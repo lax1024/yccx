@@ -1,0 +1,160 @@
+{extend name="base" /}
+{block name="css"}
+<link rel="stylesheet" href="__STATIC__/mui/css/mui.css?rand={$css_rand}" type="text/css">
+<link rel="stylesheet" href="__STATIC__/mui/css/mui-icons-extra.css?rand={$css_rand}" type="text/css">
+<link rel="stylesheet" href="__STATIC__/mobile/css/build-point.css?rand={$css_rand}" type="text/css">
+{/block}
+{block name="body"}
+<style>
+    /* 页面的长宽和背景色 */
+    html,body{
+        height: 100%;
+        width: 100%;
+        background: #ffffff;
+    }
+</style>
+<body style="overflow: scroll">
+<header class="mui-bar mui-bar-nav" style="background: rgb(252, 204, 49);color: white">
+    <span id="js_goback" class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></span>
+    <h1 class="mui-title" style="color: white">推荐建点</h1>
+</header>
+<div style="height: auto;width: 100%;overflow: scroll;margin-top: 45px;margin-bottom: 100px">
+    <div class="mui-content" style="overflow: scroll">
+        <div class="mui-row">
+            <div class="mui-col-sm-12 mui-col-xs-12" id="js_map_build_pile" style="height: 240px">
+
+            </div>
+            <img src="http://img.youchedongli.cn/public/static/mobile/images/map_choose_point.png"
+                 style="width: 30px;height: 60px;position: absolute;left: 46%;top: 18%">
+            <img id="js_location_self" style="width: 30px;height: 30px;position: absolute;left: 0;top: 28%"
+                 src="http://img.youchedongli.cn/public/static/mobile/images/location_marker_self.png?rand=20180622"/>
+        </div>
+        <div class="mui-row" style="padding-left: 5px;padding-right: 5px">
+            <div class="mui-col-sm-12 mui-col-xs-12">
+                <input id="js_point_name_input" type="text" placeholder="输入充电桩推荐位置" style="font-size: 14px;">
+
+            </div>
+            <div id="js_place_search_result" style="display: none;max-height: 150px;background: white;overflow: scroll;border: #999999 solid 1px">
+
+            </div>
+            <div class="mui-col-sm-12 mui-col-xs-12">
+                <textarea id="js_point_advise" rows="5" placeholder="建议输入附近的停车场名称，停车场的具体位置以及停车费用等信息" style="font-size: 14px"></textarea>
+            </div>
+            <div class="mui-col-sm-12 mui-col-xs-12">
+                <div style="font-size: 14px">* 如果您给我们提供更多的可参考信息，我们将会优先考虑为您建点！</div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="js_comment_submit"
+     style="height: 45px;width: 100%;position: fixed;background: #ffd31c;text-align: center;line-height: 45px;font-size: 17px">
+    推荐建点
+</div>
+<script>
+    var MARKER_SELF;
+    var CITY;
+
+    var latitude_point;
+    var longitude_point;
+</script>
+{include file="login" /}
+{include file="user_message" /}
+{include file="loading" /}
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=84chcOlNtuGKpKkIfp0oprKRveLSXEnj"></script>
+
+{if condition="$is_wxBrowser eq 'yes'"}
+<script src="http://res.wx.qq.com/open/js/jweixin-1.4.0.js?rand={$js_rand}"></script>
+<script>
+    /*
+     * 注意：
+     * 1. 所有的JS接口只能在公众号绑定的域名下调用，公众号开发者需要先登录微信公众平台进入“公众号设置”的“功能设置”里填写“JS接口安全域名”。
+     * 2. 如果发现在 Android 不能分享自定义内容，请到官网下载最新的包覆盖安装，Android 自定义分享接口需升级至 6.0.2.58 版本及以上。
+     * 3. 常见问题及完整 JS-SDK 文档地址：http://mp.weixin.qq.com/wiki/7/aaa137b55fb2e0456bf8dd9148dd613f.html
+     *
+     * 开发中遇到问题详见文档“附录5-常见错误及解决办法”解决，如仍未能解决可通过以下渠道反馈：
+     * 邮箱地址：weixin-open@qq.com
+     * 邮件主题：【微信JS-SDK反馈】具体问题
+     * 邮件内容说明：用简明的语言描述问题所在，并交代清楚遇到该问题的场景，可附上截屏图片，微信团队会尽快处理你的反馈。
+     */
+    wx.config({
+        debug: false,
+        appId: "{$jssdk['appid']}",
+        timestamp: "{$jssdk['timestamp']}",
+        nonceStr: "{$jssdk['nonceStr']}",
+        signature: "{$jssdk['signature']}",
+        jsApiList: [
+            'checkJsApi',
+            'openLocation',
+            'getLocation',
+        ]
+    });
+
+    wx.ready(function (res) {
+        if (MARKER_SELF != null) {
+            MARKER_SELF.remove();
+        }
+        weixinLocation();
+    });
+
+    wx.error(function (res) {
+//        alert(JSON.stringify(res));
+    });
+</script>
+<script>
+    //微信定位
+    function weixinLocation() {
+        loadMessageBox("微信定位中...", 10);
+        wx.getLocation({
+            success: function (res) {
+                var latitude = res.latitude; //纬度
+                var longitude = res.longitude; //经度
+                localStorage.setItem("old_marker_self_lat", latitude);
+                localStorage.setItem("old_marker_self_lng", longitude);
+                var pointx = wgs2bd(parseFloat(latitude), parseFloat(longitude));
+                if (MARKER_SELF != null) {
+                    MARKER_SELF.remove();
+                }
+                var points = new BMap.Point(pointx[1], pointx[0]);
+                localStorage.setItem("marker_self_lat", pointx[0]);
+                localStorage.setItem("marker_self_lng", pointx[1]);
+                var myIcon = new BMap.Icon("http://img.youchedongli.cn/public/static/mobile/images/marker_self.png", new BMap.Size(20, 20),{imageSize: new BMap.Size(20,20)});
+                MARKER_SELF = new BMap.Marker(points, {icon: myIcon});
+                MAP.addOverlay(MARKER_SELF);
+                MAP.setCenter(points);
+
+                var json_param = {"lat":pointx[0],"lng":pointx[1]};
+                ajax_request_byjson("POST",website + "/api/Area/get_city_lng_lat_new.html",json_param,data_handle);
+
+                function data_handle(data){
+                    if (parseInt(data.code) == 0) {
+                        var pois = data.data.pois;
+                        var addr = pois[0].addr;
+                        CITY = addr.substring(addr.indexOf("省") + 1,addr.indexOf("市"));
+                        $("#js_point_name_input").text(pois[0].name);
+                        $("#js_point_name_input").attr("data-lat");
+                        $("#js_point_name_input").attr("data-lng");
+                        setTimeout(function (args) {
+                            $("#js_place_search_result").empty();
+                            $("#js_place_search_result").hide();
+                        },500);
+                    }else {
+                        Toast("定位失败");
+                    }
+                }
+                closeLoadMessageBox();
+            },
+            cancel: function (res) {
+                // alert('用户拒绝授权获取地理位置');
+            },
+            fail: function (res) {
+//                alert(JSON.stringify(res));
+            }
+        });
+    }
+</script>
+{/if}
+
+<script type="text/javascript" src="__STATIC__/mobile/js/build-point.js?rand={$js_rand}"></script>
+</body>
+{/block}
+

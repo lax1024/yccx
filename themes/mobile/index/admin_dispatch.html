@@ -1,0 +1,174 @@
+{extend name="base" /}
+{block name="css"}
+<link rel="stylesheet" href="__STATIC__/mui/css/mui.min.css?rand={$css_rand}">
+<link rel="stylesheet" href="__STATIC__/mui/css/mui-icons-extra.css?rand={$css_rand}">
+<style>
+    .mui-card-content .mui-btn {
+        margin: 2px 5px;
+    }
+</style>
+{/block}
+{block name="body"}
+<body style="background-color: rgb(236, 236, 236); display: block;">
+<div class="mui-content" style="padding: 10px 0">
+    <form action="admin_dispatch.html" method="get">
+        <div class="mui-row">
+            <div class="mui-col-sm-10 mui-col-xs-10">
+                <div class="mui-input-row">
+                    <input type="text" name="keyword" value="{$keyword}" style="height: 33px" class="mui-input-clear"
+                           placeholder="查找车辆">
+                </div>
+            </div>
+            <div class="mui-col-sm-2 mui-col-xs-2">
+                <button type="submit" class="mui-btn mui-btn-primary">查找</button>
+            </div>
+        </div>
+    </form>
+    <div style="width: 96%;margin: 0 2%">
+        <select class="mui-btn mui-btn-block" id="device_number" style="padding: 2px 5px">
+            <option value="">
+                请选择车辆数据
+            </option>
+            {foreach name="car_device_list" item="vo"}
+            <option value="{$vo.deviceId}" data-value="{$vo.deviceId}" data-ver="{$vo.terminalVersions}"
+                    data-type="{$device_type[$vo.terminalCarType]['name']}" data-ctype="{$vo.terminalCarType}">
+                {$vo.deviceId}({$vo.name})
+            </option>
+            {/foreach}
+        </select>
+    </div>
+    <div class="mui-card">
+        <div class="mui-input-row">
+            <label>车型:</label>
+            <label id="car_type">北汽EC200</label>
+        </div>
+        <div class="mui-input-row">
+            <label>OBD版本:</label>
+            <label id="car_ver">HLT401_V202262</label>
+            <button type="button" class="mui-btn mui-btn-danger ajax-action"
+                    data-url="/api/admin_device/updateTerminal.html"
+                    style="margin-bottom: 5px;margin-right: 5px">升级
+            </button>
+        </div>
+    </div>
+    <div class="mui-card">
+        <div class="mui-card-header">控制面板</div>
+        <div class="mui-card-content" style="height: 15px"></div>
+        <div class="mui-card-content" style="text-align: center">
+            <button type="button" class="mui-btn mui-btn-success ajax-action"
+                    data-url="/api/admin_device/openDoor.html">开门
+            </button>
+            <button type="button" class="mui-btn mui-btn-primary ajax-action"
+                    data-url="/api/admin_device/closeDoor.html">关门
+            </button>
+            <button type="button" class="mui-btn mui-btn-success ajax-action"
+                    data-url="/api/admin_device/powerSupply.html">通电
+            </button>
+            <button type="button" class="mui-btn mui-btn-primary ajax-action"
+                    data-url="/api/admin_device/powerFailure.html">断电
+            </button>
+        </div>
+        <div class="mui-card-content" style="text-align: center">
+            <button type="button" class="mui-btn mui-btn-primary ajax-action"
+                    data-url="/api/admin_device/findCar.html">寻车
+            </button>
+            <button type="button" class="mui-btn mui-btn-danger ajax-action"
+                    data-url="/api/admin_device/takePhotos/direction/2.html">拍照
+            </button>
+            <button type="button" class="mui-btn mui-btn-primary ajax-action"
+                    data-url="/api/admin_device/startOrder.html">取车
+            </button>
+            <button type="button" class="mui-btn mui-btn-danger ajax-action"
+                    data-url="/api/admin_device/clearOrder.html">还车
+            </button>
+        </div>
+        <div class="mui-card-content" style="height: 15px"></div>
+    </div>
+    <div class="mui-card">
+        <div class="mui-card-header">设置车型</div>
+        <div class="mui-card-content" style="height: 15px"></div>
+        <div class="mui-card-content" style="text-align: center">
+            <div class="mui-row">
+                <div class="mui-col-sm-10 mui-col-xs-10" style="border: 1px solid #AAA;border-radius: 4px">
+                    <select class="mui-btn mui-btn-block" id="device_type" style="padding: 2px 5px">
+                        {foreach name="device_type" item="vo" key="ke"}
+                        <option value="{$ke}" >{$vo['name']}</option>
+                        {/foreach}
+                    </select>
+                </div>
+                <div class="mui-col-sm-2 mui-col-xs-2">
+                    <button type="button" class="mui-btn mui-btn-primary cartype-ajax-action"
+                            data-url="/api/admin_device/setTerminalCarType.html">设置
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="mui-card-content" style="height: 15px"></div>
+    </div>
+</div>
+<script type="text/javascript" src="__STATIC__/mui/js/mui.min.js"></script>
+<script type="text/javascript" charset="utf-8">
+    mui.init();
+
+    $('.cartype-ajax-action').on('click', function () {
+        var _url = website + $(this).data('url');
+        _url += "?device_number=" + $("#device_number").val();
+        _url += "&car_type=" + $("#device_type").val();
+        $.ajax({
+            url: _url,
+            data: [],
+            success: function (info) {
+                if (info.code === 20) {
+                    mui.alert("设置成功", "提示");
+                }else {
+                    mui.alert(info.info, "错误提示");
+                }
+            }
+        });
+    });
+
+
+    function AjaxAction(message, title, url) {
+        mui.confirm(message, title, ['取消','确定'], function (e) {
+            if (e.index == 1) {
+                $.ajax({
+                    url: url,
+                    data: [],
+                    success: function (info) {
+                        if (info.code === 20) {
+                            mui.alert("执行成功", "提示");
+                        }else {
+                            mui.alert(info.info, "错误提示");
+                        }
+                    }
+                });
+            }
+        });
+    }
+
+    /**
+     * 通用批量处理（审核、取消审核、删除）
+     */
+    $('.ajax-action').on('click', function () {
+        var _message = "要执还" + $(this).text() + "指令吗";
+        var _url = website + $(this).data('url');
+        var device_number = $("#device_number").val();
+        if (device_number == "" || device_number == undefined) {
+            mui.alert("请选择车辆", "提示");
+            return false;
+        }
+        _url += "?device_number=" + device_number;
+        AjaxAction(_message, '提示', _url);
+        return false;
+    });
+
+    $("#device_number").on('change', function () {
+        var node = $('#device_number').find('option:selected');
+        console.log(node.data('type')+"|"+node.data('ver')+"|"+node.data('ctype'));
+        $("#car_type").text(node.data('type'));
+        $("#car_ver").text(node.data('ver'));
+        $("#device_type").val(node.data('ctype'));
+    });
+</script>
+</body>
+{/block}

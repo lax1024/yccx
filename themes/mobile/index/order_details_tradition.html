@@ -1,0 +1,330 @@
+{extend name="base" /}
+{block name="css"}
+<link rel="stylesheet" type="text/css" href="__STATIC__/mobile/css/order-pay-css1.css?rand={$css_rand}">
+<link rel="stylesheet" type="text/css" href="__STATIC__/mobile/css/order-pay-css2.css?rand={$css_rand}">
+<link rel="stylesheet" href="__STATIC__/mui/css/mui.min.css?rand={$css_rand}">
+<link rel="stylesheet" href="__STATIC__/mui/css/mui-icons-extra.css?rand={$css_rand}"><link rel="stylesheet" href="__STATIC__/mui/css/mui.picker.all.css?rand={$css_rand}" type="text/css">
+<link rel="stylesheet" href="__STATIC__/mui/css/mui.poppicker.css?rand={$css_rand}" type="text/css">
+{/block}
+{block name="body"}
+<style>
+    .mui-bar {
+        background-color: #f3e856;
+    }
+
+    .mui-checkbox.mui-left label, .mui-radio.mui-left label {
+        padding-left: 10px;
+        padding-right: 20px;
+    }
+
+    .mui-checkbox input[type=checkbox]:before, .mui-radio input[type=radio]:before {
+        font-size: 22px;
+        padding-left: 10px;
+    }
+
+    .mui-input-row label {
+        padding: 0;
+    }
+
+    html {
+        width: 100%;
+    }
+
+    #segmentedControls > .mui-active {
+        background: url("../../.././public/static/mobile/images/a_bg.png?rand=2018072001") no-repeat;
+        background-size: 100%;
+    }
+
+    .mui-checkbox input[type=checkbox]:before, .mui-radio input[type=radio]:before {
+        padding-left: 0;
+    }
+
+    .mui-checkbox.mui-left label, .mui-radio.mui-left label {
+        padding-left: 0;
+    }
+
+    .user_protocol_no {
+        border-radius: 100%;
+        border: 1px solid #EEE;
+    }
+
+</style>
+
+<body class="keyboard-body" style="background: rgb(220,220,220)">
+<header class="mui-bar mui-bar-nav">
+    <span id="goback" class="mui-icon mui-icon-contact mui-icon-left-nav"></span>
+    <h1 class="mui-title">订单详情</h1>
+</header>
+<!-- start qn_main -->
+<div class="qn_main">
+    <!-- 订单详情 -->
+    <section class="qmp-pay" style="margin-top: 50px;margin-bottom: 10px;background: #FFFFFF">
+        <div style="width: 100%;height: 40px;border-bottom: rgb(196,195,200) solid 3px;padding-left: 10px">
+            <div style="width: 100%;height: 100%;float: left;line-height: 40px;text-align: left;font-size: 20px">
+                <span>时长：</span><span id="js_order_time"></span>
+            </div>
+        </div>
+
+        <div style="width: 100%;height: auto;padding-top: 10px;padding-left: 10px">
+            <div style="max-height:60px;width: 100%">
+                <span>车牌号：</span><span id="js_order_licence_plate" style="color: #00B83F;"></span>
+            </div>
+            <div style="max-height:60px;width: 100%">
+                <span>取车点：</span><span id="js_order_take_store"></span><span
+                    style="font-size: 14px;color: rgba(0,0,0,0.5)">&nbsp;&nbsp;(负责人：</span><span
+                    id="js_order_take_store_tel" style="font-size: 14px;color: rgba(0,0,0,0.5)">0000000)</span>
+            </div>
+            <div style="height: 30px;width: 100%">
+                <span>还车点：</span><span id="js_order_return_store"></span><span
+                    style="font-size: 14px;color: rgba(0,0,0,0.5)">&nbsp;&nbsp;(负责人：</span><span
+                    id="js_order_return_store_tel" style="font-size: 14px;color: rgba(0,0,0,0.5)">0000000)</span>
+            </div>
+            <div style="height: 30px;width: 100%">
+                <span>取车时间：</span><span id="js_order_take_time"></span>
+            </div>
+            <div style="height: 30px;width: 100%">
+                <span>还车时间：</span><span id="js_order_return_time"></span>
+            </div>
+            <div style="height: 30px;width: 100%">
+                <span>中途充费：</span><span id="js_order_cost_midway"></span>
+            </div>
+            <div style="height: 30px;width: 100%">
+                <span>优惠卷：</span><span id="js_order_coupon_type">满减卷</span>
+            </div>
+            <div style="height: 30px;width: 100%">
+                <span>优惠金额：</span><span id="js_order_coupon_cost" style="color: #f00;"></span>
+            </div>
+            <div style="height: 30px;width: 100%;text-align: right;font-size: 24px;margin-top: 15px;padding-right: 15px">
+                <span>实际付款：</span><span class="js-order-amount" style="color: #f00;"></span>
+            </div>
+        </div>
+    </section>
+    <!-- 订单操作(还车/续租)按钮 -->
+    <section id="js_order_handle" class="qmp-pay" style="margin-bottom: 10px;">
+        <div style="width: 100%;height: 60px;border-bottom: rgb(196,195,200) solid 3px;">
+            <div class="mui-content" style="background: #FFFFFF">
+                <div class="mui-row">
+                    <div class="mui-col-sm-5 mui-col-xs-5"
+                         style="height: 60px;text-align: center;line-height: 60px;border-radius: 5px">
+                        <span id="js_use_car_return" style="border: #ffd31c solid 1px;padding: 10px;border-radius: 5px;">我要还车</span>
+                    </div>
+                    <div class="mui-col-sm-2 mui-col-xs-2" style="height: 60px">
+
+                    </div>
+                    <div class="mui-col-sm-5 mui-col-xs-5"
+                         style="height: 60px;text-align: center;line-height: 60px;border-radius: 5px">
+                        <span id="js_use_car_continue" style="border: rgb(0,153,255) solid 1px;background: rgb(0,153,255);padding: 10px;border-radius: 5px">我要续租</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 还车操作 -->
+        <div id="js_use_car_return_handle" class="mui-content" style="display: none;background-color: #ffffff;height: auto;margin-bottom: 80px;">
+            <div class="js_return_handle_choose">
+                <div style="padding: 10px 10px 5px 20px;font-size: 14px">用车结束时，请选择归还方式</div>
+                <div class="mui-row" style="height: 100%;margin-bottom: 5px;padding-bottom: 5px">
+                    <div class="mui-col-sm-5 mui-col-xs-5" style="text-align: center;">
+                        <div class="mui-input-row mui-radio mui-left"
+                             style="padding-top: 5px;padding-left: 25px;color: rgba(0,0,0,0.5);font-size: 14px;">
+                            <label style="color: #000;">上门取车</label>
+                            <input name="return_type" type="radio" value="1">
+                        </div>
+                    </div>
+
+                    <div class="mui-col-sm-5 mui-col-xs-5" style="text-align: center;">
+                        <div class="mui-input-row mui-radio mui-left"
+                             style="padding-top: 5px;padding-left: 25px;color: rgba(0,0,0,0.5);font-size: 14px">
+                            <label style="color: #000;">到店还车</label>
+                            <input name="return_type" type="radio" value="0" checked="checked">
+                        </div>
+                    </div>
+                    <div class="mui-col-sm-2 mui-col-xs-2" style="text-align: center;">
+
+                    </div>
+                </div>
+                <div style="height: auto;width: 98%;margin-left:1%;background: #FFFFFF;">
+                    <div style="width: 100%;height: auto;padding-left: 10px;margin-top: 5px;padding-bottom: 5px;padding-top: 10px;">
+                        <div style="height: 20px;width: 20px;border: #ffd31c solid 1px;border-radius: 10px;color: #ffd31c;text-align: center;line-height: 20px;font-size: 13px;float: left">
+                            还
+                        </div>
+                        <div style="height: 20px;width: auto;float: left;font-size: 13px;padding-left: 10px;line-height: 23px">
+                            <div style="float: left">还车点：</div>
+                            <div style="max-width: 150px;float: left;overflow: hidden; white-space: nowrap; text-overflow: ellipsis;"
+                                 id="js_store_return">
+                            </div>
+                        </div>
+                        <span class="mui-icon mui-icon-location" style="color: rgb(1,181,227);font-size: 20px"></span>
+                        <span id="js_store_return_choose" style="color: rgb(1,181,227);font-size: 13px;">修改<span class="mui-icon mui-icon-arrowright" style="color: rgb(1,181,227);font-size: 12px"></span></span>
+                    </div>
+                </div>
+            </div>
+            <div class="js_return_handle_wait" style="display: none">
+                <div style="padding: 10px 10px 0 20px;font-size: 14px">归还方式:<span>到店还车</span></div>
+                <div style="height: auto;width: 98%;margin-left:1%;background: #FFFFFF;">
+                    <div style="width: 100%;height: auto;padding-left: 10px;margin-top: 5px;padding-bottom: 5px;padding-top: 10px;">
+                        <div style="height: 20px;width: 20px;border: #ffd31c solid 1px;border-radius: 10px;color: #ffd31c;text-align: center;line-height: 20px;font-size: 13px;float: left">
+                            还
+                        </div>
+                        <div style="height: 20px;width: auto;float: left;font-size: 13px;padding-left: 10px;line-height: 23px">
+                            <div style="float: left">还车点：</div>
+                            <div style="max-width: 230px;float: left;overflow: hidden; white-space: nowrap; text-overflow: ellipsis;"
+                                 id="js_store_return_show">
+                            </div>
+                        </div>
+                        <span class="mui-icon mui-icon-location" style="color: rgb(1,181,227);font-size: 20px"></span>
+                    </div>
+                </div>
+            </div>
+            <div id="js_return_car" style="height: 40px;width: 100%;background: rgb(254,153,0);border-radius: 5px;text-align: center;line-height: 40px;color: #FFFFFF;position: fixed;bottom: 0">
+                立即还车
+            </div>
+        </div>
+        <!-- 续租操作 -->
+        <div id="js_use_car_continue_handle" class="mui-content" style="height: auto;display: block;background: rgb(220,220,220);margin-bottom: 80px">
+            <!-- 续租时间选择器 -->
+            <div class="mui-row" style="height: 100%;margin-bottom: 10px;padding-bottom: 5px;background: #FFFFFF">
+                <div id="js_time_choose_continue" class="mui-col-sm-4 mui-col-xs-4" style="text-align: center;">
+                    <div id="js_time_hour_take" style="height: auto;width: 100%;font-size: 24px;color: rgb(0,153,255);">00:00</div>
+                    <div id="js_time_date_take" style="height: auto;width: 100%;font-size: 12px;color: rgb(0,0,0);">2018-07-29</div>
+                    <div style="height: auto;width: 100%;font-size: 14px;color: rgb(0,0,0);">续租时间</div>
+                </div>
+
+                <div class="mui-col-sm-4 mui-col-xs-4" style="text-align: center;">
+                    <div id="js_use_car_time" style="height: auto;width: 100%;font-size: 16px;color: rgb(0,0,0);border-bottom: #aaaaaa solid 1px">
+                        1天
+                    </div>
+                    <div id="js_goods_name" style="height: auto;width: 100%;font-size: 16px;color: rgb(0,0,0);"></div>
+                </div>
+                <div id="js_time_choose_return" class="mui-col-sm-4 mui-col-xs-4" style="text-align: center;">
+                    <div id="js_time_hour_return" style="height: auto;width: 100%;font-size: 24px;color: rgb(0,153,255);">00:00</div>
+                    <div id="js_time_date_return" style="height: auto;width: 100%;font-size: 12px;color: rgb(0,0,0);">2018-07-29</div>
+                    <div style="height: auto;width: 100%;font-size: 14px;color: rgb(0,0,0);">还车时间</div>
+                </div>
+            </div>
+            <!-- 续租要求 -->
+            <div class="mui-content" style="background-color: #ffffff;height: auto;display: block">
+                <div style="padding: 10px 10px 5px 20px;font-size: 14px">用车结束时，请选择归还方式<span style="color: #999999">(可在还车时选择)</span></div>
+                <!-- 续租后，还车方式的选择 -->
+                <div class="mui-row" style="height: 100%;margin-bottom: 5px">
+                    <div class="mui-col-sm-5 mui-col-xs-5" style="text-align: center;">
+                        <div class="mui-input-row mui-radio mui-left"
+                             style="padding-top: 5px;padding-left: 25px;color: rgba(0,0,0,0.5);font-size: 14px;">
+                            <label style="color: #000;">上门取车</label>
+                            <input name="return_type_continue" type="radio" value="1">
+                        </div>
+                    </div>
+                    <div class="mui-col-sm-5 mui-col-xs-5" style="text-align: center;">
+                        <div class="mui-input-row mui-radio mui-left"
+                             style="padding-top: 5px;padding-left: 25px;color: rgba(0,0,0,0.5);font-size: 14px">
+                            <label style="color: #000;">到店还车</label>
+                            <input name="return_type_continue" type="radio" value="0" checked="checked">
+                        </div>
+                    </div>
+                    <div class="mui-col-sm-2 mui-col-xs-2" style="text-align: center;">
+
+                    </div>
+                </div>
+                <!-- 还车点的选择 -->
+                <div style="height: auto;width: 98%;margin-left:1%;background: #FFFFFF;">
+                    <div style="width: 100%;height: auto;padding-left: 10px;margin-top: 5px;padding-bottom: 5px;padding-top: 10px;">
+                        <div style="height: 20px;width: 20px;border: #ffd31c solid 1px;border-radius: 10px;color: #ffd31c;text-align: center;line-height: 20px;font-size: 13px;float: left">
+                            还
+                        </div>
+                        <div style="height: 20px;width: auto;float: left;font-size: 13px;padding-left: 10px;line-height: 23px">
+                            <div style="float: left">还车点：</div>
+                            <div id="js_point_return_continue" style="max-width: 150px;float: left;overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
+                            </div>
+                        </div>
+                        <span class="mui-icon mui-icon-location" style="color: rgb(1,181,227);font-size: 20px"></span>
+                        <span id="js_store_return_choose_continue" style="color: rgb(1,181,227);font-size: 13px;display: none">修改
+                    <span class="mui-icon mui-icon-arrowright" style="color: rgb(1,181,227);font-size: 12px"></span>
+                </span>
+                    </div>
+                </div>
+                <!-- 协议的勾选 -->
+                <div class="fillMod introCol" style="padding: 0 10px 10px 10px;margin-top: 10px">
+                    <div class="mui-row">
+                        <div class="mui-col-sm-12 mui-col-xs-12">
+                            <span id="user_protocol" class="mui-icon mui-icon-checkmarkempty user_protocol_no"></span>
+                            <a style="text-decoration:none;" href="javascript:void(0)"
+                               id="openPopover">《优车出行服务协议》</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- 续租支付按钮 -->
+                <div style="height: 50px;width: 100%;position: fixed;bottom: 0;background: #f08b08">
+                    <div style="width: 70%;height:100%;background: #FFFFFF;border-top: #f08b08 solid 2px;float: left">
+                        <div style="float: left;text-align: left;margin-left: 10px;line-height: 50px">
+                            <span>全额</span><span style="color: #f08b08" id="js_total_price"></span></div>
+                        <div style="float: right;text-align: right;line-height: 50px;padding-right: 10px;color: #666666"
+                             id="openPopover_detail">明细
+                        </div>
+                    </div>
+                    <div id="js_submit_order"
+                         style="width: 30%;height:100%;background: #f08b08;color: #ffffff;text-align: center;line-height: 50px;float: left">
+                        去支付
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<div id="popover" class="mui-backdrop" style="display: none">
+    <header class="mui-bar mui-bar-nav">
+        <span id="goto_back" class="mui-icon mui-icon-contact mui-icon-left-nav"></span>
+        <h1 class="mui-title">优车出行服务协议</h1>
+    </header>
+    <div class="mui-content"
+         style="margin-top:45px;padding: 0 5px;background-color: white;color: #333;width: 100%;height: 100%;overflow: scroll">
+        {$article['content']}
+        {$article1['content']}
+        <hr/>
+        <div style="text-align: right">更新时间:{$article['publish_time']}</div>
+    </div>
+</div>
+<div id="popover_detail" class="mui-backdrop" style="display: none">
+    <header class="mui-bar mui-bar-nav">
+        <span id="goto_back_detail" class="mui-icon mui-icon-contact mui-icon-left-nav"></span>
+        <h1 class="mui-title">价钱明细</h1>
+    </header>
+    <div class="mui-content"
+         style="margin-top: 45px;padding: 0 5px;background-color: white;color: #333;width: 100%;height: 100%;overflow: scroll">
+        <div style="height: 30px;width: 100%;margin-top: 10px">
+            <span>单价：</span><span id="popover_detail_price" style="color: #f08b08"></span>
+        </div>
+        <div style="height: 30px;width: 100%">
+            <span>基本服务费：</span><span id="popover_detail_basic" style="color: #f08b08"></span>
+        </div>
+        <div style="height: 30px;width: 100%">
+            <span>车行手续费：</span><span id="popover_detail_procedure" style="color: #f08b08"></span>
+        </div>
+        <div style="height: 30px;width: 100%">
+            <span>用车天数：</span><span id="popover_detail_days" style="color: #f08b08"></span>
+        </div>
+        <div style="height: 30px;width: 100%">
+            <span>计算方式：</span><span style="color: #f00">天数 × (单价 + 服务费) + 手续费</span>
+        </div>
+        <div style="height: 30px;width: 100%;text-align: right;font-size: 24px;margin-top: 15px;padding-right: 15px">
+            <span>全部金额：</span><span id="popover_detail_amount" style="color: #f00;"></span>
+        </div>
+    </div>
+</div>
+
+{include file="login" /}
+{include file="loading" /}
+<script type="text/javascript" src="__STATIC__/mobile/js/jquery.min.js"></script>
+<script type="text/javascript" src="__STATIC__/mobile/js/public-js.js?rand={$js_rand}"></script>
+<script src="__STATIC__/mui/js/mui.min.js?rand={$js_rand}"></script>
+<script src="__STATIC__/mui/js/mui.picker.all.js?rand={$js_rand}"></script>
+<script type="text/javascript" src="__STATIC__/mui/js/mui.zoom.js?rand={$js_rand}"></script>
+
+<script>
+    var sn = '';
+    var goods_type = '';
+</script>
+
+<script type="text/javascript" src="__STATIC__/mobile/js/order_details_tradition-js.js?rand={$js_rand}"></script>
+
+</body>
+{/block}

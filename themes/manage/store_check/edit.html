@@ -1,0 +1,227 @@
+{extend name="base" /}
+{block name="body"}
+<style>
+    .area_div .layui-input-inline {
+        width: 160px;
+    }
+    .layui-form-label{
+        width: 100px;
+    }
+</style>
+<div class="layui-body">
+    <!--tab标签-->
+    <div class="layui-tab layui-tab-brief">
+        <ul class="layui-tab-title">
+            <li class=""><a href="{:url('manage/StoreCheck/index')}">店铺管理</a></li>
+            <li class="layui-this">编辑审核店铺</li>
+        </ul>
+        <div class="layui-tab-content">
+            <div class="layui-form">
+                <fieldset class="layui-elem-field layui-field-title">
+                    <legend>申请信息</legend>
+                </fieldset>
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">数据id</label>
+                        <div class="layui-input-inline">
+                            <div class="layui-form-mid ">{$subjoin['id']}</div>
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">管理员用户:</label>
+                        <div class="layui-input-inline" style="width: 230px">
+                            <div class="layui-form-mid ">{$subjoin['seller_name']}({$subjoin['seller_id']})</div>
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">管理员电话:</label>
+                        <div class="layui-input-inline">
+                            <div class="layui-form-mid ">{$subjoin['seller_mobile']}</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">申请单位名称:</label>
+                        <div class="layui-input-inline">
+                            <div class="layui-form-mid ">{$subjoin['store_name']}</div>
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">单位联系电话:</label>
+                        <div class="layui-input-inline" style="width: 230px">
+                            <div class="layui-form-mid ">{$subjoin['store_tel']}</div>
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">负责人姓名:</label>
+                        <div class="layui-input-inline">
+                            <div class="layui-form-mid ">{$subjoin['store_principal']}</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">负责人电话:</label>
+                        <div class="layui-input-inline">
+                            <div class="layui-form-mid ">{$subjoin['store_mobile']}</div>
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">单位区域:</label>
+                        <div class="layui-input-inline" style="width: 230px">
+                            <div class="layui-form-mid ">
+                                {$subjoin['province_name']}-{$subjoin['city_name']}-{$subjoin['area_name']}-{$subjoin['street_name']}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">单位地址:</label>
+                        <div class="layui-input-inline">
+                            <div class="layui-form-mid ">{$subjoin['address']}</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">地址坐标:</label>
+                        <div class="layui-input-inline">
+                            <div class="layui-form-mid ">经度:{$subjoin['location_longitude']}&nbsp;&nbsp;&nbsp;纬度:{$subjoin['location_latitude']}</div>
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">负责人身份证:</label>
+                        <div class="layui-input-inline" style="width: 230px">
+                            <div class="layui-form-mid ">
+                                {$subjoin['principal_id']}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">身份证正面:</label>
+                        <div class="layui-input-inline">
+                            <img onclick="show_img($(this))" data-title="身份证正面" src="__OSSIMG__{$subjoin['principal_id_front_img']}" style="height: 50px">
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">身份证反面:</label>
+                        <div class="layui-input-inline">
+                            <img onclick="show_img($(this))" data-title="身份证反面" src="__OSSIMG__{$subjoin['principal_id_back_img']}" style="height: 50px">
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">手持身份证:</label>
+                        <div class="layui-input-inline">
+                            <img onclick="show_img($(this))" data-title="手持身份证" src="__OSSIMG__{$subjoin['principal_id_handheld_img']}" style="height: 50px">
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">营业执照编号或者组织代码:</label>
+                        <div class="layui-input-inline">
+                            <div class="layui-form-mid ">{$subjoin['business_license']}</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">营业执照:</label>
+                        <div class="layui-input-inline">
+                            <img onclick="show_img($(this))" data-title="营业执照" src="__OSSIMG__{$subjoin['business_license_img']}" style="height: 50px">
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">入驻协议:</label>
+                        <div class="layui-input-inline">
+                            <img src="__OSSIMG__{$subjoin['protocol_img']}" style="height: 50px">
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">申请时间:</label>
+                        <div class="layui-input-inline">
+                            <div class="layui-form-mid ">{$subjoin['create_time']}</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">更新时间:</label>
+                        <div class="layui-input-inline">
+                            <div class="layui-form-mid ">{$subjoin['update_time']}</div>
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">状态:</label>
+                        <div class="layui-input-inline">
+
+                            <div class="layui-form-mid ">{php} if($subjoin['store_status']==0){ echo "未审核"; };if($subjoin['store_status']==1){ echo "审核失败"; };if($subjoin['store_status']==2){ echo "审核成功"; };{/php}</div>
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                    </div>
+                </div>
+                {if condition="$subjoin['store_status'] neq 2"}
+                <form class="layui-form form-container" action="{:url('manage/StoreCheck/update')}" method="post">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">备注信息</label>
+                        <div class="layui-input-block">
+                            <textarea type="text" name="remark" placeholder="（必填）"
+                                      class="layui-textarea">{$subjoin['remark']}</textarea>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">审核状态</label>
+                        <div class="layui-input-block">
+                            <input type="radio" name="store_status" value="0" title="待审核" {php}echo $subjoin['store_status']==0 ?'checked' : '';{/php}>
+                            <input type="radio" name="store_status" value="1" title="审核失败" {php}echo $subjoin['store_status']==1 ?
+                            'checked' : '';{/php}>
+                            <input type="radio" name="store_status" value="2" title="审核成功" {php}echo $subjoin['store_status']==2 ?
+                            'checked' : '';{/php}>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <div class="layui-input-block">
+                            <input type="text" hidden name="id" value="{$subjoin['id']}">
+                            <button class="layui-btn" lay-submit lay-filter="*">提交保存</button>
+                            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                        </div>
+                    </div>
+                </form>
+                {/if}
+            </div>
+        </div>
+    </div>
+</div>
+{/block}
+{block name="js"}
+<script type="text/javascript" src="__JS__/picker.js"></script>
+{/block}
+{block name="script"}
+<script>
+    $(function () {
+        var picker = layui.picker;
+        var p2 = new picker();
+        p2.set({
+            elem: '#p2',
+            url: "{:url('api/Area/get_province_list')}",
+            canSearch: true,
+            codeConfig: {$address_config}
+        }).render();
+    });
+</script>
+<script>
+    function show_img(node) {
+        var imgurl = node.attr('src');
+        var title = node.attr('data-title');
+        var texts = "<img src='" + imgurl + "' width='100%'/>";
+        layer.open({
+            title: title,
+            area: 'auto',
+            maxWidth: '560',
+            maxHeight: '560',
+            content: texts
+        });
+    }
+</script>
+{/block}

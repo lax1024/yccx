@@ -1,0 +1,43 @@
+{extend name="base" /}
+{block name="body"}
+<div class="layui-body">
+    <!--tab标签-->
+    <div class="layui-tab layui-tab-brief">
+        <ul class="layui-tab-title">
+            <li class="layui-this">统计情况</li>
+        </ul>
+        <div class="layui-container">
+            <div class="layui-row" style="height: 300px">
+                <div class="layui-col-xs6" style="float: left;width: 48%;height: 100%;padding-right: 5px">
+                    <div style="text-align: center">取还车星期分布曲线图</div>
+                    <iframe src="/index/Common/week_bar.html?data_int=201808"
+                            style="height: 100%;width: 100%;border: none">
+                    </iframe>
+                </div>
+            </div>
+        </div>
+        <div class="layui-container">
+            <div class="layui-row" style="height: 300px">
+                <div class="layui-col-xs6" style="float: left;width: 48%;height: 100%;padding-right: 5px">
+                    <div style="text-align: center">取车热力分布</div>
+                    <iframe src="/index/Common/hot_map_acquire.html?data_int=201808"
+                            style="height: 100%;width: 100%;border: none">
+                    </iframe>
+                </div>
+                <div class="layui-col-xs6" style="float: left;width: 48%;height: 100%;padding-left: 5px">
+                    <div style="text-align: center">还车热力分布</div>
+                    <iframe src="/index/Common/hot_map_return.html?data_int=201808"
+                            style="height: 100%;width: 100%;border: none">
+                    </iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}
+{block name="js"}
+<script src="__JS__/echarts/echarts.min.js"></script>
+{/block}
+{block name="script"}
+
+{/block}

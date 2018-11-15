@@ -1,0 +1,59 @@
+{extend name="base" /}
+{block name="css"}
+<link type="text/css" rel="stylesheet" href="__STATIC__/mobile/css/index-css5.css?rand={$css_rand}">
+<link rel="stylesheet" type="text/css" href="__STATIC__/mobile/css/contactlist-css.css?rand={$css_rand}">
+{/block}
+{block name="body"}
+<body style="background-color: rgb(236, 236, 236); display: block;">
+<div class="flexCo">
+    <div class="headStrip white flexCo" line="hairB bgD2">
+        <p class="iph" style="display: none"></p>
+        <p class="headCap size16">
+            <em class="opaAre isdIco size25 cancel-btn" id="goback"></em>
+            选择驾驶员
+            <em class="opaAre size14"></em>
+        </p>
+    </div>
+    <div class="fillCon flexMa">
+        <p class="addDriStr size16 add-icon">
+            <em class="isdIco fillVi size18"></em>
+            新增驾驶员
+        </p>
+        <dl class="selDriCard size14">
+            <div class="contact-wrap">
+                <dt class="color9 size18" line="hairB bgEc">
+                <div class="js-title">选择驾驶员</div>
+                <!--、护照、回乡证、台胞证-->
+                <div class="size13 support-type">支持二代身份证</div>
+                </dt>
+                <dd id="contact_div">
+                    <div class="driInn js-contact-item" line="hairB bgEc">
+                        <em class="choose isdIco colorC size19 choose-icon fillVi"></em>
+                        <p class="driMes flexMa choose-icon">
+                            <span class="name size16">
+                                <em class="fie" style="display: none">姓名</em>
+                                <em class="js-contact-name"></em>
+                            </span>
+                            <span class="tel">
+                                <em class="fie">手机号码</em>
+                                <em class="js-contact-tel"></em>
+                            </span>
+                            <span class="eng">
+                                <em class="fie">身份证</em>
+                                <em class="js-contact-idcar"></em>
+                            </span>
+                        </p>
+                        <em class="edit isdIco color9 size15 edit-icon"></em>
+                    </div>
+                </dd>
+            </div>
+        </dl>
+    </div>
+</div>
+{include file="login" /}
+{include file="loading" /}
+<script type="text/javascript" src="__STATIC__/mobile/js/jquery.min.js"></script>
+<script type="text/javascript" src="__STATIC__/mobile/js/public-js.js?rand={$js_rand}"></script>
+<script type="text/javascript" src="__STATIC__/mobile/js/contactlist-js.js?rand={$js_rand}"></script>
+</body>
+{/block}

@@ -1,0 +1,126 @@
+{extend name="base" /}
+{block name="body"}
+<div class="layui-body">
+    <!--tab标签-->
+    <div class="layui-tab layui-tab-brief">
+        <ul class="layui-tab-title">
+            <li class="layui-this">车辆任务管理</li>
+        </ul>
+        <div class="layui-tab-content">
+            <div class="layui-tab-item layui-show">
+                <form class="layui-form layui-form-pane" action="{:url('manage/OrderOperation/index')}" method="get">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">起始时间</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="start_time" value="{$start_time}"
+                                   placeholder="起始时间"
+                                   class="layui-input datetime">
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">结束时间</label>
+                        <div class="layui-inline">
+                            <input type="text" name="end_time" value="{$end_time}"
+                                   placeholder="结束时间"
+                                   class="layui-input datetime">
+                        </div>
+                    </div>
+                    <hr/>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">关键词</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="keyword" value="{$keyword}" placeholder="请输入关键词"
+                                   class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <button class="layui-btn">搜索</button>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">类型</label>
+                        <div class="layui-inline">
+                            <select name="order_type" lay-filter="statusselect">
+                                <option value="0">未选择</option>
+                                {foreach name="type_list" item="vo" key="kv"}
+                                <option value="{$kv}" {php} echo $kv==$order_type?"selected":"";{/php}>{$vo}</option>
+                                {/foreach}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">状态</label>
+                        <div class="layui-inline">
+                            <select name="order_status" lay-filter="statusselect1">
+                                <option value="-1">未选择</option>
+                                {foreach name="order_list" item="vo" key="kv"}
+                                <option value="{$kv}" {php} echo $kv==$order_status?"selected":"";{/php}>{$vo}</option>
+                                {/foreach}
+                            </select>
+                        </div>
+                    </div>
+                </form>
+                <hr>
+                <table class="layui-table">
+                    <thead>
+                    <tr>
+                        <th style="width: 30px;">ID</th>
+                        <th>电话</th>
+                        <th>姓名</th>
+                        <th>车牌号</th>
+                        <th>取车点</th>
+                        <th>还车点</th>
+                        <th>服务类型</th>
+                        <th>任务状态</th>
+                        <th>是否异常</th>
+                        <th>是否合格</th>
+                        <th>原因</th>
+                        <th>接单时间</th>
+                        <th>还车时间</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {foreach name="order_operation_list" item="vo"}
+                    <tr>
+                        <td>{$vo.id}</td>
+                        <td>{$vo.operation_phone}</td>
+                        <td>{$vo.operation_name}</td>
+                        <td>{$vo.licence_plate}</td>
+                        <td>{$vo.acquire_store_name}</td>
+                        <td>{$vo.return_store_name}</td>
+                        <td>{$vo.order_type_str}</td>
+                        <td>{$vo.order_status_str}</td>
+                        <td>{$vo.is_unusual_str}</td>
+                        <td>{$vo.is_fail_str}</td>
+                        <td>{$vo.is_fail_info}</td>
+                        <td>{$vo.create_time}</td>
+                        <td>{$vo.return_time_str}</td>
+                        <td>
+                            <a href="{:url('manage/OrderOperation/edit',['id'=>$vo['id']])}"
+                               class="layui-btn layui-btn-mini">查看任务</a>
+                            {if condition="$vo['order_status'] lt 50 and $vo['order_status'] gt 0"}
+                            <a href="{:url('manage/OrderOperation/cancel',['id'=>$vo['id']])}"
+                               class="layui-btn layui-btn-mini ajax-common">取消任务</a>
+                            {/if}
+                        </td>
+                    </tr>
+                    {/foreach}
+                    </tbody>
+                </table>
+                <!--分页-->
+                {$order_operation_list->render()}
+            </div>
+        </div>
+    </div>
+</div>
+{/block}
+{block name="script"}
+<script>
+    form.on('select(statusselect)', function (data) {
+        $(".layui-form-pane").submit();
+    });
+    form.on('select(statusselect1)', function (data) {
+        $(".layui-form-pane").submit();
+    });
+</script>
+{/block}

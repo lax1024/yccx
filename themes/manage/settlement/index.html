@@ -1,0 +1,206 @@
+{extend name="base" /}
+
+{block name="body"}
+<style>
+    .layui-table td, .layui-table th {
+        padding: 9px 7px;
+    }
+</style>
+<div class="layui-body">
+    <!--tab标签-->
+    <div class="layui-tab layui-tab-brief">
+        <ul class="layui-tab-title">
+            <li class="layui-this">结算管理</li>
+        </ul>
+        <div class="layui-tab-content">
+            <div class="layui-tab-item layui-show">
+                <form class="layui-form layui-form-pane" action="{:url('manage/Settlement/index')}" method="get">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">总店铺id</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="store_key_id" value="{$store_key_id}" placeholder="请输总店铺id"
+                                   class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <div class="layui-input-inline">
+                            <input type="radio" name="is_all" value="0" title="可以结算" {php}echo $is_all==0 ?'checked' :
+                            '';{/php}>
+                            <br/>
+                            <input type="radio" name="is_all" value="1" title="全部记录" {php}echo $is_all==1 ?'checked' :
+                            '';{/php}>
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <div class="layui-input-inline">
+                            <input type="text" name="end_time" value="{$end_time}" placeholder="请选择结算时间"
+                                   class="layui-input datetime">
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <button class="layui-btn">搜索</button>
+                    </div>
+
+                    <div class="layui-inline">
+                        <label class="layui-form-label">统计数量</label>
+                        <label class="layui-form-label">{$count}条</label>
+                    </div>
+                    <div class="layui-inline" style="">
+                        <label class="layui-form-label">统计金额</label>
+                        <label class="layui-form-label" style="width: 200px">{$order_amount}元</label>
+                    </div>
+                </form>
+                <hr>
+                <div class="layui-tab-content">
+                    <div class="layui-form">
+                        <fieldset class="layui-elem-field layui-field-title">
+                            <legend>结算信息</legend>
+                        </fieldset>
+                        <div class="layui-form-item">
+                            <div class="layui-inline">
+                                <label class="layui-form-label">结算总店铺id:</label>
+                                <input type="text" name="store_key_id" value="{$store_key_id}" hidden>
+                                <div class="layui-input-inline">
+                                    <div class="layui-form-mid ">{$store_key_id}</div>
+                                </div>
+                            </div>
+                            <div class="layui-inline">
+                                <label class="layui-form-label">结算总店铺名称:</label>
+                                <div class="layui-input-inline" style="width: 230px">
+                                    <div class="layui-form-mid ">{$store['store_name']}</div>
+                                </div>
+                            </div>
+                            <div class="layui-inline">
+                                <label class="layui-form-label">总店负责人:</label>
+                                <div class="layui-input-inline">
+                                    <div class="layui-form-mid ">{$store['store_principal']}</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <div class="layui-inline">
+                                <label class="layui-form-label">联系电话:</label>
+                                <div class="layui-input-inline">
+                                    <div class="layui-form-mid ">
+                                        {$store['store_tel']}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="layui-inline">
+                                <label class="layui-form-label">订单总金额:</label>
+                                <div class="layui-input-inline" style="width: 230px">
+                                    <div class="layui-form-mid ">{$store['order_amount_sett']}</div>
+                                </div>
+                            </div>
+                            <div class="layui-inline">
+                                <label class="layui-form-label">结算时间:</label>
+                                <input type="text" name="end_time" value="{$end_time}" hidden>
+                                <div class="layui-input-inline">
+                                    <div class="layui-form-mid">{$end_time}</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <div class="layui-inline">
+                                <label class="layui-form-label">比例:</label>
+                                <div class="layui-input-inline">
+                                    <div class="layui-form-mid ">{$store['commission_str']}</div>
+                                </div>
+                            </div>
+                            <div class="layui-inline">
+                                <label class="layui-form-label">实际结算金额:</label>
+                                <div class="layui-input-inline" style="width: 230px">
+                                    <div class="layui-form-mid ">{$store['order_amount']}</div>
+                                </div>
+                            </div>
+                            <div class="layui-inline">
+                                <label class="layui-form-label">是否结算:</label>
+                                <div class="layui-input-inline">
+                                    <div class="layui-form-mid">
+                                        <a href="javascript:void(0)"
+                                           data-action="{:url('manage/Settlement/sett',['store_key_id'=>$store_key_id,'end_time'=>$end_time])}"
+                                           class="layui-btn layui-btn-normal layui-btn-mini ajax-action">立即结算</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <table class="layui-table">
+                    <thead>
+                    <tr>
+                        <th style="width: 30px;">ID</th>
+                        <th style="width: 80px">订单编号</th>
+                        <th style="display: none">店铺id</th>
+                        <th>店铺名称</th>
+                        <th style="width: 30px">客户id</th>
+                        <th style="width: 50px">客户电话</th>
+                        <th style="width: 50px">总店铺id</th>
+                        <th>支付方式</th>
+                        <th>订单金额</th>
+                        <th>订单状态</th>
+                        <th>付款时间</th>
+                        <th style="width: 80px">备注</th>
+                        <th style="width: 120px">操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {foreach name="order_list" item="vo"}
+                    <tr>
+                        <td>{$vo.id}</td>
+                        <td>{$vo.order_sn}</td>
+                        <td style="display: none">{$vo.store_id}</td>
+                        <td>{$vo.store_name}</td>
+                        <td>{$vo.customer_id}</td>
+                        <td>{$vo.customer_name}</td>
+                        <td>{$vo.store_key_id}</td>
+                        <td>{$vo.payment_code_str}</td>
+                        <td>{$vo.order_amount}</td>
+                        <td>{$vo.order_status_str}</td>
+                        <td>{$vo.payment_time}</td>
+                        <td>{$vo.admin_notes}</td>
+                        <td>
+                            <a href="{:url('manage/Settlement/view',['id'=>$vo['id']])}"
+                               class="layui-btn layui-btn-normal layui-btn-mini">查看</a>
+                            <a href="{:url('manage/Settlement/notes',['id'=>$vo['id']])}"
+                               class="layui-btn layui-btn-normal layui-btn-mini ajax-notes">备注</a>
+                            {if condition="$vo['order_status'] eq '10' "}
+                            <a href="{:url('manage/Settlement/fee',['id'=>$vo['id']])}"
+                               class="layui-btn layui-btn-normal layui-btn-mini ajax-fee">改价格</a>
+                            {/if}
+                        </td>
+                    </tr>
+                    {/foreach}
+                    </tbody>
+                </table>
+                <!--分页-->
+                {$order_list->render()}
+            </div>
+        </div>
+    </div>
+</div>
+{/block}
+{block name="js"}
+<script src="__JS__/jquery-migrate-1.2.1.min.js"></script>
+<script src="__JS__/jquery.jqprint-0.3.js"></script>
+{/block}
+{block name="script"}
+<script>
+    $(function () {
+        $("#ddlist").hide();
+        $("#print_btn").on('click', function () {
+            if ($("#ddlist").css('display') == 'none') {
+                $("#ddlist").show();
+                $("#switchShowdiv").find('div').click();
+            }
+            $("#ddlist").jqprint({
+                debug: false, //如果是true则可以显示iframe查看效果（iframe默认高和宽都很小，可以再源码中调大），默认是false
+                importCSS: true, //true表示引进原来的页面的css，默认是true。（如果是true，先会找$("link[media=print]")，若没有会去找$("link")中的css文件）
+                printContainer: true, //表示如果原来选择的对象必须被纳入打印（注意：设置为false可能会打破你的CSS规则）。
+                operaSupport: true//表示如果插件也必须支持歌opera浏览器，在这种情况下，它提供了建立一个临时的打印选项卡。默认是true
+            });
+        });
+    });
+</script>
+{/block}

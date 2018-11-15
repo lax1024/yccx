@@ -1,0 +1,256 @@
+{extend name="base" /}
+{block name="css"}
+<link rel="stylesheet" href="__STATIC__/mobile/css/index-css1.css?rand={$css_rand}" type="text/css">
+<link rel="stylesheet" href="__STATIC__/mobile/css/index-css2.css?rand={$css_rand}" type="text/css">
+<link rel="stylesheet" href="__STATIC__/mobile/css/index-css3.css?rand={$css_rand}" type="text/css">
+<link rel="stylesheet" href="__STATIC__/mobile/css/index-css4.css?rand={$css_rand}" type="text/css">
+<link rel="stylesheet" href="__STATIC__/mobile/css/index-css5.css?rand={$css_rand}" type="text/css">
+<link rel="stylesheet" href="__STATIC__/mobile/css/timer.css?rand={$css_rand}" type="text/css">
+<link rel="stylesheet" href="__STATIC__/mui/css/mui.min.css?rand={$css_rand}" type="text/css">
+{/block}
+{block name="body"}
+<body style="background-color: rgb(236, 236, 236); display: block;">
+<div class="searWrap">
+    <div class="headStr">
+        <div class="swiper-container2">
+            <div class="swiper-wrapper2">
+                <div class="swiper-slide">
+                    <div class="mui-slider">
+                        <div class="mui-slider-group">
+                            {foreach name="slide_list" item="vo"}
+                            <div class="mui-slider-item"><a href="{$vo['link']}"><img alt="{$vo['name']}"
+                                                                                      src="__OSSIMG__{$vo['image']}"/></a>
+                            </div>
+                            {/foreach}
+                        </div>
+                    </div>
+                </div>
+            </div> <!-- Add Pagination -->
+            <div class="swiper-pagination2"></div>
+        </div>
+    </div>
+
+    <div class="searCon">
+        <p class="searTab colorF size18 searTabxt">
+            <span class="js-cartype-tradition colorVi curr">常规租车</span>
+            <span class="js-cartype-newenergy">新能源车</span>
+        </p>
+        <ul class="searForm">
+            <li line="hairB bgEc">
+                <p class="term w1" data-type="1" id="j_pcity"
+                   data-city="{&quot;Id&quot;:&quot;43&quot;,&quot;Name&quot;:&quot;三亚&quot;,&quot;DefaultLocation&quot;:{&quot;Name&quot;:&quot;凤凰国际机场&quot;,&quot;Longitude&quot;:&quot;109.412161&quot;,&quot;Latitude&quot;:&quot;18.307753&quot;}}">
+                    <span class="colorC gapB">取车城市</span>
+                    <span class="size18 cont" to="h" id="j_pcity_text">三亚</span>
+                </p>
+                <p class="term main" data-type="1" id="j_parea"
+                   data-location="{&quot;Name&quot;:&quot;凤凰国际机场&quot;,&quot;Longitude&quot;:&quot;109.412161&quot;,&quot;Latitude&quot;:&quot;18.307753&quot;}">
+                    <span class="colorC gapB">取车区域</span>
+                    <span class="size18 cont" to="h" id="j_parea_text">凤凰国际机场</span></p>
+                <p class="term honCen">
+                    <span class="flexVc colorC gapB" data-type="2" id="isReturn">
+                        <em class="selBox searIco size14" id="isReturn-flag"></em>
+                        异地还车
+                    </span>
+                    <em class="locaIco searIco fillVi size24" id="localDiv"></em>
+                    <span class="loadPic" style="display:none;">
+                        <em></em><em></em><em></em>
+                    </span>
+                </p></li>
+            <li line="hairB bgEc" id="rCityDiv" style="display: none;">
+                <p class="term w1" data-type="2" id="j_rcity" style="width: 20%">
+                    <span class="colorC gapB">还车城市</span>
+                    <span class="size18 cont" to="h" id="j_rcity_text"></span></p>
+                <p class="term w2" data-type="2" id="j_rarea" style="width: 70%">
+                    <span class="colorC gapB">还车区域</span>
+                    <span class="size18 cont" to="h" id="j_rarea_text"></span>
+                </p>
+            </li>
+            <li class="timer" line="hairB bgEc">
+                <p class="term" data-type="1" id="j_pdate">
+                    <span class="flexVc gapB size18">
+                        <span class="time" data-time="2018-03-07 10:00" id="j_pdata_ymd">
+
+                        </span>
+                        <label class="pickLab colorC">取</label>
+                    </span>
+                    <span class="colorC day" id="j_pdata_whm">
+
+                    </span>
+                </p>
+                <span class="dura" id="j_day"></span>
+                <p class="term honEnd" data-type="2" id="j_rdate">
+                    <span class="flexVc gapB size18">
+                        <label class="pickLab colorC">还</label>
+                        <span class="time" data-time="2018-03-09 10:00" id="j_rdata_ymd">
+
+                        </span>
+                    </span>
+                    <span class="colorC day" id="j_rdata_whm">
+
+                    </span>
+                </p>
+
+            <li id="js_goto_qrcode_or_license" class="texStr color6" style="opacity: 1;display: none">
+                <a href="http://www.youchedongli.cn/mobile/index/qrcode_or_license.html">
+                    扫码租车 <em class="searIco colorC size10"></em>
+                </a>
+            </li>
+
+            <li class="btn colorF size20" id="btnSearch">立即选车</li>
+            <li class="creAcce colorVi size13" id="btnCredit" style="display:none;">免信用卡租车<em
+                    class="searIco size10"></em></li>
+            <li id="chooseCredit" class="creAcce colorVi size13" style="display:none;">
+                <span id="selCredit" style="display:flex;align-items:center">
+                <em class="selBox searIco size14"></em>
+                    选择免信用卡租车服务
+                </span>
+                <em class="isdIco gapL4 size16 op-doubtIcon" style="margin-left:10px;" id="btnOpIcon"></em>
+            </li>
+        </ul>
+    </div>
+    <nav class="ci-nav">
+        <ul class="clearfix color9">
+            <!-- <li class="index_youhui"> <p class="youhui-desc hide"><em class="arrow-down"></em><span>1个可用，立减100元</span></p> <div class="nav-ico size24">&#xf0e1;</div><p>代金券</p> </li> -->
+            {if condition="$customer_id eq ''"}
+            <li class="index_order" id="js-btnLogin">
+                {else /}
+            <li class="index_order" id="index_order">
+                {/if}
+                <div class="nav-order-ico nav-ico size24"></div>
+                <p>我的订单</p></li>
+            <li class="index_consult" id="index_consult">
+                <div class="nav-ico size24"></div>
+                <p>问题咨询</p></li>
+            <li class="index_yijian" id="index_yijian">
+                <div class="nav-ico size24"></div>
+                <p>反馈建议</p></li>
+            <li class="index_map" id="index_map">
+                <div class="nav-ico size24"
+                     style="background: url('../../.././public/static/mobile/images/activity_menu_map_unchecked.png') no-repeat;background-size: 100%">
+                    &nbsp;&nbsp;&nbsp;&nbsp;
+                </div>
+                <p>地图选车</p></li>
+        </ul>
+    </nav>
+    <div id="coupons"></div>
+</div>
+{include file="login" /}
+{include file="user_message" /}
+{include file="seltime" /}
+{include file="loading" /}
+<script>
+    var location_longitude = '106.703572';
+    var location_latitude = '26.588234';
+    var mobile_phone = '{$mobile_phone}';
+</script>
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=DplTpLn9EpGEIwimAKUNscH6YWGAyoH3"></script>
+<script type="text/javascript" src="__STATIC__/mobile/js/public-js.js?rand={$js_rand}"></script>
+<script type="text/javascript" src="__STATIC__/mobile/js/gps-transform-js.js?rand={$js_rand}"></script>
+<script type="text/javascript" src="__STATIC__/mobile/js/index-js.js?rand={$js_rand}"></script>
+<script type="text/javascript" src="__STATIC__/mobile/js/jquery.selector-px.js?rand={$js_rand}"></script>
+<script type="text/javascript" src="__STATIC__/mobile/js/timer.js?rand={$js_rand}"></script>
+<script type="text/javascript" src="__STATIC__/mui/js/mui.min.js?rand={$css_rand}"></script>
+{if condition="$is_wxBrowser eq 'yes'"}
+<script src="http://res.wx.qq.com/open/js/jweixin-1.4.0.js?rand={$js_rand}"></script>
+<script>
+    /*
+     * 注意：
+     * 1. 所有的JS接口只能在公众号绑定的域名下调用，公众号开发者需要先登录微信公众平台进入“公众号设置”的“功能设置”里填写“JS接口安全域名”。
+     * 2. 如果发现在 Android 不能分享自定义内容，请到官网下载最新的包覆盖安装，Android 自定义分享接口需升级至 6.0.2.58 版本及以上。
+     * 3. 常见问题及完整 JS-SDK 文档地址：http://mp.weixin.qq.com/wiki/7/aaa137b55fb2e0456bf8dd9148dd613f.html
+     *
+     * 开发中遇到问题详见文档“附录5-常见错误及解决办法”解决，如仍未能解决可通过以下渠道反馈：
+     * 邮箱地址：weixin-open@qq.com
+     * 邮件主题：【微信JS-SDK反馈】具体问题
+     * 邮件内容说明：用简明的语言描述问题所在，并交代清楚遇到该问题的场景，可附上截屏图片，微信团队会尽快处理你的反馈。
+     */
+    wx.config({
+        debug: false,
+        appId: "{$jssdk['appid']}",
+        timestamp: "{$jssdk['timestamp']}",
+        nonceStr: "{$jssdk['nonceStr']}",
+        signature: "{$jssdk['signature']}",
+        jsApiList: [
+            'checkJsApi',
+            'getLocation'
+        ]
+    });
+
+    wx.error(function (res) {
+//        alert(JSON.stringify(res));
+        mui.alert('定位失败', '提示');
+    });
+</script>
+<script>
+    $(function () {
+        $("#localDiv").on('click', function () {
+            wx.getLocation({
+                success: function (res) {
+                    var latitude = res.latitude; //纬度
+                    var longitude = res.longitude; //经度
+                    var speed = res.speed; //速度
+                    var accuracy = res.accuracy; //位置精度
+                    var errMsg = res.errMsg; //结果状态
+                    $.ajax({
+                        url: website + "/api/area/get_city_lng_lat.html",
+                        type: "GET",
+                        async: true,
+                        data: {
+                            lng: longitude,
+                            lat: latitude
+                        },
+                        timeout: 5000,
+                        dataType: "json",
+                        beforeSend: function (xhr) {
+                        },
+                        success: function (data) {
+                            if (parseInt(data.code) == 0) {
+                                localStorage.setItem("pcity", data.data.city);
+                                localStorage.setItem("parea", data.data.description);
+                                localStorage.setItem("slng", data.data.lng);
+                                localStorage.setItem("slat", data.data.lat);
+                                localStorage.setItem("rcity", data.data.city);
+                                localStorage.setItem("rarea", data.data.description);
+                                localStorage.setItem("elng", data.data.lng);
+                                localStorage.setItem("elat", data.data.lat);
+//                                window.location.reload();
+                            }
+                        },
+                        error: function (xhr, textStatus) {
+                        },
+                        complete: function () {
+                        }
+                    });
+                },
+                cancel: function (res) {
+                    mui.alert('用户拒绝授权获取地理位置', '提示');
+                },
+                fail: function (res) {
+                    mui.alert('定位失败', '提示');
+                }
+            });
+        });
+
+        $("#index_map").on('click', function () {
+            location.href = 'map_choose_car.html';
+        });
+        var pcity = localStorage.getItem("pcity");
+        if(pcity==null||pcity==undefined){
+            setTimeout(function () {
+                $("#localDiv").click();
+            }, 2000);
+        }
+    });
+</script>
+{/if}
+<script>
+    $(function () {
+        var gallery = mui('.mui-slider');
+        gallery.slider({
+            interval: 5000//自动轮播周期，若为0则不自动播放，默认为0；
+        });
+    });
+</script>
+</body>
+{/block}
+

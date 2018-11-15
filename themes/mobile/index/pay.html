@@ -1,0 +1,351 @@
+{extend name="base" /}
+{block name="css"}
+<link href="__CSS__/order.css?rand=201711191" rel="stylesheet">
+{/block}
+{block name="js"}
+<script type="text/javascript" src="__STATIC__/mobile/js/jquery.min.js"></script>
+{/block}
+{block name="body"}
+<div id="app">
+    <div class="snap-content" style="padding-bottom: 50px; height: auto;">
+        <div class="cart-wrap" style="padding-bottom: 60px; background-color: rgb(245, 245, 245);">
+            <div class="scrollable-content">
+                <div class="list-group">
+                    <div style="transform: translate3d(0px, 0px, 0px);">
+                        <div id="cart_min_height">
+                            <div class="cart-settlement-wrap">
+                                <div class="cart-settlement-inner">
+                                    <h1 class="user-shopping-cart" style="font-size: 18px;text-align: center">
+                                        请选择支付方式</h1>
+                                </div>
+                                <div style="border: none;width: 100%;background-color: #5a5a5a;height: 1px"></div>
+                                <hr/>
+                                <div style="width: 100%;display: none" id="order_info">
+                                    <div>订单编号:
+                                        <div id="order_sn">
+                                        </div>
+                                    </div>
+                                    <p>订单总金额:<em id="all_order_amount"></em>(元)</p>
+                                    <p>已使用余额:<em id="all_pd_amount"></em>(元)</p>
+                                    <p>需在线支付:<em id="all_pay"></em>(元)</p>
+                                </div>
+                                <hr/>
+                                <div style="width: 100%">
+                                    <p>当前可用余额:<span style="color: red" id="user_money"></span>元</p>
+                                </div>
+                                <hr/>
+                                <div style="width: 100%;min-height: 200px;;background-color: white">
+                                    <div id="weixin_pay" style="float: left;width: 50%;">
+                                        <div style="width: 50%;margin: 5% 25% 0 25%;height: 100px"
+                                             class="pay_weixin_img">
+
+                                        </div>
+                                        <h4 style="text-align: center;margin-top: -20px">微信支付</h4>
+                                    </div>
+                                    <div id="yuer_pay" style="float: left;width: 50%;">
+                                        <div style="width: 50%;margin: 5% 25% 0 25%;height: 100px" class="pay_yuer_img">
+
+                                        </div>
+                                        <h4 style="text-align: center;margin-top: -20px">余额支付</h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="navbar navbar-app cart-footer"
+             style="position: fixed; bottom: 0px; left: 0px; width: 100%; height: auto; border-top-width: 1px; border-top-style: solid; border-top-color: rgb(255, 65, 70); background-color: rgb(255, 255, 255);">
+            <a href="{:url('wap/index/index')}" class="cart_returnBtn"><img
+                    src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAUCAYAAAC58NwRAAAACXBIWXMAAAsTAAALEwEAmpwYAAAApUlEQVR42p2TTQrCMBBGA57MTbeibS221tIKIp7JHs5jtFXjN5CBMCQmzeKRzXuQn4l6bTMVQQGeYBMjH8ECNBhD8gm8jUxr909uhNxqrZVPvgi5IdkX9EKuWHYFA/gYmQ5a2rIMbuBr5JmuUsp2cLfkCRxcMgcPIe98cnLg2tI+FMhDU5SHAuK65lqTHo7pRFSHAuK8ZviSxpuprGhUkV+05C/6Awh/7OA6qhEXAAAAAElFTkSuQmCC">&nbsp;&nbsp;返回购物</a>
+        </div>
+    </div>
+</div>
+<audio controls="controls" style="display: none;"></audio>
+<div class="mint-indicator" style="display: none;">
+    <div class="mint-indicator-wrapper" style="padding: 20px;"><span class="mint-indicator-spin"><div
+            class="mint-spinner-snake"
+            style="border-top-color: rgb(204, 204, 204); border-left-color: rgb(204, 204, 204); border-bottom-color: rgb(204, 204, 204); height: 32px; width: 32px;">
+
+    </div></span>
+        <span class="mint-indicator-text">加载中...</span></div>
+    <div class="mint-indicator-mask"></div>
+</div>
+<div class="mint-toast is-placemiddle" style="padding: 10px; display: none;">
+    <span class="mint-toast-text" style="padding-top: 0px;">请先选择商品</span>
+</div>
+<style>
+    .mint-msgbox {
+        top: 70%;
+    }
+</style>
+<div class="mint-msgbox is-placemiddle" style="background-color:#EEE;padding: 20px 10px; display: none;">
+    <div style="width: 100%">
+        <h4 style="text-align: center;color: #E51;font-size: 1.2rem;">支付密码</h4>
+        <div style="width: 98%;margin: 5% 1%;text-align: center">
+            <div class="alieditContainer" id="payPassword_container">
+                <input minlength="6" maxlength="6" tabindex="1" id="payPassword_rsainput" name="payPassword_rsainput"
+                       class="ui-input i-text" oncontextmenu="return false" onpaste="return false" oncopy="return false"
+                       oncut="return false" autocomplete="off" value="" type="number">
+                <div class="sixDigitPassword" tabindex="0">
+                    <i class="active"><b></b></i><i><b></b></i><i><b></b></i><i><b></b></i><i><b></b></i><i><b></b></i><span
+                        class="guangbiao" style="left:0px;"></span>
+                </div>
+            </div>
+        </div>
+        <div style="width: 98%;margin: 0 1%;text-align: center;">
+            <a id="pay_pass_cancel" style="margin: 0 18px;padding: 8px 30px;background-color: #aaa;border-radius: 8px">取消</a>
+            <a id="pay_pass_ok"
+               style="margin: 0 18px;padding: 8px 30px;background-color: #00B83F;color: white;border-radius: 8px">确定</a>
+        </div>
+    </div>
+</div>
+<script>
+    var is_data = false;
+    var is_wx = "{$is_wxBrowser}";
+    var pay_sn = '';
+    var orders_data = null;
+    $(function () {
+        var order_sns = $.cookie('order_sns');
+        getorder(order_sns);
+        $("#payPassword_rsainput").val('');
+        $(".i-text").keyup(function () {
+            var inp_v = $(this).val();
+            var inp_l = inp_v.length;
+            //$("p").html( "input的值为：" + inp_v +"; " + "值的长度为:" + inp_l);//测试用
+            for (var x = 0; x <= 6; x++) {
+                $(".sixDigitPassword").find("i").eq(inp_l).addClass("active").siblings("i").removeClass("active");
+                $(".sixDigitPassword").find("i").eq(inp_l).prevAll("i").find("b").css({"display": "block"});
+                $(".sixDigitPassword").find("i").eq(inp_l - 1).nextAll("i").find("b").css({"display": "none"});
+                $(".guangbiao").css({"left": inp_l * 51});//光标位置
+                if (inp_l == 0) {
+                    $(".sixDigitPassword").find("i").eq(0).addClass("active").siblings("i").removeClass("active");
+                    $(".sixDigitPassword").find("b").css({"display": "none"});
+                    $(".guangbiao").css({"left": 0});
+                }
+                else if (inp_l == 6) {
+                    $(".sixDigitPassword").find("b").css({"display": "block"});
+                    $(".sixDigitPassword").find("i").eq(5).addClass("active").siblings("i").removeClass("active");
+                    $(".guangbiao").css({"left": 5 * 51});
+                }
+            }
+        });
+        $("#weixin_pay").on('click', function () {
+            var order_sns = $.cookie('order_sns');
+            anewpay(order_sns, '2');
+        });
+
+        $("#pay_pass_cancel").on('click', function () {
+            $(".mint-msgbox").hide();
+        });
+
+        $("#pay_pass_ok").on('click', function () {
+            var order_sns = $.cookie('order_sns');
+            anewpay(order_sns, '1');
+            $(".mint-msgbox").hide();
+        });
+        $("#yuer_pay").on('click', function () {
+            var user_money = parseFloat($("#user_money").text());
+            if (user_money <= 0) {
+                show_tip('您的余额不足,请选择微信支付', '');
+                return;
+            }
+            $(".mint-msgbox").show();
+        });
+    });
+
+    function getorder(orders) {
+        $.ajax({
+            url: "{:url('/api/Order/getorderinfo')}",
+            type: "post",
+            data: {
+                orders: orders
+            },
+            dataType: "json",
+            success: function (data) {
+                if (data.code == 0) {
+                    for (var i = 0; i < data.data['orders_sn'].length; i++) {
+                        $("#order_sn").append("<p>" + data.data['orders_sn'][i] + "</p>");
+                    }
+                    $("#all_order_amount").text(data.data['all_order_amount']);
+                    $("#all_pd_amount").text(data.data['all_pd_amount']);
+                    $("#all_pay").text(data.data['all_pay']);
+                    $("#user_money").text(data.data['user_money']);
+                    $("#order_info").show();
+                } else {
+                    show_tip(data.info, '');
+                }
+                loadend = true;
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                show_tip(textStatus, '');
+            },
+            complete: function (XMLHttpRequest, textStatus) {
+                // 调用本次AJAX请求时传递的options参数
+            }
+        });
+    }
+
+    //获取支付信息
+    function anewpay(orders, ptype) {
+        $.ajax({
+            url: "{:url('/api/Order/anewpay')}",
+            type: "post",
+            data: {
+                orders: orders
+            },
+            dataType: "json",
+            success: function (data) {
+                if (data.code == 0) {
+                    show_tip(data.info, "{:url('/wap/index/myorder')}");
+                } else if (data.code == 10) {
+                    weixinpay(orders);
+                    //没有数据了
+                } else {
+                    show_tip(data.info, '');
+                }
+                loadend = true;
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                show_tip(textStatus, '');
+            },
+            complete: function (XMLHttpRequest, textStatus) {
+                // 调用本次AJAX请求时传递的options参数
+            }
+        });
+    }
+
+    //微信支付订单
+    function weixinpay(orders) {
+        if (is_wx != "yes") {
+            $.ajax({
+                url: "{:url('/api/Pay/wxpayMWEB')}",
+                type: "post",
+                data: {
+                    orders: orders,
+                    myrand: new Date().getTime()
+                },
+                dataType: "json",
+                success: function (data) {
+                    if (data.code == 0) {
+                        window.location.href = data.url;
+                    } else {
+                        show_tip(data.info, '');
+                    }
+                    loadend = true;
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    show_tip(textStatus, '');
+                },
+                complete: function (XMLHttpRequest, textStatus) {
+                    // 调用本次AJAX请求时传递的options参数
+                }
+            });
+            return;
+        }
+        if (is_data) {
+            callpay(orders_data);
+            return;
+        }
+        $.ajax({
+            url: "{:url('/api/Pay/wxpayJSAPI')}",
+            type: "post",
+            data: {
+                orders: orders,
+                myrand: new Date().getTime(),
+            },
+            dataType: "json",
+            success: function (data) {
+                if (data.code == 0) {
+                    is_data = true;
+                    pay_sn = data.pay_sn;
+                    orders_data = data.data;
+                    callpay(data.data);
+                } else {
+                    show_tip(data.info, '');
+                }
+                loadend = true;
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                show_tip(textStatus, '');
+            },
+            complete: function (XMLHttpRequest, textStatus) {
+                // 调用本次AJAX请求时传递的options参数
+            }
+        });
+    }
+
+    //调用微信JS api 支付
+    function jsApiCall(strjs) {
+        WeixinJSBridge.invoke(
+            'getBrandWCPayRequest',
+            {
+                "appId": strjs.appId,     //公众号名称，由商户传入
+                "timeStamp": strjs.timeStamp,         //时间戳，自1970年以来的秒数
+                "nonceStr": strjs.nonceStr, //随机串
+                "package": strjs.package,
+                "signType": strjs.signType,         //微信签名方式：
+                "paySign": strjs.paySign //微信签名
+            },
+            function (res) {
+                if (res.err_msg == "get_brand_wcpay_request:ok") {
+                    callbackvarpay();
+                    setTimeout(function () {
+                        window.location.href = "{:url('/wap/index/myorder')}";
+                    }, 2000);
+                } else if (res.err_msg == 'get_brand_wcpay_request:cancel') {
+                    alert('取消支付');
+                } else if (res.err_msg == 'get_brand_wcpay_request:fail') {
+                    alert('支付失败');
+                }
+            }
+        );
+    }
+    //回调查询验证订单
+    function callbackvarpay() {
+        $.ajax({
+            url: "{:url('index/Notify/queryweixin')}",
+            type: "post",
+            data: {
+                pay_sn: pay_sn
+            },
+            dataType: "json",
+            success: function (data) {
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+            },
+            complete: function (XMLHttpRequest, textStatus) {
+                // 调用本次AJAX请求时传递的options参数
+            }
+        });
+    }
+
+
+    function callpay(strjs) {
+        if (typeof WeixinJSBridge == "undefined") {
+            if (document.addEventListener) {
+                document.addEventListener('WeixinJSBridgeReady', jsApiCall(strjs), false);
+            } else if (document.attachEvent) {
+                document.attachEvent('WeixinJSBridgeReady', jsApiCall(strjs));
+                document.attachEvent('onWeixinJSBridgeReady', jsApiCall(strjs));
+            }
+        } else {
+            jsApiCall(strjs);
+        }
+    }
+
+    //显示错误提示
+    function show_tip(texts, url) {
+        $(".mint-toast").show();
+        $(".mint-toast-text").text(texts);
+        setTimeout(function () {
+                $(".mint-toast").hide();
+                if (url != '') {
+                    window.location.href = url;
+                }
+            }, 2000
+        );
+    }
+</script>
+{/block}

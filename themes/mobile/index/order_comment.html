@@ -1,0 +1,379 @@
+{extend name="base" /}
+{block name="css"}
+<link rel="stylesheet" href="__STATIC__/mui/css/mui.min.css">
+<link rel="stylesheet" href="__STATIC__/mui/css/mui-icons-extra.css?rand={$css_rand}">
+<style>
+    html, body {
+        background-color: #ffffff;
+    }
+
+    ul {
+        font-size: 14px;
+        color: #8f8f94;
+    }
+
+    .mui-bar {
+        background-color: #f3e856;
+    }
+
+    .mui-btn-outlined {
+        font-size: 18px;
+    }
+
+    .order_car_tag button {
+        font-size: 10px;
+        padding: 0px 1px;
+    }
+
+    .order_nocomment_starts {
+        width: 50%;
+    }
+
+    .order_comment_select_button {
+        background-color: rgb(204, 204, 204);
+        color: #333333;
+        font-size: 14px;
+        border-radius: 5px;
+        padding: 5px 10px;
+    }
+
+    .comment_select {
+        background-color: rgb(248, 219, 47);
+    }
+
+    .comment_unselect {
+        background-color: rgb(204, 204, 204);
+    }
+
+    .order_voice_comment_button {
+        height: 100%;
+        width: auto;
+        font-size: 14px;
+        padding: 0%;
+        color: rgb(114, 105, 85);
+        background-color: rgb(230, 230, 230);
+        border-radius: 8px;
+        float: left;
+    }
+
+    .mui-checkbox input[type=checkbox]:before, .mui-radio input[type=radio]:before {
+        font-size: 24px;
+    }
+
+    .mui-input-row label {
+        padding: 10px 15px;
+    }
+
+    .mui-checkbox input[type=checkbox]:checked:before, .mui-radio input[type=radio]:checked:before {
+        color: rgb(248, 219, 47);
+    }
+
+    .mui-checkbox.mui-left label, .mui-radio.mui-left label {
+        padding-left: 50px;
+        width: auto;
+    }
+
+    .mui-btn-primary {
+        color: #000;
+        border: 1px solid #fff;
+        border-radius: 5px;
+        background-color: #bbbbbb;
+    }
+
+    .mui-content {
+        background-color: #ffffff;
+    }
+</style>
+{/block}
+{block name="body"}
+<body>
+<header class="mui-bar mui-bar-nav">
+    <span id="goto_back" class="mui-icon mui-icon-contact mui-icon-left-nav"></span>
+    <h1 class="mui-title">评价晒车</h1>
+</header>
+<div style="height: auto;width: 100%;overflow: scroll;margin-top: 50px;margin-bottom: 100px">
+    <div class="mui-content" style="overflow: scroll">
+        <div class="mui-row order_info_div">
+            <div class="mui-col-sm-3 mui-col-xs-3">
+                <img class="js_goods_img" style="width: 88%;margin: 18% 6% 0 6%"
+                     src="">
+            </div>
+            <div class="mui-col-sm-6 mui-col-xs-6" style="text-align: left;">
+                <p style="margin-top:10px;font-size: 14px;margin-bottom:2px;color:rgb(67,67,67)">
+                    <span class="js_goods_name"></span>
+                    <span class="js_goods_licence_plate"></span>
+                    -
+                    <span class="js_store_key_name"></span>
+                </p>
+                <div class="order_car_tag">
+                    <span style="border:#999999 solid 1px;font-size: 12px;padding: 2px 3px;background:white;border-radius: 3px">车况佳</span>
+                    <span style="border:#999999 solid 1px;font-size: 12px;padding: 2px 3px;background:white;border-radius: 3px">24h营业</span>
+                    <span style="border:#999999 solid 1px;font-size: 12px;padding: 2px 3px;background:white;border-radius: 3px">新能源汽车</span>
+                </div>
+                <p style="display: inline;color:rgb(95, 208, 30);font-size: 12px">行驶时间：<span
+                        class="js_interval_time"></span></p>
+                <br>
+                <p style="display: inline;color:rgb(67,67,67);font-size: 12px">行驶里程：<span class="js_all_mileage"></span>
+                </p>
+            </div>
+            <div class="mui-col-sm-3 mui-col-xs-3" style="text-align: center;">
+                <p style="font-size: 1.1rem;color: rgb(250,158,1);margin: 30% 5% 0 0">¥<span
+                        class="js_order_amount"></span>
+                </p>
+            </div>
+        </div>
+
+        <div style="text-align: right;margin-right: 6%">
+            <p style="margin-bottom: 0px">满意请给5星</p>
+        </div>
+        <div class="mui-row order_comment_div">
+            <div class="mui-row" style="text-align: right;margin-top: 4%">
+                <div class="mui-col-sm-1 mui-col-xs-1" style="text-align: center"></div>
+                <div class="mui-col-sm-4 mui-col-xs-4" style="text-align: center">
+                    <span style="font-size: 16px;display: inline;">优车出行评价：</span>
+                </div>
+
+                <div class="mui-col-sm-1 mui-col-xs-1" style="text-align: center">
+                    <img class="order_nocomment_starts js_comment_list" data-index="0"
+                         src="http://img.youchedongli.cn/public/static/mobile/images/order_nocomment_start.png">
+                </div>
+                <div class="mui-col-sm-1 mui-col-xs-1" style="text-align: center">
+                    <img class="order_nocomment_starts js_comment_list" data-index="1"
+                         src="http://img.youchedongli.cn/public/static/mobile/images/order_nocomment_start.png">
+                </div>
+                <div class="mui-col-sm-1 mui-col-xs-1" style="text-align: center">
+                    <img class="order_nocomment_starts js_comment_list" data-index="2"
+                         src="http://img.youchedongli.cn/public/static/mobile/images/order_nocomment_start.png">
+                </div>
+                <div class="mui-col-sm-1 mui-col-xs-1" style="text-align: center">
+                    <img class="order_nocomment_starts js_comment_list" data-index="3"
+                         src="http://img.youchedongli.cn/public/static/mobile/images/order_nocomment_start.png">
+                </div>
+                <div class="mui-col-sm-1 mui-col-xs-1" style="text-align: center">
+                    <img class="order_nocomment_starts js_comment_list" data-index="4"
+                         src="http://img.youchedongli.cn/public/static/mobile/images/order_nocomment_start.png">
+                </div>
+                <div class="mui-col-sm-1 mui-col-xs-1" style="text-align: center"></div>
+                <div class="mui-col-sm-1 mui-col-xs-1" style="text-align: center"></div>
+            </div>
+            <div class="mui-row" style=" margin: 5% 0%;">
+                <div class="mui-col-sm-4 mui-col-xs-4" style="text-align: center">
+                    <span class="mui-btn-outlined order_comment_select_button js_comment_nature">卫生不佳</span>
+                </div>
+                <div class="mui-col-sm-4 mui-col-xs-4" style="text-align: center">
+                    <span class="mui-btn-outlined order_comment_select_button js_comment_nature">操控性不好</span>
+                </div>
+                <div class="mui-col-sm-4 mui-col-xs-4" style="text-align: center">
+                    <span class="mui-btn-outlined order_comment_select_button js_comment_nature">车况较差</span>
+                </div>
+            </div>
+
+            <div class="mui-row" style=" margin: 5% 0%;">
+                <div class="mui-col-sm-4 mui-col-xs-4" style="text-align: center">
+                    <span class="mui-btn-outlined order_comment_select_button js_comment_nature">电量不够</span>
+                </div>
+                <div class="mui-col-sm-3 mui-col-xs-4" style="text-align: center">
+                    <span class="mui-btn-outlined order_comment_select_button js_comment_nature">取车点少</span>
+                </div>
+                <div class="mui-col-sm-3 mui-col-xs-4" style="text-align: center">
+                    <span class="mui-btn-outlined order_comment_select_button js_comment_nature">还车点少</span>
+                </div>
+            </div>
+
+            <div class="mui-row" style=" margin: 5% 0%;">
+                <div class="mui-col-sm-7 mui-col-xs-7" style="text-align: center">
+                    <span class="mui-btn-outlined order_comment_select_button js_comment_nature">上一位用户卫生习惯不佳</span>
+                </div>
+                <div class="mui-col-sm-5 mui-col-xs-5" style="text-align: center">
+                    <span class="mui-btn-outlined order_comment_select_button js_comment_nature">客服不能解决问题</span>
+                </div>
+            </div>
+
+            <div class="mui-row order_comment_text" style="text-align: center;">
+            <textarea id="js_text_comment" rows="5" placeholder="亲，您对本次的行程还满意吗？"
+                      style="width: 90%;border:none;border-radius:5px;background:rgb(230,230,230);font-size: 14px;margin-bottom: 0px"></textarea>
+                <!--<div style="width:auto;position: relative;bottom: 30px;text-align:right;margin-bottom: 0px;float: right;right: 30px;color:rgba(0,0,0,0.5);font-size: 14px">-->
+                <!--至少输入10个字-->
+                <!--</div>-->
+            </div>
+        </div>
+
+        <div style="margin-left:20px;height: 40px;">
+            <div id="js_voice_comment_flag" type="button" class="mui-btn mui-btn-primary mui-icon mui-icon-mic"
+                 style="float: left">
+                语音评价
+            </div>
+            <div id="js_voice_comment_play" type="button" class="mui-btn mui-btn-primary"
+                 style="float: left;display: none">
+                语音播放
+            </div>
+        </div>
+
+        <div class="mui-input-row mui-checkbox mui-left">
+            <label style="font-size: 14px">匿名评价</label>
+            <input type="checkbox" id="js_anonymity_comment">
+        </div>
+
+        <div class="mui-row order_comment_button" style="text-align: center;width: 100%;  position: fixed; bottom:5px;">
+            <button style="background-color:rgb(248,219,47);color: #333333;width: 95%;font-size: 20px;padding: 8px 0"
+                    type="button" id="js_submit_comment" class="mui-btn  mui-btn-yellow">
+                提交评价
+            </button>
+        </div>
+    </div>
+
+    <div id="js_voice_comment_model"
+         style="height: 120px;width: 80%;position: fixed;bottom: 30%;left: 10%;border: #0a8ddf solid 1px;border-radius: 5px;background:rgb(204, 204, 204);padding-top: 10px;display: none">
+
+        <div style="position: absolute;height: 30px;top: 10px;left: 10px;right: 10px">
+            <span style="float:left;">时长：<span id="js_voice_time">0/60秒</span></span>
+            <span id="js_close_voice_comment_model" style="float: right;">X</span>
+        </div>
+
+        <div id="js_voice_comment"
+             style="position: absolute;width: 90px;height: 90px;background: #eeeeee;border: #0a8ddf solid 1px;border-radius: 45px;top: 15px;left: 35%;font-size: 18px;text-align: center;line-height: 90px">
+            按住录音
+        </div>
+    </div>
+</div>
+<script>
+    var voice_sid;
+    var voice_id;
+    var voice_url = '';
+    var t = 0;
+    var timer;
+</script>
+<script src="__STATIC__/mui/js/mui.min.js?rand={$css_rand}"></script>
+<script type="text/javascript" src="__STATIC__/mobile/js/jquery.min.js?rand={$css_rand}"></script>
+<!-- 引入 jQuery Mobile 库 -->
+<script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+<script type="text/javascript" src="__STATIC__/mobile/js/public-js.js?rand={$js_rand}"></script>
+<script type="text/javascript" src="__STATIC__/mobile/js/order-comment-js.js?rand={$js_rand}"></script>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.4.0.js?rand={$js_rand}"></script>
+{if condition="$is_wxBrowser eq 'yes'"}
+<script>
+    /**
+     * 注意：
+     * 1. 所有的JS接口只能在公众号绑定的域名下调用，公众号开发者需要先登录微信公众平台进入“公众号设置”的“功能设置”里填写“JS接口安全域名”。
+     * 2. 如果发现在 Android 不能分享自定义内容，请到官网下载最新的包覆盖安装，Android 自定义分享接口需升级至 6.0.2.58 版本及以上。
+     * 3. 常见问题及完整 JS-SDK 文档地址：http://mp.weixin.qq.com/wiki/7/aaa137b55fb2e0456bf8dd9148dd613f.html
+     *
+     * 开发中遇到问题详见文档“附录5-常见错误及解决办法”解决，如仍未能解决可通过以下渠道反馈：
+     * 邮箱地址：weixin-open@qq.com
+     * 邮件主题：【微信JS-SDK反馈】具体问题
+     * 邮件内容说明：用简明的语言描述问题所在，并交代清楚遇到该问题的场景，可附上截屏图片，微信团队会尽快处理你的反馈。
+     */
+    wx.config({
+        debug: false,
+        appId: "{$jssdk['appid']}",
+        timestamp: "{$jssdk['timestamp']}",
+        nonceStr: "{$jssdk['nonceStr']}",
+        signature: "{$jssdk['signature']}",
+        jsApiList: [
+            'startRecord',
+            'stopRecord',
+            'playVoice',
+            'pauseVoice',
+            'stopVoice',
+            'uploadVoice',
+            'downloadVoice'
+        ]
+    });
+
+    wx.ready(function () {
+        //检查JsApi
+        wx.checkJsApi({
+            jsApiList: [
+                'startRecord',
+                'stopRecord',
+                'playVoice',
+                'pauseVoice',
+                'stopVoice',
+                'uploadVoice',
+                'downloadVoice'
+            ],
+            success: function (res) {
+                // alert(JSON.stringify(res));
+            },
+            fail: function () {
+                // alert("检查JsApi失败");
+            }
+        });
+        var Tim;
+        $("#js_voice_comment").on("touchstart", function () {
+            Tim = setTimeout(function () {
+                t = 0;
+                $("#js_voice_time").text(t + "/60秒");
+                wx.startRecord({
+                    success: function (res) {
+                        voice_id = res.localId;
+                        timer = setInterval(function () {
+                            t++;
+                            $("#js_voice_time").text(t + "/60秒");
+                        }, 1000);
+                    },
+                    cancel: function () {
+                        alert('用户拒绝授权录音');
+                    }
+                });
+            }, 1500);
+            return false;
+        });
+
+        $("#js_voice_comment").on("touchend", function () {
+            window.clearTimeout(Tim);
+            if (t >= 1) {
+                wx.stopRecord({
+                    success: function (res) {
+                        voice_id = res.localId;
+                        wx.uploadVoice({
+                            localId: voice_id,
+                            success: function (res) {
+                                voice_sid = res.serverId;
+                                $("#js_voice_comment_model").fadeOut(500);
+                                $.ajax({
+                                    url: website + "/api/Dynupload/upload_voice.html",
+                                    type: "GET",
+                                    async: true,
+                                    data: {
+                                        sid: voice_sid
+                                    },
+                                    timeout: 5000,
+                                    dataType: "json",
+                                    success: function (data) {
+
+                                        if (parseInt(data.code) == 0) {
+                                            $("#js_voice_time").text("0/60秒");
+                                            Toast('上传语音成功!', 2000);
+                                            voice_url = data.url;
+                                            $("#js_voice_comment_play").show();
+                                        } else {
+                                            Toast(data.info, 2000);
+                                        }
+                                    }
+                                });
+                            }
+                        });
+                    }
+                });
+            } else {
+                Toast("录音时间太短", 2000);
+            }
+            clearTimeout(timer);
+            return false;
+        });
+
+        $("#js_voice_comment_play").on("click", function () {
+            wx.playVoice({
+                localId: voice_id // 需要播放的音频的本地ID，由stopRecord接口获得
+            });
+        });
+    });
+
+    wx.error(function (res) {
+        alert(JSON.stringify(res));
+    });
+</script>
+{/if}
+</body>
+{/block}

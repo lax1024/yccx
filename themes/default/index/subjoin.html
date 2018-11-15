@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>优车动力商户系统</title>
+    <meta name="description" content="优车动力商户系统">
+    <link rel="stylesheet" href="__JS__/layui/css/layui.css">
+    <link rel="stylesheet" href="__CSS__/font-awesome.min.css">
+    <style>
+        .area_div .layui-input-inline {
+            width: 160px;
+        }
+
+        .area_div .layui-input-inline:nth-child(4) {
+            margin-left: 109px;
+        }
+
+        .header {
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            min-height: 880px;
+            min-width: 1024px;
+            background: url(__STATIC__/images/seller_index1.png) no-repeat #56bc94;
+            background-size: 100%;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<div class="header">
+    <!--tab标签-->
+    <div class="layui-tab layui-tab-brief" style="margin:5% 5%;width: 90%;background-color: white">
+        <ul class="layui-tab-title">
+            <li class="layui-this">申请开店</li>
+        </ul>
+        <div class="layui-tab-content">
+            <div class="layui-tab-item layui-show">
+                {if condition="$subjoin['store_name'] neq ''"}
+                <p style="color: red">备注说明：{$subjoin['remark']}</p>
+                <form class="layui-form form-container" action="{:url('api/seller/update_subjoin')}" method="post">
+                    <input name="id" value="{$subjoin['id']}" hidden>
+                    {else /}
+                    <form class="layui-form form-container" action="{:url('api/seller/add_subjoin')}" method="post">
+                        {/if}
+                        <div style="float: left;width: 50%">
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">单位名称</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="store_name" value="{$subjoin['store_name']}" required
+                                           lay-verify="required"
+                                           placeholder="请输入单位名称" class="layui-input">
+                                </div>
+                            </div>
+                            <div id="p2" class="area_div">
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">单位地址</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="address" value="{$subjoin['address']}" required
+                                           lay-verify="required"
+                                           placeholder="请输入单位地址" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">地理坐标</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="location_longitude" id="lng_input"
+                                           value="{$subjoin['location_longitude']}" hidden>
+                                    <input type="text" name="location_latitude" id="lat_input"
+                                           value="{$subjoin['location_latitude']}" hidden>
+                                    <label class="layui-form-label" style="text-align: left;width: 120px"> 经度:<span
+                                            id="lng">{$subjoin['location_longitude']}</span></label>
+                                    <label class="layui-form-label" style="text-align: left;width: 120px"> 纬度:<span
+                                            id="lat">{$subjoin['location_latitude']}</span></label>
+                                    <a href="javascript:pickup_location('lng','lat')" class="layui-btn">选择坐标</a>
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">营业时间</label>
+                                <div class="layui-input-block">
+                                    <div class="layui-input-inline">
+                                        <select name="business_start" lay-verify="required" lay-search>
+                                            {foreach name="business_start" item="vo"}
+                                            <option value="{$vo.name}" {php}echo $vo[
+                                            'selected'];{/php} >{$vo.name}</option>
+                                            {/foreach}
+                                        </select>
+                                    </div>
+                                    <div class="layui-form-mid">至</div>
+                                    <div class="layui-input-inline">
+                                        <select name="business_end" lay-verify="required" lay-search>
+                                            {foreach name="business_end" item="vo"}
+                                            <option value="{$vo.name}" {php}echo $vo[
+                                            'selected'];{/php} >{$vo.name}</option>
+                                            {/foreach}
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">单位电话</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="store_tel" lay-verify="required"
+                                           value="{$subjoin['store_tel']}"
+                                           placeholder="请输入单位电话"
+                                           class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">单位负责人</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="store_principal" lay-verify="required"
+                                           value="{$subjoin['store_principal']}"
+                                           placeholder="请输入单位负责人"
+                                           class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">负责人电话</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="store_mobile" lay-verify="required" id="js-tel"
+                                           value="{$subjoin['store_mobile']}"
+                                           placeholder="请输入负责人电话"
+                                           class="layui-input">
+                                </div>
+                                <div class="layui-input-inline">
+                                    <a class="layui-btn" id="cp_check_phone">获取验证码</a>
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">验证码</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="code" lay-verify="required" value="" placeholder="请输入验证码"
+                                           class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">负责人身份证号</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="principal_id" lay-verify="required"
+                                           value="{$subjoin['principal_id']}"
+                                           placeholder="请输入负责人身份证号"
+                                           class="layui-input">
+                                </div>
+                            </div>
+                        </div>
+                        <div style="float: left;width: 50%">
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">身份证正面</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="principal_id_front_img" value=""
+                                           id="thumb_principal_id_front_img"
+                                           hidden>
+                                    <img src="__OSSIMG__{$subjoin['principal_id_front_img']}"
+                                         style="width:200px;height: 100px" id="thumb_principal_id_front_img_img">
+                                    <input type="file" name="file" accept="image/png"
+                                           onclick="upload_img('/index.php/api/upload/upload.html?type=subjoin','thumb_principal_id_front_img')"
+                                           class="layui-upload-file">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">身份证背面</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="principal_id_back_img" value=""
+                                           id="thumb_principal_id_back_img"
+                                           hidden>
+                                    <img src="__OSSIMG__{$subjoin['principal_id_back_img']}"
+                                         style="width:200px;height: 100px" id="thumb_principal_id_back_img_img">
+                                    <input type="file" name="file" accept="image/png"
+                                           onclick="upload_img('/index.php/api/upload/upload.html?type=subjoin','thumb_principal_id_back_img')"
+                                           class="layui-upload-file">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">手持身份证</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="principal_id_handheld_img" value=""
+                                           id="thumb_principal_id_handheld_img" hidden>
+                                    <img src="__OSSIMG__{$subjoin['principal_id_handheld_img']}"
+                                         style="width:200px;height: 100px" id="thumb_principal_id_handheld_img_img">
+                                    <input type="file" name="file" accept="image/png"
+                                           onclick="upload_img('/index.php/api/upload/upload.html?type=subjoin','thumb_principal_id_handheld_img')"
+                                           class="layui-upload-file">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">营业执照编号或者组织代码</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="business_license" lay-verify="required"
+                                           value="{$subjoin['business_license']}"
+                                           placeholder="请输入营业执照编号或者组织代码"
+                                           class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">营业执照图片</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="business_license_img" value=""
+                                           id="thumb_business_license_img"
+                                           hidden>
+                                    <img src="__OSSIMG__{$subjoin['business_license_img']}"
+                                         style="width:200px;height: 100px" id="thumb_business_license_img_img">
+                                    <input type="file" name="file" accept="image/png"
+                                           onclick="upload_img('/index.php/api/upload/upload.html?type=subjoin','thumb_business_license_img')"
+                                           class="layui-upload-file">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">入驻协议图片</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="protocol_img" value="" id="thumb_protocol_img" hidden>
+                                    <img src="__OSSIMG__{$subjoin['protocol_img']}"
+                                         style="width:200px;height: 100px" id="thumb_protocol_img_img">
+                                    <input type="file" name="file" accept="image/png"
+                                           onclick="upload_img('/index.php/api/upload/upload.html?type=subjoin','thumb_protocol_img')"
+                                           class="layui-upload-file">
+                                </div>
+                            </div>
+                        </div>
+                        <div style="width: 100%;text-align: center">
+                            <div class="layui-form-item">
+                                <div class="layui-input-block">
+                                    <button class="layui-btn" style="width: 25%" lay-submit lay-filter="*">提交申请</button>
+                                    <button type="reset" style="width: 25%" class="layui-btn layui-btn-primary">重置
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    // 定义全局JS变量
+    var GV = {
+        current_controller: "manage/{$controller|default=''}/",
+        base_url: "__STATIC__"
+    };
+</script>
+<!--JS引用-->
+<script src="__JS__/jquery.min.js"></script>
+<script src="__JS__/layui/lay/dest/layui.all.js"></script>
+<script>
+    var layer = layui.layer,
+        form = layui.form();
+    /**
+     * 通用表单提交(AJAX方式)
+     */
+    form.on('submit(*)', function (data) {
+        $.ajax({
+            url: data.form.action,
+            type: data.form.method,
+            data: $(data.form).serialize(),
+            success: function (info) {
+                if (info.code === 0) {
+                    setTimeout(function () {
+                        location.href = info.url;
+                        //location.reload();
+                    }, 1000);
+                }
+                layer.msg(info.info);
+            }
+        });
+
+        return false;
+    });
+
+    /**
+     * 拾取地理坐标值
+     */
+    function pickup_location(lng, lat) {
+        layer.open({
+            type: 2,
+            title: '选择地理坐标',
+            shadeClose: true,
+            shade: 0.8,
+            area: ['600px', '600px'],
+            btn: ['确定', '取消'],
+            content: "/index/common/location.html",
+            yes: function (index, layero) {
+                var lng_num = localStorage.getItem('lng');
+                var lat_num = localStorage.getItem('lat');
+                $("#" + lng).text(lng_num);
+                $("#" + lng + "_input").val(lng_num);
+                $("#" + lat).text(lat_num);
+                $("#" + lat + "_input").val(lat_num);
+                localStorage.setItem('lng', '0.000000');
+                localStorage.setItem('lat', '0.000000');
+                layer.close(index);
+            }, btn2: function (index) {
+                localStorage.setItem('lng', '0.000000');
+                localStorage.setItem('lat', '0.000000');
+                layer.close(index);
+            }
+        });
+    }
+</script>
+<script type="text/javascript" src="__JS__/picker.js"></script>
+<script>
+    $(function () {
+        layui.upload({
+            url: "/index.php/api/upload/upload",
+            type: 'image',
+            ext: 'jpg|png|gif|bmp',
+            success: function (data) {
+                if (data.error === 0) {
+                    document.getElementById("thumb").value = data.url;
+                } else {
+                    layer.msg(data.message);
+                }
+            }
+        });
+        var picker = layui.picker;
+        var p2 = new picker();
+        p2.set({
+            elem: '#p2',
+            url: "{:url('api/Area/get_province_list')}",
+            canSearch: true,
+            codeConfig: {$address_config}
+        }).render();
+
+        $("#cp_check_phone").on('click', function () {
+            get_code($("#js-tel").val());
+        });
+    });
+    function get_code(tel) {
+        $.ajax({
+            url: "{:url('api/Login/get_verify_code')}",
+            type: "post",
+            data: {
+                mobile: tel,
+                condition: 'no_ver'
+            },
+            dataType: "json",
+            success: function (info) {
+                if (parseInt(info.code) == 0) {
+                    check_phone_time();
+                } else {
+                    alert(info.info);
+                }
+            }
+        });
+    }
+
+    var tiems = 59;
+    var timeint = null;
+    function check_phone_time() {
+        $("#cp_check_phone").addClass('disabled');
+        timeint = setInterval(function () {
+            if (tiems <= 0) {
+                window.clearInterval(timeint);
+                $("#cp_check_phone").removeClass('disabled');
+                $("#cp_check_phone").text('验证手机');
+                tiems = 59;
+            } else {
+                $("#cp_check_phone").text("时间(" + tiems + ")");
+                tiems--;
+            }
+        }, 1000);
+    }
+
+</script>
+<script>
+    function upload_img(url, id) {
+        layui.upload({
+            url: url,
+            type: 'image',
+            ext: 'jpg|png|gif|bmp',
+            success: function (data) {
+                if (data.error === 0) {
+                    $("#" + id).val(data.url);
+                    $("#" + id + "_img").attr("src", "__OSSIMG__" + data.url);
+                } else {
+                    layer.msg(data.message);
+                }
+            }
+        });
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,324 @@
+{extend name="wapbase" /}
+{block name="webtitle"}
+<title>发布动态</title>
+{/block}
+{block name="css"}
+<meta name="robots" content="none">
+<meta name="format-detection" content="telephone=no">
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=320,initial-scale=1,minimum-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="viewport" content="width=319.9,initial-scale=1,minimum-scale=1, maximum-scale=1, user-scalable=no"
+      media="(device-height: 568px)">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="x5-fast-scroller" content="disable">
+<meta name="tags" content="sea2.1">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<link charset="utf-8" rel="stylesheet" href="__CSS__/ui-write.css?rand=20171129">
+<link charset="utf-8" rel="stylesheet" href="__CSS__/publish.css?rand=20171129">
+{/block}
+{block name="js"}
+<script src="__JS__/jquery.cookie.js"></script>
+{/block}
+{block name="body"}
+<div id="form-0" class="form-pop">
+    <div class="nav-wrap fixed">
+        <div class="ui-top-nav">
+            <div class="col-l">
+                <button class="btn">
+                    <span class="ico i-back" style="display:none;"></span>
+                    <a style="color: #555;" href="{:url('gametree/index/gamedyn')}"><span class="txt"
+                                                                                          style="font-weight: 600">取消</span></a>
+                </button>
+            </div>
+            <div class="col-m" id="form-0-title" style="font-weight: 600">写说说</div>
+            <div class="col-r">
+                <button class="btn" id="form-0-submit"><span class="txt" style="font-weight: 600">发表</span></button>
+            </div>
+        </div>
+    </div>
+    <div class="form-wrap" style="position: relative; width: 100%;">
+        <input type="text" hidden value="" id="dynid">
+        <div class="write-form j-write">
+            <div class="write-text J_textareaWrapper"><textarea id="content_text" maxlength="2000" rows="5"
+                                                                placeholder="写点什么吧…"></textarea></div>
+            <div class="write-plugin">
+                <span class="counter" data-form="limit">2000</span></div>
+            <div class="J_photoPicker">
+                <div class="write-image J_photo_container">
+                    <div id="J_photo_container">
+                        <p class="write-img J_photo J_photo_item" style="display: none">
+                            <b class="J_img img J_img_btn" data-img=""></b>
+                        </p>
+                    </div>
+                    <div class="write-upload J_button_photo" id="chooseImage">
+                        <label class="field-area">
+                            <span class="inner">
+                                <span class="txt J_hintText" style="display: none;">添加照片</span>
+                            </span>
+                            <p class="j-limit-tips" style="position:absolute;left:0;top:0;opacity:0;">还可上传8张照片</p>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="write-field j-write-location">
+                <span class="field-txt" role="button" data-oper="init" id="getLocation">所在位置:点击获取</span>
+                <select id="listm"
+                        style="padding: 4px 3px;display: none;width: 65%;border-radius: 2px;border: 1px solid rgba(21,117,255,0.8)">
+                    <option value="">选择位置</option>
+                </select>
+                <span class="addr_info" style="color: red;font-size: 12px"></span>
+            </div>
+        </div>
+        <div class="write-option" style="display: none">
+            <div class="write-field J_photoQuality">
+                <span class="field-txt">上传高清图</span><span class="ui-switch checked"></span></div>
+        </div>
+    </div>
+    <div id="container" style="display: none"></div>
+</div>
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=DplTpLn9EpGEIwimAKUNscH6YWGAyoH3"></script>
+{if condition="$is_wxBrowser eq 'yes'"}
+<script src="__JS__/jweixin-1.4.0.js?rand={$js_rand}"></script>
+<script>
+    /*
+     * 注意：
+     * 1. 所有的JS接口只能在公众号绑定的域名下调用，公众号开发者需要先登录微信公众平台进入“公众号设置”的“功能设置”里填写“JS接口安全域名”。
+     * 2. 如果发现在 Android 不能分享自定义内容，请到官网下载最新的包覆盖安装，Android 自定义分享接口需升级至 6.0.2.58 版本及以上。
+     * 3. 常见问题及完整 JS-SDK 文档地址：http://mp.weixin.qq.com/wiki/7/aaa137b55fb2e0456bf8dd9148dd613f.html
+     *
+     * 开发中遇到问题详见文档“附录5-常见错误及解决办法”解决，如仍未能解决可通过以下渠道反馈：
+     * 邮箱地址：weixin-open@qq.com
+     * 邮件主题：【微信JS-SDK反馈】具体问题
+     * 邮件内容说明：用简明的语言描述问题所在，并交代清楚遇到该问题的场景，可附上截屏图片，微信团队会尽快处理你的反馈。
+     */
+    wx.config({
+        debug: false,
+        appId: "{$jssdk['appid']}",
+        timestamp: "{$jssdk['timestamp']}",
+        nonceStr: "{$jssdk['nonceStr']}",
+        signature: "{$jssdk['signature']}",
+        jsApiList: [
+            'checkJsApi',
+            'chooseImage',
+            'uploadImage',
+            'getLocation'
+        ]
+    });
+    var addr_info = '';
+    //自定义内容
+    wx.ready(function () {
+        //选择图片
+        document.querySelector('#chooseImage').onclick = function () {
+            wx.chooseImage({
+                count: 9, // 默认9
+                sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
+                sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+                success: function (res) {
+                    var localIds = res.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
+                    for (var i = 0; i < localIds.length; i++) {
+                        addimg(localIds[i]);
+                    }
+                }
+            });
+        };
+        document.querySelector('#getLocation').onclick = function () {
+            wx.getLocation({
+                success: function (res) {
+                    get_addr_list(res.longitude, res.latitude);
+                },
+                cancel: function (res) {
+                    $("#addr_info").text('用户拒绝授权获取地理位置');
+                }
+            });
+        };
+    });
+    wx.error(function (res) {
+        alert(res.errMsg);
+    });
+
+    var local;
+    var index_lo = 0;
+    var map;
+    var mPoint;
+    var options;
+    function get_addr_list(latitude, longitude) {
+        map = new BMap.Map("container");            // 创建Map实例
+        mPoint = new BMap.Point(latitude, longitude);
+        map.enableScrollWheelZoom();
+        map.centerAndZoom(mPoint, 20);
+        $("#getLocation").text("所在位置:");
+        $("#listm").show();
+        options = {
+            onSearchComplete: function (results) {
+                if (local.getStatus() == BMAP_STATUS_SUCCESS) {
+                    // 判断状态是否正确
+                    for (var i = 0; i < results.getCurrentNumPois(); i++) {
+                        if (index_lo == 0) {
+                            var addr = results.getPoi(i).city;
+                            var node = "<option value='" + addr + "'>" + addr + "</option>";
+                            $("#listm").append(node);
+                        }
+                        index_lo++;
+                        var addr = results.getPoi(i).city + "-" + results.getPoi(i).title;
+                        var node = "<option value='" + addr + "'>" + addr + "</option>";
+                        $("#listm").append(node);
+                    }
+                }
+            }
+        };
+        local = new BMap.LocalSearch(map, options);
+        local.searchNearby("娱乐", mPoint, 800);
+        local.searchNearby("商场", mPoint, 500);
+        local.searchNearby("超市", mPoint, 500);
+        local.searchNearby("大厦", mPoint, 500);
+        local.searchNearby("酒店", mPoint, 800);
+    }
+
+    var serverIdarr = ['', '', '', '', '', '', '', '', ''];
+    var imgdarr = ['', '', '', '', '', '', '', '', ''];
+    var serverIdindex = 0;
+    var node = $(".J_photo_item").clone(true);
+    node.show();
+    $(".J_photo_item").remove();
+    $(function () {
+//        $("#getLocation").on('click', function () {
+//            get_addr_list('106.704049', '26.585505');
+//        });
+        $("#form-0-submit").on('click', function () {
+            addr_info = $("#listm").val();
+            $.ajax({
+                url: "__API__/Dynamic/publis_dyn.html",
+                type: "post",
+                data: {
+                    content: $("#content_text").val(),
+                    img: imgdarr.toString(),
+                    addr: addr_info,
+                    dynid: $("#dynid").val()
+                },
+                dataType: "json",
+                success: function (data) {
+                    if (data.code == 0) {
+                        window.location.href = "{:url('gametree/index/gamedyn')}";
+                    } else {
+                        alert(data.info);
+                        //没有数据了
+                    }
+                    loadend = true;
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+
+                },
+                complete: function (XMLHttpRequest, textStatus) {
+                    // 调用本次AJAX请求时传递的options参数
+                }
+            });
+        });
+    });
+
+    function delimg(index) {
+        var serverIdarrtemp = Array();
+        var imgdarrtemp = Array();
+        var j = 0;
+        for (var i = 0; i < serverIdindex.length; i++) {
+            if (parseInt(i) != parseInt(index)) {
+                serverIdarrtemp[j] = serverIdindex[i];
+                j++;
+            }
+        }
+        var j = 0;
+        for (var i = 0; i < imgdarr.length; i++) {
+            if (parseInt(i) != parseInt(index)) {
+                imgdarrtemp[j] = imgdarr[i];
+                j++;
+            }
+        }
+        serverIdarr = serverIdarrtemp;
+        imgdarr = imgdarrtemp;
+        serverIdindex--;
+    }
+
+    function addimg(img) {
+        update_img();
+        if (is_has_img(img)) {
+            return;
+        }
+        var nodet = node.clone(true);
+        nodet.find('.J_img').css('background-image', "url('" + img + "')");
+        nodet.find('.J_img').attr('data-img', img);
+        nodet.find('.J_img').attr('data-index', serverIdindex);
+        nodet.find('.J_img_btn').on('click', function () {
+            var index = $(this).attr('data-index');
+            if (confirm("你确定要删除此图片么")) {
+                delimg(index);
+                $(this).parent('.J_photo_item').remove();
+            }
+        });
+        wx.uploadImage({
+            localId: img + '',
+            isShowProgressTips: 1,
+            success: function (res) {
+                serverIdarr[serverIdindex] = res.serverId;
+                get_img_url(res.serverId, serverIdindex);
+                serverIdindex++;
+            },
+            fail: function (res) {
+                alert("上传失败" + res.errMsg);
+            }
+        });
+        $('#J_photo_container').append(nodet);
+    }
+
+    //回去图片实际地址
+    function get_img_url(sid, indexs) {
+        $.ajax({
+            url: "__API__/Dynupload/upload.html",
+            type: "post",
+            data: {
+                sid: sid,
+                type: 'jpg'
+            },
+            dataType: "json",
+            success: function (data) {
+                if (data.code == 0) {
+                    imgdarr[indexs] = data.url;
+                    $("#J_photo_container").find('.J_img_btn').eq(indexs).css('background-image', "url('" + "http://img.ystttc.com" + data.url + "')");
+                    $("#J_photo_container").find('.J_img_btn').eq(indexs).attr('data-img', "http://img.ystttc.com" + data.url);
+                } else {
+                    alert(data.info);
+                    //没有数据了
+                }
+                loadend = true;
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                show_tip(textStatus);
+            },
+            complete: function (XMLHttpRequest, textStatus) {
+                // 调用本次AJAX请求时传递的options参数
+            }
+        });
+    }
+    function is_has_img(img) {
+        var tempnode = $('#J_photo_container').find('.J_img');
+        if (tempnode.length >= 9) {
+            return true;
+        }
+        for (var i = 0; i < tempnode.length; i++) {
+            if (tempnode.eq(i).attr('data-img') == img) {
+                return true;
+            }
+        }
+        return false;
+    }
+    function update_img() {
+        var tempnode = $('#J_photo_container').find('.J_img');
+        if (tempnode.length >= 9) {
+            $('#chooseImage').hide();
+        } else {
+            $('#chooseImage').show();
+        }
+    }
+
+</script>
+{/if}
+{/block}

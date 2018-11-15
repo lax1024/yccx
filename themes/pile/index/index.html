@@ -1,0 +1,261 @@
+{extend name="base" /}
+{block name="css"}
+<link rel="stylesheet" href="__STATIC__/mui/css/mui.css?rand={$css_rand}" type="text/css">
+<link rel="stylesheet" href="__STATIC__/mui/css/mui-icons-extra.css?rand={$css_rand}" type="text/css">
+<link rel="stylesheet" href="__STATIC__/mui/css/app-self.css?rand={$css_rand}" type="text/css">
+<link rel="stylesheet" href="__STATIC__/pile/css/index.css?rand={$css_rand}" type="text/css">
+{/block}
+{block name="body"}
+<style>
+    /** 百度地图标注Marker上方的距离Lable样式 */
+    .marker_store_label {
+        height: 30px;
+        max-width: 300px;
+        text-align: center;
+        line-height: 20px;
+        background-image: url("__OSSIMG____STATIC__/pile/images/pop_car_distance.png");
+        background-repeat: no-repeat;
+        color: #fff;
+        background-size: 100% 100%;
+        -moz-background-size: 100% 100%;
+        padding: 0 5px 0 5px;
+        background-color: rgba(255, 255, 255, 0.01);
+
+    }
+
+    .tag-span-div span:nth-child(1) {
+        background: rgb(35, 171, 55);
+    }
+    .tag-span-div span:nth-child(2) {
+        background: rgb(0,161,233);
+    }
+    .tag-span-div span:nth-child(3) {
+        background: rgb(255,218,47);
+    }
+</style>
+<script>
+    var MARKER_SELF;
+</script>
+<body>
+<!-- 百度地图：显示充电桩的位置，以及做对充电桩的处理 -->
+<div id="js_pile_map" class="map-content"></div>
+<!-- 最上方的菜单 -->
+<div class="body-top-area">
+    <div class="body-top-item">
+        <div style="border-right: #999999 solid 1px;">
+            <span class="mui-icon mui-icon-location" style="font-size: 16px;float: left"></span>
+            <span id="js_user_location"
+                  style="max-width: 130px;float: left;overflow: hidden;white-space: nowrap;text-overflow: ellipsis"></span>
+            <span class="mui-icon mui-icon-arrowdown" style="font-size: 16px;float: left"></span>
+        </div>
+    </div>
+    <div class="body-top-item">
+        <div style="text-align: right;border-left: #999999 solid 1px;">
+            <span>电站列表</span>
+        </div>
+    </div>
+</div>
+<!-- 定位图标 -->
+<img id="js_update_user_location" class="flag-user" style="bottom: 265px;"
+     src="__OSSIMG____STATIC__/pile/images/location_marker_self.png?rand=20180622"/>
+<!-- 建议图标 -->
+<img id="js_user_advise" class="flag-user" style="bottom: 310px;"
+     src="__OSSIMG____STATIC__/pile/images/map_advise_flag.png?rand=20180622"/>
+<!-- 建站图标 -->
+<div id="js_build_pile" class="flag-user"
+     style="bottom: 355px;background: #f3e856;border-radius: 15px;line-height: 30px;text-align: center">
+    <span class="mui-icon mui-icon-flag" style="color: #ffffff;line-height: 30px"></span>
+</div>
+<!-- 扫码启动充电 -->
+<div class="charge-by-code" id="js_charge_by_code">
+    <div>扫码启动充电</div>
+</div>
+<!-- 百度地图上的充电桩位置的标注的点击弹窗 -->
+<div id="js_pope_marker" class="popup-map-marker">
+    <div id="js_pope_marker_close" class="popup-map-close">
+        <span>×</span>
+    </div>
+    <div class="content-popup-title">
+        <div class="content-popup-title-left">
+            <div class="title-left-name">
+                <span id="js_pope_marker_name">优车酷中曹司店</span>
+                <span id="js_pope_marker_navi" class="mui-icon mui-icon-navigate" style="color: #0000ff"></span>
+            </div>
+            <div class="title-left-address">
+                <span>详细地址：<span id="js_pope_marker_address">花溪区花溪大道103号，阳光优车酷</span></span>
+            </div>
+        </div>
+        <div id="js_pope_marker_img" class="content-popup-title-right">
+            <img data-preview-src='' data-preview-group='store_img' class="js_store_img"
+                 src="__OSSIMG____STATIC__/pile/images/img_return_car_no.png">
+        </div>
+    </div>
+    <div class="content-popup-body">
+        <div class="body-left">
+            <div class="mui-row tag-span-div">
+            </div>
+            <div class="mui-row">
+                <span class="body-left-span">电桩数量</span>
+                <!--<span class="body-left-span" style="margin-left: 5px"><span id="js_num_direct"></span>个直流/<span id="js_num_alternation"></span>个交流</span>-->
+                <span class="body-left-span" style="margin-left: 5px"><span id="js_num_direct"></span>个快充桩</span>
+            </div>
+            <div class="mui-row">
+                <span class="body-left-span">电桩功率</span>
+                <span class="body-left-span" style="margin-left: 5px"><span id="js_pile_power"></span>kw</span>
+            </div>
+            <div class="mui-row">
+                <span class="body-left-span">资费范围</span>
+                <span class="body-left-span" style="margin-left: 5px"><span id="js_store_price"></span>元/度</span>
+            </div>
+            <div class="mui-row">
+                <span class="body-left-span">停&nbsp;&nbsp;车&nbsp;&nbsp;场</span>
+                <span class="body-left-span" style="margin-left: 5px"><span id="js_store_parking_price"></span>元/小时</span>
+            </div>
+        </div>
+        <div class="body-right">
+            <div id="js_store_accept" class="mui-row" style="color: #00bfff;font-size: 12px">
+                停车场可停车辆：乘用车、小型物流车
+            </div>
+            <div id="js_store_unaccept" class="mui-row" style="color: red;font-size: 12px">
+                停车场不可停车辆：中型物流车、大型物流车、公交车
+            </div>
+        </div>
+    </div>
+    <!--<div class="content-popup-bottom">-->
+        <!--<span>注：<span id="js_store_remark"></span></span>-->
+    <!--</div>-->
+</div>
+
+{include file="loading" /}
+
+<script>
+    mui.previewImage();
+</script>
+
+{if condition="$is_wxBrowser eq 'yes'"}
+<script src="http://res.wx.qq.com/open/js/jweixin-1.4.0.js?rand={$js_rand}"></script>
+<script>
+    /*
+     * 注意：
+     * 1. 所有的JS接口只能在公众号绑定的域名下调用，公众号开发者需要先登录微信公众平台进入“公众号设置”的“功能设置”里填写“JS接口安全域名”。
+     * 2. 如果发现在 Android 不能分享自定义内容，请到官网下载最新的包覆盖安装，Android 自定义分享接口需升级至 6.0.2.58 版本及以上。
+     * 3. 常见问题及完整 JS-SDK 文档地址：http://mp.weixin.qq.com/wiki/7/aaa137b55fb2e0456bf8dd9148dd613f.html
+     *
+     * 开发中遇到问题详见文档“附录5-常见错误及解决办法”解决，如仍未能解决可通过以下渠道反馈：
+     * 邮箱地址：weixin-open@qq.com
+     * 邮件主题：【微信JS-SDK反馈】具体问题
+     * 邮件内容说明：用简明的语言描述问题所在，并交代清楚遇到该问题的场景，可附上截屏图片，微信团队会尽快处理你的反馈。
+     */
+    wx.config({
+        debug: false,
+        appId: "{$jssdk['appid']}",
+        timestamp: "{$jssdk['timestamp']}",
+        nonceStr: "{$jssdk['nonceStr']}",
+        signature: "{$jssdk['signature']}",
+        jsApiList: [
+            'checkJsApi',
+            'openLocation',
+            'getLocation',
+            'scanQRCode'
+        ]
+    });
+
+    wx.ready(function (res) {
+        if (MARKER_SELF != null) {
+            MARKER_SELF.remove();
+        }
+        weixinLocation(true);
+    });
+
+    wx.error(function (res) {
+//        alert(JSON.stringify(res));
+    });
+</script>
+<script>
+    /**
+     * 调用第三方导航软件实现导航
+     * @param lat  目的地纬度
+     * @param lng  目的地经度
+     */
+    function go_openLocation(lat, lng, name, address) {
+        var ponitx = wgs2gcj(lat, lng);//将gps坐标转为百度地图坐标
+        wx.openLocation({
+            latitude: ponitx[0], // 纬度，浮点数，范围为90 ~ -90
+            longitude: ponitx[1], // 经度，浮点数，范围为180 ~ -180。
+            name: name, // 位置名
+            address: address, // 地址详情说明
+            scale: 18, // 地图缩放级别,整形值,范围从1~28。默认为最大
+            infoUrl: '' // 在查看位置界面底部显示的超链接,可点击跳转
+        });
+    }
+
+    //微信定位
+    function weixinLocation(is_request) {
+        if(is_request){
+            loadMessageBox("微信定位中，请稍等...", 10);
+        }else {
+            loadMessageBox("正在刷新位置，请稍等...", 10);
+        }
+        wx.getLocation({
+            success: function (res) {
+                closeLoadMessageBox();
+                var latitude = res.latitude; //纬度
+                var longitude = res.longitude; //经度
+                localStorage.setItem("old_marker_self_lat", latitude);
+                localStorage.setItem("old_marker_self_lng", longitude);
+                //将定位得到的GPS坐标转为百度坐标
+                var pointx = wgs2bd(parseFloat(latitude), parseFloat(longitude));
+                //判断是否用用户位置图标
+                if (MARKER_SELF != null) {
+                    //有的话，先删除
+                    MARKER_SELF.remove();
+                }
+                var points = new BMap.Point(pointx[1], pointx[0]);
+                localStorage.setItem("marker_self_lat", points.lat);
+                localStorage.setItem("marker_self_lng", points.lng);
+                var myIcon;
+                myIcon = new BMap.Icon(OSSIMG + "/marker_self.png?x-oss-process=image/resize,h_300", new BMap.Size(20, 20), {imageSize: new BMap.Size(20, 20)});
+                MARKER_SELF = new BMap.Marker(points, {icon: myIcon});
+                MAP.addOverlay(MARKER_SELF);
+                //设置用户位置为地图中心
+                MAP.setCenter(points);
+                //解析用户的详细地址
+                get_user_location();
+                if (is_request) {
+                    get_charge_list();
+                }
+
+            },
+            cancel: function (res) {
+                // alert('用户拒绝授权获取地理位置');
+            },
+            fail: function (res) {
+//                alert(JSON.stringify(res));
+            }
+        });
+    }
+
+    //二维码扫描按钮的点击事件
+    $("#js_charge_by_code").on('click', function () {
+        wx.scanQRCode({
+            needResult: 0,
+            desc: 'scanQRCode desc',
+            success: function (data) {
+                //alert(JSON.stringify(data));
+            }
+        });
+    });
+</script>
+{/if}
+
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=84chcOlNtuGKpKkIfp0oprKRveLSXEnj"></script>
+<script type="text/javascript" src="__STATIC__/pile/js/baidu/TextIconOverlay.js"></script>
+<script type="text/javascript" src="__STATIC__/pile/js/baidu/MarkerClusterer.js"></script>
+<script type="text/javascript" src="__STATIC__/mui/js/mui.min.js?rand={$css_rand}"></script>
+<script type="text/javascript" src="__STATIC__/mui/js/mui.js?rand={$js_rand}"></script>
+<script type="text/javascript" src="__STATIC__/mui/js/mui.zoom.js?rand={$js_rand}"></script>
+<script type="text/javascript" src="__STATIC__/mui/js/mui.previewimage.js?rand={$js_rand}"></script>
+<script type="text/javascript" src="__STATIC__/pile/js/index.js?rand={$js_rand}"></script>
+</body>
+{/block}
+

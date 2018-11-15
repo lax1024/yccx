@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width,height=device-height,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes"><!-- 设置Web应用以全屏模式运行 -->
+    <meta name="apple-mobile-web-app-status-bar-style" content="black"><!-- 隐藏状态栏 -->
+    <meta name="format-detection" content="telephone=no"><!-- 告诉设备忽略将页面中的数字识别为电话号码 -->
+    <meta name=apple-mobile-web-app-title content={$seo_title}>
+    <meta name="keywords" content="{$seo_keyword}"/>
+    <meta name="description" content="{$seo_description}"/>
+    <script type="text/javascript" src="__STATIC__/pile/js/config.js"></script>
+    <script type="text/javascript" src="__STATIC__/pile/js/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="__STATIC__/pile/js/tools/gps-transform.js?rand={$js_rand}"></script>
+    <script type="text/javascript" src="__STATIC__/pile/js/tools/public.js?rand={$js_rand}"></script>
+    <title>{$seo_title}</title>
+    <link rel="stylesheet" href="__STATIC__/pile/css/config.css?rand={$css_rand}" type="text/css">
+    <script>
+        /**
+         1. 禁用动态添加脚本，防止广告加载
+         */
+        (function () {
+            var createElement = document.createElement;
+            document.createElement = function (tag) {
+                switch (tag) {
+                    case 'script':
+                        console.log('禁用动态添加脚本，防止广告加载');
+                        break;
+                    default:
+                        return createElement.apply(this, arguments);
+                }
+            }
+        })();
+    </script>
+    {block name="css"}{/block}
+    {block name="js"}{/block}
+</head>
+{block name="body"}
+{/block}
+</html>

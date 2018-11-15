@@ -1,0 +1,172 @@
+{extend name="base" /}
+{block name="css"}
+<link rel="stylesheet" type="text/css" href="__STATIC__/mui/css/mui.min.css?rand={$css_rand}">
+<link rel="stylesheet" type="text/css" href="__STATIC__/mui/css/mui-icons-extra.css?rand={$css_rand}">
+<link rel="stylesheet" type="text/css" href="__STATIC__/mui/css/app-self.css?rand={$css_rand}">
+{/block}
+{block name="body"}
+<style>
+    html{
+        height: 100%;
+    }
+
+    .return_car_place_img img{
+        height: 100%;
+        width: 100%;
+    }
+
+    .city-main {
+        background-color: #fff;
+        padding-right: 30px;
+        height: 50px;
+    }
+    .sub-list {
+        border-bottom: #aaa solid 1px;
+        padding: 7px;
+        font-size: 14px;
+    }
+
+
+</style>
+
+<script>
+    var marker_self;
+    var city;
+</script>
+<body style="height: 100%">
+<header class="mui-bar mui-bar-nav" style="background-color: #ffd31c">
+    <span id="js_go_back" style="color: white" class="mui-icon mui-icon-back"></span>
+    <h1 class="mui-title" style="color: white">取车位置</h1>
+</header>
+<div class="mui-input-row mui-search" style="position: fixed;top: 50px;z-index: 500;width: 96%;height: 35px;background: #fffcef;line-height: 40px;margin-left: 2%">
+    <input id="js_place_search" type="search" class="mui-input-clear" placeholder="输入具体地址进行搜索" style="background: white;height: 100%">
+</div>
+<div id="js_place_search_result" style="width:100%;background: white;position: fixed;top: 80px;z-index: 500;overflow: scroll;">
+
+</div>
+<div id="store_map" style="height: 100%;"></div>
+
+<img id="user_location_self" style="width:35px; height:35px; position:fixed;left: 8px;bottom: 150px;"
+     src="http://img.youchedongli.cn/public/static/mobile/images/location_marker_self.png?rand=20180622"/>
+
+<img src="http://img.youchedongli.cn/public/static/mobile/images/map_choose_point.png" style="width: 30px;height: 60px;position: fixed;left: 46%;top: 40%">
+
+<div style="height: auto;width: 96%;font-size: 14px;background: rgba(255,255,255,0.8);margin-left: 2%;border-radius: 5px;position: fixed;bottom: 50px;z-index: auto;border: rgba(0,0,0,0.3) solid 1px">
+    <div style="width: 100%;line-height: 20px;padding-left: 10px;max-width: 99%;border-bottom: rgba(0,0,0,0.3) solid 1px">
+        取车点：<span id="js_place_take_car"></span>
+    </div>
+    <div style="width: 100%;line-height: 20px;padding-left: 10px;max-width: 99%;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;display: none">
+        当前位置：<span id="js_place_self"></span>
+    </div>
+</div>
+
+<div id="js_choose_this_point" style="height: 40px;width: 100%;position: fixed;bottom: 0;background: #f3e856;text-align: center;line-height: 40px">选择该点</div>
+
+{include file="login" /}
+{include file="loading" /}
+<script type="text/javascript"
+        src="http://api.map.baidu.com/api?v=2.0&ak=84chcOlNtuGKpKkIfp0oprKRveLSXEnj"></script>
+
+<script type="text/javascript" src="__STATIC__/mobile/js/jquery.min.js"></script>
+<script type="text/javascript" src="__STATIC__/mobile/js/public-js.js?rand={$js_rand}"></script>
+<script type="text/javascript" src="__STATIC__/mobile/js/gps-transform-js.js?rand={$js_rand}"></script>
+
+<script type="text/javascript" src="__STATIC__/mui/js/mui.min.js?rand={$css_rand}"></script>
+
+<script type="text/javascript" src="__STATIC__/mobile/js/store-take-js.js?rand={$css_rand}"></script>
+
+{if condition="$is_wxBrowser eq 'yes'"}
+<script src="http://res.wx.qq.com/open/js/jweixin-1.4.0.js?rand={$js_rand}"></script>
+<script>
+    /*
+     * 注意：
+     * 1. 所有的JS接口只能在公众号绑定的域名下调用，公众号开发者需要先登录微信公众平台进入“公众号设置”的“功能设置”里填写“JS接口安全域名”。
+     * 2. 如果发现在 Android 不能分享自定义内容，请到官网下载最新的包覆盖安装，Android 自定义分享接口需升级至 6.0.2.58 版本及以上。
+     * 3. 常见问题及完整 JS-SDK 文档地址：http://mp.weixin.qq.com/wiki/7/aaa137b55fb2e0456bf8dd9148dd613f.html
+     *
+     * 开发中遇到问题详见文档“附录5-常见错误及解决办法”解决，如仍未能解决可通过以下渠道反馈：
+     * 邮箱地址：weixin-open@qq.com
+     * 邮件主题：【微信JS-SDK反馈】具体问题
+     * 邮件内容说明：用简明的语言描述问题所在，并交代清楚遇到该问题的场景，可附上截屏图片，微信团队会尽快处理你的反馈。
+     */
+    wx.config({
+        debug: false,
+        appId: "{$jssdk['appid']}",
+        timestamp: "{$jssdk['timestamp']}",
+        nonceStr: "{$jssdk['nonceStr']}",
+        signature: "{$jssdk['signature']}",
+        jsApiList: [
+            'checkJsApi',
+            'openLocation',
+            'getLocation',
+        ]
+    });
+
+    wx.ready(function (res) {
+        if (marker_self != null) {
+            marker_self.remove();
+        }
+        weixinLocation();
+    });
+
+    wx.error(function (res) {
+//        alert(JSON.stringify(res));
+    });
+</script>
+<script>
+    //微信定位
+    function weixinLocation() {
+        loadMessageBox("微信定位中...", 10);
+        wx.getLocation({
+            success: function (res) {
+                var latitude = res.latitude; //纬度
+                var longitude = res.longitude; //经度
+                localStorage.setItem("old_marker_self_lat", latitude);
+                localStorage.setItem("old_marker_self_lng", longitude);
+                var pointx = wgs2bd(parseFloat(latitude), parseFloat(longitude));
+                if (marker_self != null) {
+                    marker_self.remove();
+                }
+                var points = new BMap.Point(pointx[1], pointx[0]);
+                localStorage.setItem("marker_self_lat", pointx[0]);
+                localStorage.setItem("marker_self_lng", pointx[1]);
+                var myIcon = new BMap.Icon("http://img.youchedongli.cn/public/static/mobile/images/marker_self.png", new BMap.Size(20, 20),{imageSize: new BMap.Size(20,20)});
+                marker_self = new BMap.Marker(points, {icon: myIcon});
+                map.addOverlay(marker_self);
+                map.setCenter(points);
+
+                $.ajax({
+                    url: website + "/api/Area/get_city_lng_lat_new",
+                    type: "POST",
+                    async: true,
+                    data: {
+                        lat:pointx[0],
+                        lng:pointx[1]
+                    },
+                    outTime: 5000,
+                    dataType: "json",
+                    success: function (data) {
+                        if (parseInt(data.code) == 0) {
+                            var pois = data.data.pois;
+                            var addr = pois[0].addr;
+                            city = addr.substring(addr.indexOf("省") + 1,addr.indexOf("市"));
+                            $("#js_place_self").text(addr.substring(addr.indexOf("市") + 1,addr.length) + pois[0].name);
+                            $("#js_place_take_car").text(addr.substring(addr.indexOf("市") + 1,addr.length) + pois[0].name);
+                        }
+                    }
+                });
+
+                closeLoadMessageBox();
+            },
+            cancel: function (res) {
+                // alert('用户拒绝授权获取地理位置');
+            },
+            fail: function (res) {
+//                alert(JSON.stringify(res));
+            }
+        });
+    }
+</script>
+{/if}
+</body>
+{/block}

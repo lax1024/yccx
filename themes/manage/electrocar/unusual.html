@@ -1,0 +1,112 @@
+{extend name="base" /}
+{block name="body"}
+<div class="layui-body">
+    <!--tab标签-->
+    <div class="layui-tab layui-tab-brief">
+        <ul class="layui-tab-title">
+            <li class=""><a href="{:url('manage/electrocar/index')}">新能源车辆管理</a></li>
+            <li class="layui-this">异常车辆查看</li>
+            <li class=""><a href="{:url('manage/CarTask/index')}">任务车辆</a></li>
+        </ul>
+        <div class="layui-tab-content">
+            <div class="layui-tab-item layui-show">
+                <form class="layui-form layui-form-pane" action="{:url('manage/electrocar/unusual')}" method="get">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">车辆状态</label>
+                        <div class="layui-inline">
+                            <select name="car_status" lay-filter="statusselect">
+                                {foreach name="car_status_list" item="vo" key="kv"}
+                                <option value="{$kv}" {php} echo $kv==$car_status?"selected":"";{/php}>{$vo}</option>
+                                {/foreach}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">统计:</label>
+                        <div class="layui-inline">
+                            <div class="layui-form-mid">{$sum}(辆)</div>
+                        </div>
+                    </div>
+                </form>
+                <hr>
+                <table class="layui-table">
+                    <thead>
+                    <tr>
+                        <th style="width: 30px;">ID</th>
+                        <th>所在门店</th>
+                        <th>异常类型</th>
+                        <th>车牌号</th>
+                        <th>车辆状态</th>
+                        <th>续航里程</th>
+                        <th>电压</th>
+                        <th>站点距离</th>
+                        <th>时间</th>
+                        <th>停车费</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {foreach name="carcommon_list" item="vo"}
+                    <tr>
+                        <td>{$vo.id}</td>
+                        <td>{$vo.store_site_name}</td>
+                        <td>{$vo.type_str}</td>
+                        <td>{$vo.licence_plate}</td>
+                        <td>{$vo.car_status_str}/({$vo.car_device_str})</td>
+                        <td>{$vo.driving_mileage}(km)</td>
+                        <td>{$vo.voltage}(V)</td>
+                        <td>{$vo.distance}(km)</td>
+                        <td>{$vo.gain_hour}(小时)</td>
+                        <td>{$vo.park}(元)</td>
+                        <th>
+                            <a href="{:url('manage/electrocar/dispatch_car',['car_id'=>$vo['id']])}"
+                               class="layui-btn layui-btn-normal layui-btn-mini ajax-common-dispatch-btn">调至最近站点</a>
+                        </th>
+                    </tr>
+                    {/foreach}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}
+{block name="script"}
+<script>
+    form.on('select(statusselect)', function (data) {
+        $(".layui-form-pane").submit();
+    });
+    $(".ajax-common-dispatch-btn").on('click', function () {
+        var _href = $(this).attr("href");
+        layer.open({
+            shade: false,
+            content: '确定确定要调度车辆到最近的站点吗？',
+            btn: ['确定', '取消'],
+            yes: function (index1) {
+                layer.close(index1);
+                $.ajax({
+                    url: _href,
+                    type: "GET",
+                    dataType: 'json',
+                    success: function (info) {
+                        if (info.code === 0) {
+                            layer.open({
+                                shade: false,
+                                content: '车辆已经调度到：' + info.data,
+                                btn: ['确定'],
+                                yes: function (index) {
+                                    layer.close(index);
+                                    window.location.reload();
+                                }
+                            });
+                        } else {
+                            layer.msg(info.info);
+                        }
+                    }
+                });
+            }
+        });
+        return false;
+    })
+</script>
+{/block}

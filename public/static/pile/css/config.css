@@ -1,0 +1,6 @@
+/* 页面的长宽和背景色 */
+html,body{
+    height: 100%;
+    width: 100%;
+    background: #ffffff;
+}

@@ -1,0 +1,42 @@
+{extend name="base" /}
+{block name="css"}
+{/block}
+{block name="body"}
+<body>
+
+<select id="js_select_test">
+    <option>Test1</option>
+    <option>Test2</option>
+    <option>Test3</option>
+    <option>Test4</option>
+    <option>Test5</option>
+</select>
+<input type="button" value="TestAdd1" id="test_add">
+
+
+<div id="img_div_1">
+    <input type="file" id="file_input" onchange="addFile(this);" style="display:none"  />
+    <div style="position: relative;">
+        <img id="file_img" src="add_img.png" width="75" onclick="file_input.click();" height="65" />
+    </div>
+    <div class="divX" id="img_zindex_div_1" onclick="del()">
+        <img src="no.png" width="16" height="16" />
+    </div>
+</div>
+
+<div id="js_add_div" style="height: auto;width: 100%;border: #ffd31c solid 1px">
+
+</div>
+<script>
+    var add_item = $("#test_add").clone();
+    $("#test_add").remove();
+    $("#js_select_test").on("change",function () {
+        var item = add_item.clone();
+        console.log($(this).val());
+        item.val($(this).val());
+        item.appendTo("#js_add_div");
+    });
+</script>
+</body>
+{/block}
+

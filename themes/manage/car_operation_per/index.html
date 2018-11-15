@@ -1,0 +1,64 @@
+{extend name="base" /}
+{block name="body"}
+<div class="layui-body">
+    <!--tab标签-->
+    <div class="layui-tab layui-tab-brief">
+        <ul class="layui-tab-title">
+            <li class="layui-this">运营人员管理</li>
+            <li class=""><a href="{:url('manage/CarOperationPer/add')}">添加运营人员</a></li>
+        </ul>
+        <div class="layui-tab-content">
+            <div class="layui-tab-item layui-show">
+                <form class="layui-form layui-form-pane" action="{:url('manage/CarOperationPer/index')}" method="get">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">关键词</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="keyword" value="{$keyword}" placeholder="请输入关键词"
+                                   class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <button class="layui-btn">搜索</button>
+                    </div>
+                </form>
+                <hr>
+                <table class="layui-table">
+                    <thead>
+                    <tr>
+                        <th style="width: 30px;">ID</th>
+                        <th>姓名</th>
+                        <th>电话</th>
+                        <th>级别</th>
+                        <th>状态</th>
+                        <th>添加时间</th>
+                        <th>更新时间</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {foreach name="car_regulations_list" item="vo"}
+                    <tr>
+                        <td>{$vo.id}</td>
+                        <td>{$vo.name}</td>
+                        <td>{$vo.phone}</td>
+                        <td>{$vo.grade_str}</td>
+                        <td>{$vo.status_str}</td>
+                        <td>{$vo.add_time}</td>
+                        <td>{$vo.update_time}</td>
+                        <td>
+                            <a href="{:url('manage/CarOperationPer/edit',['id'=>$vo['id']])}"
+                               class="layui-btn layui-btn-mini">编辑操作</a>
+                            <a href="{:url('manage/CarOperationPer/delete',['id'=>$vo['id']])}"
+                               class="layui-btn layui-btn-danger layui-btn-mini ajax-common">删除</a>
+                        </td>
+                    </tr>
+                    {/foreach}
+                    </tbody>
+                </table>
+                <!--分页-->
+                {$car_regulations_list->render()}
+            </div>
+        </div>
+    </div>
+</div>
+{/block}

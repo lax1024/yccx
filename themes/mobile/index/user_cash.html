@@ -1,0 +1,335 @@
+{extend name="base" /}
+{block name="css"}
+<link rel="stylesheet" href="__STATIC__/mui/css/mui.min.css">
+<link rel="stylesheet" href="__STATIC__/mui/css/mui-icons-extra.css?rand={$css_rand}">
+<link rel="stylesheet" href="__STATIC__/mobile/css/user-center-css.css?rand={$css_rand}">
+<style>
+    ul {
+        font-size: 14px;
+        color: #8f8f94;
+    }
+
+    .mui-bar {
+        background-color: #f3e856;
+    }
+
+    .mui-btn-outlined {
+        font-size: 18px;
+    }
+
+    .user_cash_bg_div {
+        margin-top: 44px;
+        text-align: center;
+    }
+
+    .user_cash_info {
+        position: absolute;
+        left: 37%;
+        top: 25%;
+        text-align: center;
+    }
+</style>
+{/block}
+{block name="body"}
+<body>
+<header class="mui-bar mui-bar-nav">
+    <span id="goto_back" class="mui-icon mui-icon-contact mui-icon-left-nav"></span>
+    <h1 class="mui-title">缴纳押金</h1>
+</header>
+<div class="mui-content">
+    {if condition="$customer_data['cash_is']==1"}
+    <div class="user_cash_bg_div">
+        <img class="user_cash_bg" src="http://img.youchedongli.cn/public/static/mobile/images/user_cash_bg.png"
+             style="width: 53%;">
+        <div class="user_cash_info">
+            <p style="font-size: 120%;color: #333;">已缴纳押金</p>
+            <p style="font-size: 120%;color: #333;">{$customer_data['cash']}元</p>
+        </div>
+    </div>
+    <div class="mui-row" style="padding-top: 20px;margin-bottom: 100px;">
+        {if condition="$cash_data['code']==1300"}
+        <p style="font-size: 14px;text-align: center">最后一次还车时间:{$cash_data['end_time']}</p>
+        <p style="font-size: 14px;text-align: center">预计退款日期:{$cash_data['data']['return_day']}</p>
+        <p style="text-align: center;color: rgb(114,105,85);font-size: 14px">自动退还剩余时间:&nbsp;&nbsp;<span
+                style="color: rgb(114,105,85)"><em class="js-day">{$cash_data['data']['day']}</em>天<em
+                class="js-hour">{$cash_data['data']['hour']}</em>小时<em
+                class="js-minute">{$cash_data['data']['minute']}</em>分钟<em class="js-second">{$cash_data['data']['second']}</em>秒</span>
+        </p>
+        {/if}
+        {if condition="$cash_data['code']==1001"}
+        <p style="font-size: 14px;text-align: center">{$cash_data['info']}</p>
+        {foreach name="$cash_data['data']" item="vo"}
+        <div class="mui-card">
+            <!--页眉，放置标题-->
+            <div class="mui-card-header">违章时间：{$vo.start_time_str}</div>
+            <!--内容区-->
+            <div class="mui-card-content" style="padding: 10px 5px">{$vo.info}</div>
+        </div>
+        {/foreach}
+        {/if}
+        {if condition="$cash_data['code']==0"}
+        <div class="mui-col-sm-4 mui-col-xs-4" style="text-align: center"></div>
+        <div class="mui-col-sm-4 mui-col-xs-4" style="text-align: center">
+            <button type="button" id="js_return_cash" class="mui-btn mui-btn-yellow"
+                    style="font-size: 15px;width:100%;border:none;color: #333;background-color: rgb(248,219,47);">退还押金
+            </button>
+        </div>
+        <div class="mui-col-sm-4 mui-col-xs-4" style="text-align: center">
+        </div>
+        {/if}
+        {if condition="$cash_data['code']!==0&&$cash_data['code']!==1300&&$cash_data['code']!==1001"}
+        <p style="font-size: 14px;text-align: center">{$cash_data['info']}</p>
+        {/if}
+    </div>
+    {else/}
+    <div class="mui-row">
+        <div class="user_cash_bg_div">
+            <img class="user_cash_bg" src="http://img.youchedongli.cn/public/static/mobile/images/user_cash_bg.png"
+                 style="width: 53%;">
+            <div class="user_cash_info">
+                <p style="font-size: 120%;color: #333;">需缴纳押金</p>
+                <p style="font-size: 120%;color: #333;">{$cash}元</p>
+            </div>
+        </div>
+        <div style="width: 80%;margin: 0 10%">
+            <p style="font-size: 14px;text-align: left">若未使用车辆，押金可随时退还。若使用为押金车辆，押金在支付订单完成后10天自动退还( 发生违章和其他异常情况除外)</p>
+        </div>
+        <div class="mui-col-sm-6 mui-col-xs-6" style="text-align: right;">
+            <button type="button" data-pay="weixin" class="js-pay-cash mui-btn mui-btn-primary mui-btn-outlined"
+                    style="margin-right: 10px">微&nbsp;&nbsp;信
+            </button>
+        </div>
+        <div class="mui-col-sm-6 mui-col-xs-6" style="text-align: left;">
+            <button type="button" data-pay="unionpay" class="js-pay-cash mui-btn  mui-btn-outlined"
+                    style="margin-left: 10px">银&nbsp;&nbsp;联
+            </button>
+        </div>
+        <!--<div class="mui-col-sm-4 mui-col-xs-4" style="text-align: center;display: none">-->
+        <!--<button type="button" data-pay="alipay" class="js-pay-cash mui-btn  mui-btn-outlined">支付宝</button>-->
+        <!--</div>-->
+    </div>
+    {/if}
+    <div style="margin: 20px 20px;">
+        <a href="user_cash_log.html" style="font-size:14px;color: rgb(114,105,85)">查看押金记录</a>
+    </div>
+
+    <div style="margin: 10px 20px">
+        <p style="font-size:14px;">*提示:</p>
+    </div>
+</div>
+<script src="__STATIC__/mui/js/mui.min.js?rand={$css_rand}"></script>
+<script type="text/javascript" src="__STATIC__/mobile/js/jquery.min.js?rand={$css_rand}"></script>
+<script type="text/javascript" src="__STATIC__/mobile/js/public-js.js?rand={$js_rand}"></script>
+<script type="text/javascript" src="__STATIC__/mobile/js/user-cash-js.js?rand={$js_rand}"></script>
+<script>
+    var is_data = false;
+    var pay_sn = '{$pay_sn}';
+    //    var orders_data = null;
+    var loadend = false;
+    var cash_data_code = '{$cash_data.code}';
+    var pay_cash = true;
+    $(function () {
+        $(".js-pay-cash").on('click', function () {
+            if (pay_cash) {
+                pay_cash = false;
+                var pays = $(this).attr('data-pay');
+                get_cash_info(pays);
+                setTimeout(function () {
+                    pay_cash = true;
+                }, 5000);
+            }
+            return false;
+        });
+
+        $("#js_return_cash").on('click', function () {
+            return_cash();
+            return false;
+        });
+
+        function get_cash_info(pays) {
+            if (pays == 'weixin') {
+                $.ajax({
+                    url: website + '/api/Customer/add_deposit.html',
+                    type: "get",
+                    data: {
+                        myrand: new Date().getTime()
+                    },
+                    dataType: "json",
+                    success: function (data) {
+                        if (data.code == 0) {
+                            weixinpay(data.out_trade_no);
+                        } else {
+                            mui.alert(data.info, '提示');
+                        }
+                        loadend = true;
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        Toast(textStatus, 2000);
+                    },
+                    complete: function (XMLHttpRequest, textStatus) {
+                        // 调用本次AJAX请求时传递的options参数
+                    }
+                });
+            } else if (pays == 'alipay') {
+                mui.alert('支付宝支付正在对接中，敬请期待', '提示');
+            } else if (pays == 'unionpay') {
+                mui.alert('银联支付正在对接中，敬请期待', '提示');
+            }
+        }
+
+        function return_cash() {
+            if (pay_sn != "") {
+                $.ajax({
+                    url: website + '/api/Pay/wxpayRefund.html',
+                    type: "get",
+                    data: {
+                        pay_sn: pay_sn
+                    },
+                    dataType: "json",
+                    success: function (data) {
+                        mui.alert(data.info, '提示');
+                        loadend = true;
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        Toast(textStatus, 2000);
+                    },
+                    complete: function (XMLHttpRequest, textStatus) {
+                        // 调用本次AJAX请求时传递的options参数
+                    }
+                });
+            } else {
+                mui.alert('充值单号不存在', '提示');
+            }
+        }
+
+        //微信支付订单
+        function weixinpay(pay_snx) {
+            //数据有缓存
+            $.ajax({
+                url: "{:url('/api/Pay/wxcashJSAPI')}",
+                type: "post",
+                data: {
+                    pay_sn: pay_snx,
+                    myrand: new Date().getTime()
+                },
+                dataType: "json",
+                success: function (data) {
+                    if (data.code == 0) {
+                        is_data = true;
+                        pay_sn = data.pay_sn;
+//                        orders_data = data.data;
+                        callpay(data.data);
+                    } else {
+                        Toast(data.info, 2000);
+                    }
+                    loadend = true;
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    Toast(textStatus, 2000);
+                },
+                complete: function (XMLHttpRequest, textStatus) {
+                    // 调用本次AJAX请求时传递的options参数
+                }
+            });
+        }
+
+        //调用微信JS api 支付
+        function jsApiCall(strjs) {
+            WeixinJSBridge.invoke(
+                'getBrandWCPayRequest',
+                {
+                    "appId": strjs.appId,     //公众号名称，由商户传入
+                    "timeStamp": strjs.timeStamp,         //时间戳，自1970年以来的秒数
+                    "nonceStr": strjs.nonceStr, //随机串
+                    "package": strjs.package,
+                    "signType": strjs.signType,         //微信签名方式：
+                    "paySign": strjs.paySign //微信签名
+                },
+                function (res) {
+                    if (res.err_msg == "get_brand_wcpay_request:ok") {
+                        callbackvarpay();
+                        setTimeout(function () {
+                            window.location.href = "{:url('/mobile/index/user_center')}";
+                        }, 1000);
+                    } else if (res.err_msg == 'get_brand_wcpay_request:cancel') {
+                        mui.alert('取消支付', '提示');
+                    } else if (res.err_msg == 'get_brand_wcpay_request:fail') {
+                        mui.alert('支付失败', '提示');
+                    }
+                }
+            );
+        }
+
+        //回调查询验证订单
+        function callbackvarpay() {
+            $.ajax({
+                url: "{:url('index/Notify/query_weixin_cash')}",
+                type: "get",
+                data: {
+                    pay_sn: pay_sn
+                },
+                dataType: "json",
+                success: function (data) {
+
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                },
+                complete: function (XMLHttpRequest, textStatus) {
+                    // 调用本次AJAX请求时传递的options参数
+                }
+            });
+        }
+
+        function callpay(strjs) {
+            if (typeof WeixinJSBridge == "undefined") {
+                if (document.addEventListener) {
+                    document.addEventListener('WeixinJSBridgeReady', jsApiCall(strjs), false);
+                } else if (document.attachEvent) {
+                    document.attachEvent('WeixinJSBridgeReady', jsApiCall(strjs));
+                    document.attachEvent('onWeixinJSBridgeReady', jsApiCall(strjs));
+                }
+            } else {
+                jsApiCall(strjs);
+            }
+        }
+
+        if (parseInt(cash_data_code) == 1300) {
+            setInterval(function () {
+                updateTime();
+            }, 1000);
+        }
+    });
+
+    function updateTime() {
+        var day = parseInt($(".js-day").text());
+        var hour = parseInt($(".js-hour").text());
+        var minute = parseInt($(".js-minute").text());
+        var second = parseInt($(".js-second").text());
+        if (second > 0) {
+            second--;
+        } else {
+            if (minute > 0) {
+                second = 60;
+                minute--;
+            } else {
+                if (hour > 0) {
+                    minute = 60;
+                    hour--;
+                } else {
+                    if (day > 0) {
+                        hour = 24;
+                        day--;
+                    } else {
+                        hour = 0;
+                    }
+                }
+            }
+        }
+        $(".js-day").text(day);
+        $(".js-hour").text(hour);
+        $(".js-minute").text(minute);
+        $(".js-second").text(second);
+    }
+</script>
+</body>
+{/block}

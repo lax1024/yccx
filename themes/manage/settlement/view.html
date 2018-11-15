@@ -1,0 +1,162 @@
+{extend name="base" /}
+{block name="body"}
+<div class="layui-body">
+    <!--tab标签-->
+    <div class="layui-tab layui-tab-brief">
+        <ul class="layui-tab-title">
+            <li class="layui-this"><a href="{:url('jybz/Orders/index')}">结算管理</a></li>
+        </ul>
+        <div class="layui-tab-content">
+            <div class="layui-form">
+                <fieldset class="layui-elem-field layui-field-title">
+                    <legend>订单信息</legend>
+                </fieldset>
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">订单号:</label>
+                        <div class="layui-input-inline">
+                            <div class="layui-form-mid ">{$order['order_sn']}</div>
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">支付单号:</label>
+                        <div class="layui-input-inline" style="width: 230px">
+                            <div class="layui-form-mid ">{$order['pay_sn']}</div>
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">店铺（id）:</label>
+                        <div class="layui-input-inline">
+                            <div class="layui-form-mid ">{$order['store_name']}({$order['store_id']})</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">下单时间:</label>
+                        <div class="layui-input-inline">
+                            <div class="layui-form-mid ">{$order['add_time']}</div>
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">付款时间:</label>
+                        <div class="layui-input-inline" style="width: 230px">
+                            <div class="layui-form-mid ">{$order['payment_time']}</div>
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">付款方式:</label>
+                        <div class="layui-input-inline">
+                            <div class="layui-form-mid">{$order['payment_code_str']}</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">商品总金额:</label>
+                        <div class="layui-input-inline">
+                            <div class="layui-form-mid">{$order['goods_amount']}</div>
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">订单总价格:</label>
+                        <div class="layui-input-inline" style="width: 230px">
+                            <div class="layui-form-mid">{$order['order_amount']}</div>
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label"></label>
+                        <div class="layui-input-inline">
+                            <div class="layui-form-mid"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">使用余额:</label>
+                        <div class="layui-input-inline">
+                            <div class="layui-form-mid">{$order['pd_amount']}</div>
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">三方支付:</label>
+                        <div class="layui-input-inline">
+                            <div class="layui-form-mid">{$order['order_amount']-$order['pd_amount']}</div>
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">订单状态:</label>
+                        <div class="layui-input-inline">
+                            <div class="layui-form-mid">{$order['order_state_str']}</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">分销用户id:</label>
+                        <div class="layui-input-inline">
+                            <div class="layui-form-mid">{$order['channel_uid']}</div>
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">分销用户名称:</label>
+                        <div class="layui-input-inline">
+                            <div class="layui-form-mid">{$order['channel_username']}</div>
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">分销用户昵称:</label>
+                        <div class="layui-input-inline">
+                            <div class="layui-form-mid">{$order['channel_wx_name']}</div>
+                        </div>
+                    </div>
+                </div>
+                <fieldset class="layui-elem-field layui-field-title">
+                    <legend>买家信息</legend>
+                </fieldset>
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">用户id:</label>
+                        <div class="layui-input-inline">
+                            <label class="layui-form-label">{$order['buyer_id']}</label>
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">用户名称:</label>
+                        <div class="layui-input-inline" style="width: 230px">
+                            <div class="layui-form-mid">{$order['buyer_name']}</div>
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">电话号码:</label>
+                        <div class="layui-input-inline">
+                            <div class="layui-form-mid">{$order['buyer_phone']}</div>
+                        </div>
+                    </div>
+                </div>
+                <fieldset class="layui-elem-field layui-field-title">
+                    <legend>课程信息</legend>
+                </fieldset>
+                <div class="layui-collapse" lay-accordion="">
+                    <div class="layui-colla-item">
+                        <h2 class="layui-colla-title">{$order['goods_info']['title']}</h2>
+                        <div class="layui-colla-content" style="height: 100px">
+                            <div style="float:left;width: 200px;">
+                                <img src="__PUBLIC__{$order['goods_info']['img']}" style="width: 100%">
+                            </div>
+                            <div style="float:left;margin-left: 15px">
+                                <p>课程名称:{$order['goods_info']['title']}</p>
+                                <hr/>
+                                <p>课程名称章节</p>
+                                {foreach name="$order.order_goods" item="vo"}
+                                <p>{$vo.name}</p>
+                                {/foreach}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}

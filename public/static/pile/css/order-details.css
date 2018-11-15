@@ -1,0 +1,185 @@
+.body-details-top {
+    height: 120px;
+    width: 100%;
+    position: absolute;
+    top: 45px;
+    background-image: url('http://img.youchedongli.cn/public/static/mobile/images/bag_details_top.png?rand=20180622');
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+}
+
+/** 致谢框-->开始 */
+.body-details-thank {
+    height: 30px;
+    width: 92%;
+    margin-left: 4%;
+    background: #ffffff;
+    position: absolute;
+    top: 155px;
+    z-index: 50;
+    border-radius: 10px;
+    border-bottom: rgb(197, 197, 197) solid 1px;
+}
+
+.body-details-thank div {
+    height: 20px;
+    width: 40px;
+    margin-left: 15px;
+    margin-right: 5px;
+    margin-top: 5px;
+    float: left;
+}
+
+.body-details-thank p {
+    font-size: 14px;
+    line-height: 30px;
+    float: left;
+    color: black;
+}
+
+/** 致谢框-->结束 */
+
+/** 充电门店的基本信息 ---->开始 */
+.body-details-content {
+    height: 210px;
+    width: 100%;
+    background: #ffffff;
+    position: absolute;
+    top: 170px;
+    padding-top: 25px;
+}
+
+.popup-map-marker {
+    height: auto;
+    width: 92%;
+    margin-left: 4%;
+    padding-right: 5px;
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 5px;
+    border-bottom: rgb(202, 202, 202) solid 2px;
+    border-right: rgb(202, 202, 202) solid 1px;
+}
+
+.content-popup-title {
+    height: 50px;
+    width: 100%;
+}
+
+.content-popup-title-left {
+    height: 100%;
+    width: 100%;
+    float: left;
+}
+
+.title-left-name {
+    width: 100%;
+    padding-left: 10px;
+}
+
+.title-left-address {
+    width: 100%;
+    padding-left: 10px;
+    font-size: 12px;
+}
+
+.content-popup-title-right {
+    height: 100%;
+    width: 30%;
+    float: left;
+}
+
+.content-popup-title-right img {
+    height: 98%;
+    width: 98%;
+    margin-left: 1%;
+    margin-top: 1%;
+}
+
+.content-popup-body {
+    height: 90px;
+    width: 100%;
+}
+
+.body-left {
+    width: 70%;
+    height: 100%;
+    float: left;
+}
+
+.body-left div {
+    padding-left: 5px;
+    margin-top: 1px;
+    font-size: 14px;
+}
+
+.body-left span {
+    border: rgb(0, 255, 0) solid 1px;
+    padding: 1px 3px;
+    border-radius: 2px;
+}
+
+.body-right {
+    width: 30%;
+    height: 100%;
+    float: left;
+}
+
+.body-right-top {
+    height: 70px;
+    width: 100%;
+    text-align: center;
+    line-height: 50px;
+}
+
+.body-right-top img {
+    height: 100%;
+    width: 100%;
+}
+
+.body-right-bottom {
+    height: 40px;
+    width: 100%;
+    font-size: 14px;
+    text-align: center;
+    line-height: 40px;
+}
+
+.content-popup-bottom {
+    height: 30px;
+    width: 100%;
+}
+
+.content-popup-bottom div {
+    padding-left: 5px;
+    margin-top: 15px;
+}
+
+.content-popup-bottom span {
+    padding: 3px 5px;
+    color: red;
+    font-size: 14px;
+}
+
+/** 充电门店的基本信息--->结束 */
+
+/** 订单基本信息--->开始 */
+.body-details-items {
+    height: 200px;
+    width: 100%;
+    background: #ffffff;
+    position: absolute;
+    top: 390px;
+    margin-bottom: 80px;
+}
+
+.body-details-title {
+    height: auto;
+    width: 90%;
+    margin-left: 5%;
+    margin-top: 10px;
+}
+
+.mui-table-view-cell:after{
+    background-color: rgba(0,0,0,0);
+}
+/** 订单基本信息--->结束 */

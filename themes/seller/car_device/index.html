@@ -1,0 +1,83 @@
+{extend name="base" /}
+{block name="body"}
+<div class="layui-body">
+    <!--tab标签-->
+    <div class="layui-tab layui-tab-brief">
+        <ul class="layui-tab-title">
+            <li class="layui-this">车机设备管理</li>
+            <!--<li class=""><a href="{:url('selCarDeviceToolvice/add')}">添加车机设备</a></li>-->
+        </ul>
+        <div class="layui-tab-content">
+            <div class="layui-tab-item layui-show">
+                <form class="layui-form layui-form-pane" action="{:url('seller/CarDevice/index')}" method="get">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">关键词</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="keyword" value="{$keyword}" placeholder="请输入关键词"
+                                   class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <button class="layui-btn">搜索</button>
+                    </div>
+                </form>
+                <div style="display: none">
+                    <div class="layui-inline" id="store_site_list">
+                        <div class="layui-input-block" style="margin-left: 0px">
+                            <select id="terminal_car_type" class="layui-input">
+                                {foreach name="terminal_car_type" item="vo" key="kv"}
+                                <option value="{$kv}" data-value="{$vo.value}">{$vo.name}</option>
+                                {/foreach}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <table class="layui-table">
+                    <thead>
+                    <tr>
+                        <th style="width: 30px;">ID</th>
+                        <th style="width: 50px;">设备名称</th>
+                        <th>设备编号</th>
+                        <th >设备类型</th>
+                        <th >车型</th>
+                        <th>SIM_ICCDI</th>
+                        <th>OBD版本</th>
+                        <th>归属店铺</th>
+                        <th>设备状态</th>
+                        <th>终端状态</th>
+                        <th>添加时间</th>
+                        <th>更新时间</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {foreach name="cardevice_list" item="vo"}
+                    <tr>
+                        <td>{$vo.id}</td>
+                        <td>{$vo.name}</td>
+                        <td>{$vo.deviceId}</td>
+                        <td>{$vo.carName}</td>
+                        <td>{$device_type[$vo.deviceType]}</td>
+                        <td>{$vo.simIccid}</td>
+                        <td>{$vo.terminalVersions}</td>
+                        <td>{$vo.storeKeyName}({$vo.storeKeyId})</td>
+                        <td>{$device_status[$vo.deviceStatus]}</td>
+                        <td>
+                            {if condition="$vo['deviceOnline']!=1"}
+                            离线
+                            {else/}
+                            在线
+                            {/if}
+                        </td>
+                        <td>{$vo.createTime_str}</td>
+                        <td>{$vo.updateTime_str}</td>
+                    </tr>
+                    {/foreach}
+                    </tbody>
+                </table>
+                <!--分页-->
+            </div>
+        </div>
+    </div>
+</div>
+{/block}

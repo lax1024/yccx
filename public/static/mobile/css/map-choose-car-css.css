@@ -1,0 +1,134 @@
+body, html {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    font-family: "微软雅黑";
+}
+
+#l-map {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    left: 0;
+}
+
+#r-result {
+    width: 100%;
+    display: none
+}
+
+#main {
+    display: none;
+}
+
+#main span {
+    width: 50%;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+}
+
+#r-result h1 {
+    background: #A2CD5A;
+    display: none;
+}
+
+#r-result a {
+    display: none;
+}
+
+#r-result .suggest-plan-des {
+    font-size: 18px;
+}
+
+#content {
+    overflow: hidden;
+    height: 20%;
+}
+
+#car {
+    float: left;
+    background: #6495ED;
+}
+
+#walking {
+    float: right;
+    background: #ffffff;
+}
+
+.js_marker_car_close {
+    position: absolute;
+    right: 10px;
+    z-index: 9999;
+    font-size: 36px;
+    margin-top: 10px;
+}
+
+.js_marker_car_index {
+    width: 100%;
+    position: fixed;
+    bottom: 56px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.car_index_item {
+    height: 8px;
+    width: 8px;
+    background-color: rgb(175,180,186);
+    border-radius: 4px;
+    margin-left: 4px;
+    margin-right: 4px;
+}
+
+.car_index_item_checked {
+    background: #ffdb30;
+}
+
+.gradient_ele_flag {
+    background: -webkit-linear-gradient(left, red, #f3e856); /* Safari 5.1 - 6.0 */
+    background: -o-linear-gradient(right, red, #f3e856); /* Opera 11.1 - 12.0 */
+    background: -moz-linear-gradient(right, red, #f3e856); /* Firefox 3.6 - 15 */
+    background: linear-gradient(to right, red, #f3e856); /* 标准的语法（必须放在最后） */
+}
+
+.use_car_btn {
+    width: 47%;
+    height: 40px;
+    float: left;
+    background: #f3e856;
+    display: flex;
+    vertical-align: center;
+    align-items: center;
+    border-radius: 20px;
+}
+
+.marker_store_label{
+    height: 30px;
+    max-width: 300px;
+    text-align: center;
+    line-height: 20px;
+    background-image: url("http://img.youchedongli.cn/public/static/mobile/images/pop_car_distance.png");
+    background-repeat: no-repeat;
+    color: #fff;
+    background-size:100% 100%;
+    -moz-background-size:100% 100%;
+    padding: 0 5px 0 5px;
+    background-color: rgba(255,255,255,0.01);
+
+}
+
+.loadbar{
+    width: auto;
+}
+
+.loadbar div{
+    float: left;
+    position: relative;
+    width: 6px;
+    height: 15px;
+    margin-left: 2px;
+    border: 1px solid rgba(0,0,0,0.3);
+}

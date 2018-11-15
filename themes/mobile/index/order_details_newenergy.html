@@ -1,0 +1,126 @@
+{extend name="base" /}
+{block name="css"}
+<link rel="stylesheet" type="text/css" href="__STATIC__/mobile/css/order-pay-css1.css?rand={$css_rand}">
+<link rel="stylesheet" type="text/css" href="__STATIC__/mobile/css/order-pay-css2.css?rand={$css_rand}">
+<link rel="stylesheet" href="__STATIC__/mui/css/mui.min.css?rand={$css_rand}">
+<link rel="stylesheet" href="__STATIC__/mui/css/mui-icons-extra.css?rand={$css_rand}">
+{/block}
+{block name="body"}
+<style>
+    .mui-bar {
+        background-color: #f3e856;
+    }
+</style>
+<body class="keyboard-body">
+<header class="mui-bar mui-bar-nav">
+    <span id="goback" class="mui-icon mui-icon-contact mui-icon-left-nav"></span>
+    <h1 class="mui-title">订单详情</h1>
+</header>
+<!-- start qn_main -->
+<div class="qn_main">
+    <!-- 告警框 -->
+    <div id="toastdiv"></div>
+    <section class="qmp-pay" style="margin-top: 50px">
+        <section id="cashier_body" class="white_bg">
+
+            <!--<div style="width: 100%;height: 50px;line-height: 50px;padding-left: 10px">-->
+            <!--<span style="font-size: 22px">订单详情</span>-->
+            <!--</div>-->
+
+            <div style="width: 100%;height: 40px;border-bottom: rgb(196,195,200) solid 3px">
+                <div style="width: 50%;height: 100%;float: left;line-height: 40px;text-align: center">
+                    <span>时长：</span><span id="js_order_time"></span>
+                </div>
+                <div style="width: 40%;height: 100%;float: left;line-height: 40px;text-align: center">
+                    <span>里程：</span><span id="js_order_km"></span>
+                </div>
+            </div>
+
+            <div style="width: 100%;height: auto;padding-top: 10px;padding-left: 10px">
+                <div style="max-height:60px;width: 100%">
+                    <span>车牌号：</span><span id="js_order_licence_plate" style="color: #00B83F;"></span>
+                </div>
+                <div style="max-height:60px;width: 100%">
+                    <span>取车点：</span><span id="js_order_take_store"></span><span style="font-size: 14px;color: rgba(0,0,0,0.5)">&nbsp;&nbsp;(负责人：</span><span id="js_order_take_store_tel" style="font-size: 14px;color: rgba(0,0,0,0.5)">0000000)</span>
+                </div>
+                <div style="max-height:60px;width: 100%">
+                    <span>还车点：</span><span id="js_order_return_store"></span><span style="font-size: 14px;color: rgba(0,0,0,0.5)">&nbsp;&nbsp;(负责人：</span><span id="js_order_return_store_tel" style="font-size: 14px;color: rgba(0,0,0,0.5)">0000000)</span>
+                </div>
+                <div style="height: 30px;width: 100%">
+                    <span>取车时间：</span><span id="js_order_take_time"></span>
+                </div>
+                <div style="height: 30px;width: 100%">
+                    <span>还车时间：</span><span id="js_order_return_time"></span>
+                </div>
+                <div style="height: 30px;width: 100%">
+                    <span>中途充费：</span><span id="js_order_cost_midway"></span>
+                </div>
+                <div style="height: 30px;width: 100%">
+                    <span>优惠卷：</span><span id="js_order_coupon_type">满减卷</span>
+                </div>
+                <div style="height: 30px;width: 100%">
+                    <span>优惠金额：</span><span id="js_order_coupon_cost" style="color: #f00;"></span>
+                </div>
+                <div style="height: 30px;width: 100%;text-align: right;font-size: 24px;margin-top: 15px;padding-right: 15px">
+                    <span>实际付款：</span><span class="js-order-amount" style="color: #f00;"></span>
+                </div>
+            </div>
+        </section>
+        <!-- 支付平台使用余额 -->
+        <!--<div class="m_pay_btn" id="js-pay-btn">-->
+            <!--<button type="button">立即支付</button>-->
+        <!--</div>-->
+    </section>
+</div>
+{include file="login" /}
+{include file="loading" /}
+<script type="text/javascript" src="__STATIC__/mobile/js/jquery.min.js"></script>
+<script type="text/javascript" src="__STATIC__/mobile/js/public-js.js?rand={$js_rand}"></script>
+<script type="text/javascript" src="__STATIC__/mobile/js/order-pay-js.js?rand={$js_rand}"></script>
+<script>
+    var sn = '';
+    var goods_type = '';
+    $(function () {
+        sn = getValueByParameter(location.href, 'sn');
+        goods_type = getValueByParameter(location.href, 'goods_type');
+        $.ajax({
+            url: website + '/api/Order/get_ordersn_info.html',
+            type: "post",
+            data: {
+                order_sn: sn,
+                myrand: new Date().getTime()
+            },
+            dataType: "json",
+            success: function (data) {
+                if (parseInt(data.code) == 0) {
+                    var order = data.data;
+                    $(".js-order-amount").text('¥' + (order.order_amount).toFixed(2));
+                    $("#js_order_time").text(order.interval_time_str.hour + "时" + order.interval_time_str.minute + "分");
+                    $("#js_order_km").text(order.all_mileage + "公里");
+                    $("#js_order_take_store").text(order.acquire_store_name);
+                    $("#js_order_return_store").text(order.return_store_name);
+                    $("#js_order_take_store_tel").text(order.acquire_store_tel + ")");
+                    $("#js_order_return_store_tel").text(order.return_store_tel + ")");
+                    $("#js_order_take_time").text(order.acquire_time_str);
+                    $("#js_order_return_time").text(order.return_time_str);
+                    $("#js_order_cost_midway").text(order.pd_amount + "元");
+                    $("#js_order_coupon_type").text(order.coupon_class);
+                    $("#js_order_coupon_cost").text(parseFloat(order.coupon_type).toFixed(2) + "元");
+                    $("#js_order_licence_plate").text(order.order_goods.licence_plate);
+                } else {
+                    Toast(data.info, 4000);
+                    $("#js-pay-btn").hide();
+                }
+                loadend = true;
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                Toast(textStatus, 2000);
+            },
+            complete: function (XMLHttpRequest, textStatus) {
+                // 调用本次AJAX请求时传递的options参数
+            }
+        });
+    });
+</script>
+</body>
+{/block}

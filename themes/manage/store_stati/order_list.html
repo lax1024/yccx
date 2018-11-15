@@ -1,0 +1,73 @@
+{extend name="base" /}
+{block name="body"}
+<div class="layui-body">
+    <!--tab标签-->
+    <div class="layui-tab layui-tab-brief">
+        <ul class="layui-tab-title">
+            <li class=""><a href="{:url('manage/StoreStati/index')}">还车情况</a></li>
+            <li class=""><a href="{:url('manage/StoreStati/creturn')}">还车情况</a></li>
+            <li class=""><a href="{:url('manage/StoreStati/stand')}">空置情况</a></li>
+            <li class="layui-this">订单收益</li>
+        </ul>
+        <div class="layui-tab-content">
+            <div class="layui-tab-item layui-show">
+                <div id="main" style="width: 100%;height: 480px">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}
+{block name="js"}
+<script src="__JS__/echarts/echarts.min.js"></script>
+{/block}
+{block name="script"}
+<script>
+    setInterval(function () {
+        $("#main").css("height", $(document.body).height());
+    }, 2000);
+    var myChart = echarts.init(document.getElementById('main'));
+    option = {
+        color: ['#3398DB'],
+        tooltip : {
+            trigger: 'axis',
+            axisPointer : {            // 坐标轴指示器，坐标轴触发有效
+                type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+            }
+        },
+        grid: {
+            left: '3%',
+            right: '4%',
+            bottom: '3%',
+            containLabel: true
+        },
+        xAxis : [
+            {
+                type : 'category',
+                data : {$order_day},
+                axisTick: {
+                    alignWithLabel: true
+                }
+            }
+        ],
+        yAxis : [
+            {
+                type : 'value',
+                axisLabel: {
+                    formatter: '{value} 元'
+                }
+            }
+        ],
+        series : [
+            {
+                name:'净收益',
+                type:'bar',
+                barWidth: '60%',
+                data:{$order_data}
+            }
+        ]
+    };
+    // 使用刚指定的配置项和数据显示图表。
+    myChart.setOption(option);
+</script>
+{/block}

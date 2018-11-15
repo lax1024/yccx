@@ -1,0 +1,51 @@
+{extend name="base" /}
+{block name="body"}
+<div class="layui-body">
+    <!--tab标签-->
+    <div class="layui-tab layui-tab-brief">
+        <ul class="layui-tab-title">
+            <li class="layui-this">渠道管理</li>
+            <li class=""><a href="{:url('manage/CustomerChannel/add')}">添加渠道</a></li>
+        </ul>
+        <div class="layui-tab-content">
+            <div class="layui-tab-item layui-show">
+                <table class="layui-table">
+                    <thead>
+                    <tr>
+                        <th style="width: 30px;">ID</th>
+                        <th>渠道名称</th>
+                        <th>用户id</th>
+                        <th>用户昵称</th>
+                        <th>返利条件</th>
+                        <th>状态</th>
+                        <th>添加时间</th>
+                        <th>更新时间</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {foreach name="customer_channel_list" item="vo"}
+                    <tr>
+                        <td>{$vo.id}</td>
+                        <td>{$vo.name}</td>
+                        <td>{$vo.customer_id}</td>
+                        <td>{$vo.wechar_nickname}</td>
+                        <td>{$vo.condition_str}</td>
+                        <td>{$vo.status_str}</td>
+                        <td>{$vo.add_time}</td>
+                        <td>{$vo.update_time}</td>
+                        <td>
+                            <a href="{:url('manage/CustomerChannel/edit',['id'=>$vo['id']])}" class="layui-btn layui-btn-normal layui-btn-mini">编辑</a>
+                            <a href="{:url('manage/CustomerChannel/delete',['id'=>$vo['id']])}" class="layui-btn layui-btn-danger layui-btn-mini ajax-delete">删除</a>
+                        </td>
+                    </tr>
+                    {/foreach}
+                    </tbody>
+                </table>
+                <!--分页-->
+                {$customer_channel_list->render()}
+            </div>
+        </div>
+    </div>
+</div>
+{/block}

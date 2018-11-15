@@ -1,0 +1,105 @@
+{extend name="base" /}
+{block name="body"}
+<div class="layui-body">
+    <!--tab标签-->
+    <div class="layui-tab layui-tab-brief">
+        <ul class="layui-tab-title">
+            <li class=""><a href="{:url('seller/Charging/index')}">充电桩设备管理</a></li>
+            <li class="layui-this">添加充电桩设备</li>
+        </ul>
+        <div class="layui-tab-content">
+            <div class="layui-tab-item layui-show">
+                <form class="layui-form form-container" action="{:url('seller/Charging/save')}" method="post">
+                    <div id="p2"></div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">名称</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="name" value="" required
+                                   lay-verify="required" placeholder="请输入充电桩设备名称" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">设备编号</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="device_number" value="" required
+                                   lay-verify="required" placeholder="请输入设备编号" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">充电抢编号</label>
+                        <div class="layui-input-inline">
+                            <select name="device_gun">
+                                <option value="0">单个充电枪</option>
+                                <option value="1">1号充电枪</option>
+                                <option value="2">2号充电枪</option>
+                                <option value="3">3号充电枪</option>
+                                <option value="4">4号充电枪</option>
+                                <option value="5">5号充电枪</option>
+                                <option value="6">6号充电枪</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">充电枪功率</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="power" placeholder="请输充电枪功率" class="layui-input">
+                        </div>
+                        <div class="layui-form-mid layui-word-aux">KW</div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">每小时单价</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="hour_price" placeholder="请输每小时单价" class="layui-input">
+                        </div>
+                        <div class="layui-form-mid layui-word-aux">元</div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">每度电单价</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="quantity_price" value="" required
+                                   lay-verify="required" placeholder="请输每度电单价" class="layui-input">
+                        </div>
+                        <div class="layui-form-mid layui-word-aux">元</div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">归属店铺</label>
+                        <div class="layui-input-inline">
+                            <select name="store_id" lay-verify="required">
+                                {foreach name="store_list" item="vo"}
+                                <option value="{$vo.id}">{neq name="vo.level" value="1"}|{php}for($i=1;$i<$vo['level'];$i++){echo '--';}{/php}{/neq}{$vo.store_name}</option>
+                                {/foreach}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">充电桩类型</label>
+                        <div class="layui-input-inline">
+                            <select name="charging_type" lay-verify="required">
+                                {foreach name="charging_type" item="vo" key="ke"}
+                                <option value="{$ke}">{$vo}</option>
+                                {/foreach}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">充电桩状态</label>
+                        <div class="layui-input-inline">
+                            <select name="charging_status" lay-verify="required">
+                                {foreach name="charging_status" item="vo" key="ke"}
+                                <option value="{$ke}">{$vo}</option>
+                                {/foreach}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <div class="layui-input-block">
+                            <button class="layui-btn" lay-submit lay-filter="*">保存</button>
+                            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}

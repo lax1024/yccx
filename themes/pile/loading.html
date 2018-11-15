@@ -1,0 +1,57 @@
+<link rel="stylesheet" href="__STATIC__/pile/css/index-loading.css?rand={$css_rand}" type="text/css">
+<!-- loading部分 -->
+<div id="page-loading" style="display: none;">
+    <div class="page-loading">
+        <div class="page-loading-mask"></div>
+        <div class="page-loading-bg">
+            <div class="bg-container">
+                <div class="bg-luotuo"></div>
+                <!--<i class="icon-luotuo icon-luotuo-01" style="display: block;"></i>-->
+                <!--<i class="icon-luotuo icon-luotuo-02" style="display: none;"></i>-->
+                <!--<i class="icon-luotuo icon-luotuo-03" style="display: none;"></i>-->
+                <!--<i class="icon-luotuo icon-luotuo-04" style="display: none;"></i>-->
+                <!--<i class="icon-luotuo icon-luotuo-05" style="display: none;"></i>-->
+            </div>
+            <div class="page-loading-text" id="js-page-loading-text">都会加大对手机号的机会打款时间</div>
+        </div>
+    </div>
+</div>
+<div id="j_loading_bar" class="loading-bar" style="display: none;">
+    <span class="circlePoint"></span>
+</div>
+<script>
+    var page_overtime_second = 0;
+    var page_overtime;
+    /**
+     * 打开加载框
+     * @param content
+     * @param overtime
+     */
+    $("#page-loading").on('click', function () {
+        return false;
+    });
+    function loadMessageBox(content, overtime, fun) {
+        $("#js-page-loading-text").text(content);
+        $("#page-loading").show();
+        page_overtime = setInterval(function () {
+            if (page_overtime_second > overtime) {
+                $("#page-loading").hide();
+                window.clearInterval(page_overtime);
+                fun();
+            }
+            page_overtime_second++;
+        }, 1000);
+        fun = function (url, title) {
+
+        };
+    }
+    /**
+     * 关闭加载框
+     * @param content
+     * @param overtime
+     */
+    function closeLoadMessageBox() {
+        $("#page-loading").hide();
+        window.clearInterval(page_overtime);
+    }
+</script>

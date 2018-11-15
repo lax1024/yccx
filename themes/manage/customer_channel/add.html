@@ -1,0 +1,63 @@
+{extend name="base" /}
+{block name="body"}
+<div class="layui-body">
+    <!--tab标签-->
+    <div class="layui-tab layui-tab-brief">
+        <ul class="layui-tab-title">
+            <li class=""><a href="{:url('manage/CustomerChannel/index')}">渠道管理</a></li>
+            <li class="layui-this">添加渠道</li>
+        </ul>
+        <div class="layui-tab-content">
+            <div class="layui-tab-item layui-show">
+                <form class="layui-form form-container" action="{:url('manage/CustomerChannel/save')}" method="post">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">渠道名称</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="name" value="" required lay-verify="required" placeholder="请输入渠道名称"
+                                   class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">地址</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="address" value="" required lay-verify="required" placeholder="用|隔开"
+                                   class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">渠道用户id</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="customer_id" value="" required lay-verify="required"
+                                   placeholder="请输入渠道用户id" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">渠道条件</label>
+                        <div class="layui-input-inline">
+                            <select name="condition" lay-verify="required">
+                                {foreach name="condition" item="vo" key="ke"}
+                                <option value="{$ke}">{$vo.name}</option>
+                                {/foreach}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">状态</label>
+                        <div class="layui-input-block">
+                            <input type="radio" name="status" value="0" title="未启用">
+                            <input type="radio" name="status" value="1" title="正常" checked="checked">
+                            <input type="radio" name="status" value="2" title="锁定">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <div class="layui-input-block">
+                            <button class="layui-btn" lay-submit lay-filter="*">保存</button>
+                            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}

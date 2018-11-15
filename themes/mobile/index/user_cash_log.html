@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
+    <title>押金日志</title>
+    <script>
+        var website = "http://www.youchedongli.cn";
+    </script>
+    <link rel="stylesheet" href="__STATIC__/mui/css/mui.min.css?rand={$css_rand}">
+    <link rel="stylesheet" href="__STATIC__/mui/css/mui-icons-extra.css?rand={$css_rand}">
+    <link rel="stylesheet" href="__STATIC__/mobile/css/user-center-css.css?rand={$css_rand}">
+    <style>
+        ul {
+            font-size: 14px;
+            color: #8f8f94;
+        }
+
+        .mui-bar {
+            background-color: #f3e856;
+        }
+
+        .mui-icon-right-nav {
+            float: right;
+        }
+    </style>
+</head>
+<body>
+<header class="mui-bar mui-bar-nav">
+    <span id="goto_back" class="mui-icon mui-icon-contact mui-icon-left-nav"></span>
+    <h1 class="mui-title">押金日志</h1>
+</header>
+<div class="mui-content">
+    <ul class="mui-table-view">
+        {foreach name="customer_cash_log_data" item="vo"}
+        {if condition="$vo['type']=='add'"}
+        <li class="mui-table-view-cell">
+            <div>
+                <span style="font-size: 0.8rem">缴纳押金:{$vo['cash']}(元)</span>
+                <span style="font-size: 0.8rem;">&nbsp;&nbsp;时间:{$vo['add_time']}</span>
+            </div>
+            <div>
+                <span style="font-size: 0.8rem">充值号:{$vo['pay_sn']}</span>
+            </div>
+            <span class="mui-badge mui-badge-success">缴纳</span>
+        </li>
+        {else/}
+        <li class="mui-table-view-cell">
+            <div>
+                <span style="font-size: 0.8rem">退还押金:{$vo['cash']}(元)</span>
+                <span style="font-size: 0.8rem;">&nbsp;&nbsp;时间:{$vo['add_time']}</span>
+            </div>
+            <div>
+                <span style="font-size: 0.8rem">支付号:{$vo['pay_sn']}</span>
+            </div>
+            <span class="mui-badge mui-badge-danger">退还</span>
+        </li>
+        {/if}
+        {/foreach}
+    </ul>
+</div>
+<script src="__STATIC__/mui/js/mui.min.js?rand={$css_rand}"></script>
+<script type="text/javascript" src="__STATIC__/mobile/js/jquery.min.js?rand={$css_rand}"></script>
+<script type="text/javascript" src="__STATIC__/mobile/js/public-js.js?rand={$js_rand}"></script>
+<script type="text/javascript" src="__STATIC__/mobile/js/user-cash-log-js.js?rand={$js_rand}"></script>
+</body>
+</html>

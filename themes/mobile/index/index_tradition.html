@@ -1,0 +1,456 @@
+{extend name="base" /}
+{block name="css"}
+<link rel="stylesheet" href="__STATIC__/mui/css/mui.min.css?rand={$css_rand}" type="text/css">
+<link rel="stylesheet" href="__STATIC__/mui/css/mui-icons-extra.css?rand={$css_rand}" type="text/css">
+<link rel="stylesheet" href="__STATIC__/mui/css/mui.picker.all.css?rand={$css_rand}" type="text/css">
+<link rel="stylesheet" href="__STATIC__/mui/css/mui.poppicker.css?rand={$css_rand}" type="text/css">
+<link rel="stylesheet" href="__STATIC__/mobile/css/index-tradition-css.css?rand={$css_rand}" type="text/css">
+{/block}
+{block name="body"}
+<style>
+    .mui-checkbox.mui-left label, .mui-radio.mui-left label {
+        padding-left: 10px;
+        padding-right: 20px;
+    }
+
+    .mui-checkbox input[type=checkbox]:before, .mui-radio input[type=radio]:before {
+        font-size: 22px;
+        padding-left: 10px;
+    }
+
+    .mui-input-row label {
+        padding: 0;
+    }
+
+    html {
+        width: 100%;
+    }
+
+    .mui-active {
+        overflow: scroll;
+    }
+
+    #segmentedControls > .mui-active {
+        background: url("../../.././public/static/mobile/images/a_bg.png?rand=2018072001") no-repeat;
+        background-size: 100%;
+    }
+
+    .mui-table-view-cell {
+        padding: 10px 10px 0 10px;
+    }
+
+    .user_protocol_no {
+        border-radius: 100%;
+        border: 1px solid #EEE;
+    }
+
+    .user_protocol_yes {
+        color: #0AAB6F;
+        border-radius: 100%;
+        border: 1px solid #0AAB6F;
+    }
+
+    .store_list_li_checked {
+        background: #eeeeee;
+        border-radius: 2px;
+    }
+
+    .js_store_list:after {
+        background: none;
+    }
+</style>
+<body style="width: 100%;overflow: scroll;background-color: rgb(234,234,234)">
+<div class="headStr">
+    <div class="mui-slider">
+        <div class="mui-slider-group">
+            <div class="mui-slider-item">
+                <img src="http://img.youchedongli.cn/public/static/mobile/images/app_home_ad01_640_273.png"/>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div style="height: auto;width: 98%;margin-left:1%;position: relative;">
+    <div class="mui-content" style="background-color: #ffffff;height: 100%">
+        <div class="mui-row" style="height: 100%;margin-bottom: 5px">
+            <div class="mui-col-sm-5 mui-col-xs-5" style="text-align: center;">
+                <div class="js_take_time" style="padding-top: 5px;color: rgba(0,0,0,0.5);font-size: 14px">取车时间</div>
+                <div id="js_take_time" class="js_take_time" data-time="2018-07-21"
+                     style="padding-top: 5px;font-size: 22px"></div>
+                <div id="js_take_week" style="padding-top: 5px;color: rgba(0,0,0,0.5);font-size: 14px;">今天 02:15</div>
+                <div class="mui-input-row mui-radio mui-left"
+                     style="padding-top: 5px;padding-left: 25px;color: rgba(0,0,0,0.5);font-size: 14px">
+                    <label>送车上门</label>
+                    <input name="take_type" value="1" type="radio">
+                </div>
+            </div>
+            <div class="mui-col-sm-2 mui-col-xs-2" style="text-align: center;height: 100%;margin-top: 10%">
+                <div id="js_use_car_time" data-days="1"
+                     style="width: 100%;border: #00B83F solid 1px;padding-top: 2px;border-radius: 12px;">1天
+                </div>
+            </div>
+            <div class="mui-col-sm-5 mui-col-xs-5" style="text-align: center;">
+                <div class="js_return_time" style="padding-top: 5px;color: rgba(0,0,0,0.5);font-size: 14px">还车时间</div>
+                <div id="js_return_time" class="js_return_time" data-time="2018-07-25"
+                     style="padding-top: 5px;font-size: 22px"></div>
+                <div id="js_return_week" style="padding-top: 5px;color: rgba(0,0,0,0.5);font-size: 14px;">周四 12:30</div>
+                <div class="mui-input-row mui-radio mui-left"
+                     style="padding-top: 5px;padding-left: 25px;color: rgba(0,0,0,0.5);font-size: 14px">
+                    <label>到店自取</label>
+                    <input name="take_type" type="radio" value="0" checked="checked">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div style="height: auto;width: 98%;margin-left:1%;background: #FFFFFF">
+    <div style="width: 100%;height: auto;padding-left: 10px;margin-top: 5px;padding-top: 5px;padding-bottom: 5px;">
+        <div style="height: 20px;width: 20px;border: #ffd31c solid 1px;border-radius: 10px;color: #ffd31c;text-align: center;line-height: 20px;font-size: 13px;float: left">
+            取
+        </div>
+        <div style="height: 20px;width: auto;float: left;font-size: 13px;padding-left: 10px;line-height: 23px">
+            <div style="float: left">取车点：</div>
+            <div style="max-width: 190px;float: left;overflow: hidden; white-space: nowrap; text-overflow: ellipsis;"
+                 id="js_store_take">
+            </div>
+        </div>
+        <span class="mui-icon mui-icon-location" style="color: rgb(1,181,227);font-size: 20px"></span>
+        <span id="js_store_take_choose" style="display: none;color: rgb(1,181,227);font-size: 13px;">修改<span class="mui-icon mui-icon-arrowright"
+                                                                     style="color: rgb(1,181,227);font-size: 12px"></span></span>
+    </div>
+</div>
+
+<div style="width: 98%;margin-left:1%;height: auto;margin-top: 3px;margin-bottom: 10px">
+    <div class="mui-content mui-row mui-fullscreen" style="position: relative;">
+        <div class="mui-col-xs-2 mui-col-sm-2" style="height: 200px">
+            <div id="segmentedControls"
+                 class="mui-segmented-control mui-segmented-control-inverted mui-segmented-control-vertical">
+                <span class="mui-control-item mui-active" style="text-decoration: none;font-size: 12px;line-height: 35px"
+                      data-href="content1">热销</span>
+                <span class="mui-control-item" style="text-decoration: none;font-size: 12px;line-height: 35px"
+                   data-href="content2">经济型</span>
+                <span class="mui-control-item" style="text-decoration: none;font-size: 12px;line-height: 35px"
+                   data-href="content3">舒适型</span>
+                <span class="mui-control-item" style="text-decoration: none;font-size: 12px;line-height: 35px"
+                   data-href="content4">商务型</span>
+            </div>
+        </div>
+        <div id="segmentedControlContents" class="mui-col-xs-10 mui-col-sm-10" style="height: 200px">
+            <div id="content1" class="mui-control-content mui-active">
+                <ul class="mui-table-view js_car_list" style="display: none">
+                    <li class="mui-table-view-cell js_car_list_li" style="padding: 0 10px 0 10px;">
+                        <div class="mui-table-view">
+                            <div class="mui-table-view-cell mui-media">
+                                <img style="max-width: 80px;height: 50px" class="mui-media-object mui-pull-left"
+                                     src="../../.././public/static/mobile/images/app_home_ad01_640_273.png">
+                                <div class="mui-media-body">
+                                    <div class="js_car_series_name mui-ellipsis" style="font-size: 16px;">奇瑞EQ</div>
+                                    <p class='mui-ellipsis js_car_cartype_name' style="font-size: 14px">4/5座 2018款</p>
+                                </div>
+                            </div>
+                        </div>
+                        <ul class="mui-table-view js_store_list">
+                            <li class="mui-table-view-cell mui-media js_store_list_li">
+                                <span class="mui-media-object mui-pull-right js_store_price"
+                                      style="max-width: 80px;color: red">￥1.00/天</span>
+                                <div class="mui-media-body" style="font-size: 13px">
+                                    <div class='mui-ellipsis js_store_name'>优车出行-群升大智慧</div>
+                                    <!--<p class='mui-ellipsis' style="font-size: 13px">距离：<span style="font-size: 14px"-->
+                                                                                             <!--class="js_store_distance">0.06km</span>-->
+                                    <!--</p>-->
+                                    <p class='mui-ellipsis' style="font-size: 13px">
+                                        押金：<span style="font-size: 14px">1500元</span>
+                                    </p>
+                                    <p class='mui-ellipsis' style="font-size: 13px">
+                                        违章保证金：<span style="font-size: 14px">500元</span>
+                                    </p>
+                                </div>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+
+            <div id="content2" class="mui-control-content">
+
+            </div>
+            <div id="content3" class="mui-control-content">
+
+            </div>
+            <div id="content4" class="mui-control-content">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div style="height: auto;width: 98%;margin-left:1%;position: relative;margin-bottom: 65px;">
+    <div class="mui-content" style="background-color: #ffffff;height: 100%">
+        <div style="padding: 10px 10px 5px 20px;color: #999999;font-size: 14px">用车结束时，请选择归还方式</div>
+        <div class="mui-row" style="height: 100%;margin-bottom: 5px">
+            <div class="mui-col-sm-5 mui-col-xs-5" style="text-align: center;">
+                <div class="mui-input-row mui-radio mui-left"
+                     style="padding-top: 5px;padding-left: 25px;color: rgba(0,0,0,0.5);font-size: 14px;">
+                    <label>上门取车</label>
+                    <input name="return_type" type="radio" value="1">
+                </div>
+            </div>
+            <div class="mui-col-sm-2 mui-col-xs-2" style="text-align: center;">
+
+            </div>
+            <div class="mui-col-sm-5 mui-col-xs-5" style="text-align: center;">
+                <div class="mui-input-row mui-radio mui-left"
+                     style="padding-top: 5px;padding-left: 25px;color: rgba(0,0,0,0.5);font-size: 14px">
+                    <label>到店还车</label>
+                    <input name="return_type" type="radio" value="0" checked="checked">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div style="height: auto;width: 100%;background: #FFFFFF;">
+        <div style="width: 100%;height: auto;padding-left: 10px;margin-top: 5px;padding-bottom: 5px;padding-top: 10px;">
+            <div style="height: 20px;width: 20px;border: #ffd31c solid 1px;border-radius: 10px;color: #ffd31c;text-align: center;line-height: 20px;font-size: 13px;float: left">
+                还
+            </div>
+            <div style="height: 20px;width: auto;float: left;font-size: 13px;padding-left: 10px;line-height: 23px">
+                <div style="float: left">还车点：</div>
+                <div style="float: left;max-width: 190px;overflow: hidden; white-space: nowrap; text-overflow: ellipsis;"
+                     id="js_store_return">
+                </div>
+            </div>
+            <span class="mui-icon mui-icon-location" style="color: rgb(1,181,227);font-size: 20px"></span>
+            <span id="js_store_return_choose" style="display: none;color: rgb(1,181,227);font-size: 13px;">修改<span class="mui-icon mui-icon-arrowright"
+                                                                         style="color: rgb(1,181,227);font-size: 12px"></span></span>
+        </div>
+    </div>
+    <div class="fillMod introCol" style="padding: 0 10px 10px 10px;margin-top: 10px">
+        <div class="mui-row">
+            <div class="mui-col-sm-12 mui-col-xs-12">
+                <span id="user_protocol" class="mui-icon mui-icon-checkmarkempty user_protocol_no"></span>
+                <a style="text-decoration:none;" href="javascript:void(0)"
+                   id="openPopover">《优车出行服务协议》</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div style="height: 50px;width: 100%;position: fixed;bottom: 0;background: #f08b08">
+    <div style="width: 70%;height:100%;background: #FFFFFF;border-top: #f08b08 solid 2px;float: left">
+        <div style="float: left;text-align: left;margin-left: 10px;line-height: 50px">
+            <span>全额</span><span style="color: #f08b08" id="js_total_price"></span></div>
+        <div style="float: right;text-align: right;line-height: 50px;padding-right: 10px;color: #666666"
+             id="openPopover_detail">明细
+        </div>
+    </div>
+    <div id="js_submit_order"
+         style="width: 30%;height:100%;background: #f08b08;color: #ffffff;text-align: center;line-height: 50px;float: left">
+        立即支付
+    </div>
+</div>
+<div id="popover" class="mui-backdrop" style="display: none">
+    <header class="mui-bar mui-bar-nav">
+        <span id="goto_back" class="mui-icon mui-icon-contact mui-icon-left-nav"></span>
+        <h1 class="mui-title">优车出行服务协议</h1>
+    </header>
+    <div class="mui-content"
+         style="margin-top:45px;padding: 0 5px;background-color: white;color: #333;width: 100%;height: 100%;overflow: scroll">
+        {$article['content']}
+        {$article1['content']}
+        <hr/>
+        <div style="text-align: right">更新时间:{$article['publish_time']}</div>
+    </div>
+</div>
+<div id="popover_detail" class="mui-backdrop" style="display: none">
+    <header class="mui-bar mui-bar-nav">
+        <span id="goto_back_detail" class="mui-icon mui-icon-contact mui-icon-left-nav"></span>
+        <h1 class="mui-title">价钱明细</h1>
+    </header>
+    <div class="mui-content"
+         style="margin-top: 45px;padding: 0 5px;background-color: white;color: #333;width: 100%;height: 100%;overflow: scroll">
+        <div style="height: 30px;width: 100%;margin-top: 10px">
+            <span>单价：</span><span id="popover_detail_price" style="color: #f08b08"></span>
+        </div>
+        <div style="height: 30px;width: 100%">
+            <span>基本服务费：</span><span id="popover_detail_basic" style="color: #f08b08"></span>
+        </div>
+        <div style="height: 30px;width: 100%">
+            <span>车行手续费：</span><span id="popover_detail_procedure" style="color: #f08b08"></span>
+        </div>
+        <div style="height: 30px;width: 100%">
+            <span>用车天数：</span><span id="popover_detail_days" style="color: #f08b08"></span>
+        </div>
+        <div style="height: 30px;width: 100%">
+            <span>计算方式：</span><span style="color: #f00">天数 × (单价 + 服务费) + 手续费</span>
+        </div>
+        <div style="height: 30px;width: 100%;text-align: right;font-size: 24px;margin-top: 15px;padding-right: 15px">
+            <span>全部金额：</span><span id="popover_detail_amount" style="color: #f00;"></span>
+        </div>
+    </div>
+</div>
+
+<div id="id_car_data_refresh"
+     style="display: none;width:30px; height:30px; position:fixed;right: 10px;bottom: 180px;background: #ffdb30;text-align:center;line-height: 30px;border-radius: 15px;color: #FFFFFF"
+     class="mui-icon mui-icon-refresh"></div>
+
+{include file="user_message" /}
+{include file="login" /}
+{include file="loading" /}
+
+<script src="__STATIC__/mobile/js/jquery.min.js"></script>
+<script src="__STATIC__/mobile/js/public-js.js?rand={$js_rand}"></script>
+<script src="__STATIC__/mobile/js/gps-transform-js.js?rand={$js_rand}"></script>
+<script src="__STATIC__/mui/js/mui.min.js?rand={$js_rand}"></script>
+<script src="__STATIC__/mui/js/mui.picker.all.js?rand={$js_rand}"></script>
+<script type="text/javascript" src="__STATIC__/mui/js/mui.zoom.js?rand={$js_rand}"></script>
+<script src="__STATIC__/mobile/js/index-tradition-js.js?rand={$js_rand}"></script>
+<script>
+    //协议是否同意选择
+    $("#user_protocol").on('click', function () {
+        if ($(this).hasClass('user_protocol_no')) {
+            $(this).removeClass('user_protocol_no');
+            $(this).addClass('user_protocol_yes');
+        } else {
+            $(this).removeClass('user_protocol_yes');
+            $(this).addClass('user_protocol_no');
+        }
+    });
+
+    $("#openPopover").on("click", function () {
+        pushHistory();//进栈
+    });
+    $("#openPopover_detail").on("click", function () {
+        pushHistory();//进栈
+    });
+
+
+    //物理返回按钮
+    // pushHistory();//进栈
+    //物理返回键的点击事件监听
+    window.addEventListener("popstate", function (e) {
+        if ($("#popover").css('display') == 'block') {
+            $("#popover").fadeOut(300);
+            window.history.back();
+        } else if ($("#popover_detail").css('display') == 'block') {
+            $("#popover_detail").fadeOut(300);
+            window.history.back();
+        } else {
+            window.history.back();
+        }
+    }, false);
+
+    //将上一个页面进栈
+    function pushHistory() {
+        var state = {
+            title: "title",
+            url: "#"
+        };
+        window.history.pushState(state, "title", "#");
+    }
+
+    $(function () {
+        $("#goto_back").on('click', function () {
+            $("#popover").fadeOut(300);
+        });
+        $("#openPopover").on('click', function () {
+            $("#popover").fadeIn(250);
+        });
+        $("#goto_back_detail").on('click', function () {
+            $("#popover_detail").fadeOut(300);
+        });
+        $("#openPopover_detail").on('click', function () {
+            $("#popover_detail").fadeIn(250);
+        });
+    });
+
+    $("#id_car_data_refresh").on("click", function () {
+        weixinLocation();
+        // location.reload();
+        // get_car_list_ajax("26.40847866","106.632648");
+    })
+</script>
+
+{if condition="$is_wxBrowser eq 'yes'"}
+<script src="http://res.wx.qq.com/open/js/jweixin-1.4.0.js?rand={$js_rand}"></script>
+<script>
+    /*
+     * 注意：
+     * 1. 所有的JS接口只能在公众号绑定的域名下调用，公众号开发者需要先登录微信公众平台进入“公众号设置”的“功能设置”里填写“JS接口安全域名”。
+     * 2. 如果发现在 Android 不能分享自定义内容，请到官网下载最新的包覆盖安装，Android 自定义分享接口需升级至 6.0.2.58 版本及以上。
+     * 3. 常见问题及完整 JS-SDK 文档地址：http://mp.weixin.qq.com/wiki/7/aaa137b55fb2e0456bf8dd9148dd613f.html
+     *
+     * 开发中遇到问题详见文档“附录5-常见错误及解决办法”解决，如仍未能解决可通过以下渠道反馈：
+     * 邮箱地址：weixin-open@qq.com
+     * 邮件主题：【微信JS-SDK反馈】具体问题
+     * 邮件内容说明：用简明的语言描述问题所在，并交代清楚遇到该问题的场景，可附上截屏图片，微信团队会尽快处理你的反馈。
+     */
+    wx.config({
+        debug: false,
+        appId: "{$jssdk['appid']}",
+        timestamp: "{$jssdk['timestamp']}",
+        nonceStr: "{$jssdk['nonceStr']}",
+        signature: "{$jssdk['signature']}",
+        jsApiList: [
+            'checkJsApi',
+            'openLocation',
+            'getLocation'
+        ]
+    });
+
+    wx.ready(function (res) {
+        weixinLocation();
+    });
+
+    wx.error(function (res) {
+        // alert(JSON.stringify(res));
+    });
+</script>
+<script>
+    /**
+     * 调用第三方导航软件实现导航
+     * @param lat  目的地纬度
+     * @param lng  目的地经度
+     */
+    function go_openLocation(lat, lng, name, address) {
+        // var ponitx = wgs2gcj(lat, lng);//将gps坐标转为百度地图坐标
+        wx.openLocation({
+            // latitude: ponitx[0], // 纬度，浮点数，范围为90 ~ -90
+            // longitude: ponitx[1], // 经度，浮点数，范围为180 ~ -180。
+            latitude: lat, // 纬度，浮点数，范围为90 ~ -90
+            longitude: lng, // 经度，浮点数，范围为180 ~ -180。
+            name: name, // 位置名
+            address: address, // 地址详情说明
+            scale: 18, // 地图缩放级别,整形值,范围从1~28。默认为最大
+            infoUrl: '' // 在查看位置界面底部显示的超链接,可点击跳转
+        });
+    }
+    //微信定位
+    function weixinLocation() {
+        loadMessageBox("微信定位中...", 10);
+        wx.getLocation({
+            success: function (res) {
+                var latitude = res.latitude; //纬度
+                var longitude = res.longitude; //经度
+                localStorage.setItem("old_marker_self_lat", latitude);
+                localStorage.setItem("old_marker_self_lng", longitude);
+                var pointx = wgs2bd(parseFloat(latitude), parseFloat(longitude));
+
+                localStorage.setItem("marker_self_lat", pointx[0]);
+                localStorage.setItem("marker_self_lng", pointx[1]);
+
+                get_car_list_ajax(latitude, longitude);
+            },
+            cancel: function (res) {
+                // alert('用户拒绝授权获取地理位置');
+            },
+            fail: function (res) {
+//                alert(JSON.stringify(res));
+            }
+        });
+    }
+</script>
+{/if}
+</body>
+{/block}
+

@@ -1,0 +1,213 @@
+{extend name="base" /}
+{block name="body"}
+<div class="layui-body">
+    <!--tab标签-->
+    <div class="layui-tab layui-tab-brief">
+        <ul class="layui-tab-title">
+            <li class="layui-this">车机设备管理</li>
+            <!--<li class=""><a href="{:url('manCarDeviceToolvice/add')}">添加车机设备</a></li>-->
+        </ul>
+        <div class="layui-tab-content">
+            <div class="layui-tab-item layui-show">
+                <form class="layui-form layui-form-pane" action="{:url('manage/CarDevice/index')}" method="get">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">关键词</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="keyword" value="{$keyword}" placeholder="请输入关键词"
+                                   class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <button class="layui-btn">搜索</button>
+                    </div>
+                </form>
+                <div style="display: none">
+                    <div class="layui-inline" id="car_type_list">
+                        <div class="layui-input-block" style="margin-left: 0px">
+                            <select id="terminal_car_type" class="layui-input">
+                                {foreach name="terminal_car_type" item="vo" key="kv"}
+                                <option value="{$kv}" data-value="{$vo.value}">{$vo.name}</option>
+                                {/foreach}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div style="display: none">
+                    <div class="layui-inline" id="time_code_list">
+                        <div class="layui-input-block" style="margin-left: 0px">
+                            <select id="terminal_time_code" class="layui-input">
+                                {foreach name="terminal_time_code" item="vo"}
+                                <option value="{$vo.value}" data-value="{$vo.value}">{$vo.name}</option>
+                                {/foreach}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <table class="layui-table">
+                    <thead>
+                    <tr>
+                        <th style="width:100px">操作</th>
+                        <th style="width: 30px;">ID</th>
+                        <th style="width: 50px;">设备名称</th>
+                        <th>设备编号</th>
+                        <th>设备类型</th>
+                        <th>车型</th>
+                        <th>OBD版本</th>
+                        <th>归属店铺</th>
+                        <th>设备状态</th>
+                        <th>终端状态</th>
+                        <th>更新时间</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {foreach name="cardevice_list" item="vo"}
+                    <tr>
+                        <td style="width:100px">
+                            <a href="{:url('manage/CarDevice/edit',['id'=>$vo['deviceId']])}"
+                               class="layui-btn layui-btn-normal layui-btn-mini">编辑查看</a>
+                            <a href="{:url('manage/CarDevice/openDoor',['device_number'=>$vo['deviceId']])}"
+                               class="layui-btn layui-btn-normal layui-btn-mini ajax-common">开门</a>
+                            <a href="{:url('manage/CarDevice/closeDoor',['device_number'=>$vo['deviceId']])}"
+                               class="layui-btn layui-btn-normal layui-btn-mini ajax-common">关门</a>
+                            <a href="{:url('manage/CarDevice/restartTerminal',['device_number'=>$vo['deviceId']])}"
+                               class="layui-btn layui-btn-normal layui-btn-mini ajax-common">重启</a>
+                            <a href="{:url('manage/CarDevice/powerSupply',['device_number'=>$vo['deviceId']])}"
+                               class="layui-btn layui-btn-normal layui-btn-mini ajax-common">点火</a>
+                            <a href="{:url('manage/CarDevice/powerFailure',['device_number'=>$vo['deviceId']])}"
+                               class="layui-btn layui-btn-normal layui-btn-mini ajax-common">熄火</a>
+                            <a href="{:url('manage/CarDevice/startOrder',['device_number'=>$vo['deviceId']])}"
+                               class="layui-btn layui-btn-normal layui-btn-mini ajax-common">下单</a>
+                            <a href="{:url('manage/CarDevice/clearOrder',['device_number'=>$vo['deviceId']])}"
+                               class="layui-btn layui-btn-normal layui-btn-mini ajax-common">还车</a>
+                            <a href="{:url('manage/CarDevice/findCar',['device_number'=>$vo['deviceId']])}"
+                               class="layui-btn layui-btn-normal layui-btn-mini ajax-common">寻车</a>
+                            <a href="{:url('manage/CarDevice/callTerminal',['device_number'=>$vo['deviceId']])}"
+                               class="layui-btn layui-btn-normal layui-btn-mini ajax-common">点名</a>
+                            <a href="{:url('manage/CarDevice/updateTerminal',['device_number'=>$vo['deviceId']])}"
+                               class="layui-btn layui-btn-normal layui-btn-mini ajax-common">升级</a>
+                            <a href="{:url('manage/CarDevice/takePhotos',['device_number'=>$vo['deviceId'],'direction'=>'1'])}"
+                               class="layui-btn layui-btn-normal layui-btn-mini ajax-common">拍照前方</a>
+                            <a href="{:url('manage/CarDevice/takePhotos',['device_number'=>$vo['deviceId'],'direction'=>'2'])}"
+                               class="layui-btn layui-btn-normal layui-btn-mini ajax-common">拍照内部</a>
+                            <a href="{:url('manage/CarDevice/setTerminalCarType',['device_number'=>$vo['deviceId']])}"
+                               class="layui-btn layui-btn-normal layui-btn-mini ajax-car-common"
+                               data-value="{$vo['terminalCarType']}">设置车型</a>
+                            <a href="{:url('manage/CarDevice/setTerminalDormancy',['device_number'=>$vo['deviceId']])}"
+                               class="layui-btn layui-btn-normal layui-btn-mini ajax-time-common"
+                               data-value="">设置休眠</a>
+                            <a href="{:url('manage/CarDevice/delDevice',['device_id'=>$vo['id']])}"
+                               class="layui-btn layui-btn-danger layui-btn-mini ajax-delete">删除</a>
+                            {if condition="$vo['device_status']==4"}
+                            <a href="{:url('api/CarDevice/remove_bind',['device_number'=>$vo['deviceId'],'device_type'=>$vo['deviceType']])}"
+                               class="layui-btn layui-btn-danger layui-btn-mini ajax-remove-bind">解除绑定</a>
+                            {/if}
+                        </td>
+                        <td>{$vo.id}</td>
+                        <td>{$vo.name}</td>
+                        <td>{$vo.deviceId}</td>
+                        <td>{$vo.carName}</td>
+                        <td>{$device_type[$vo.deviceType]}</td>
+                        <td>{$vo.terminalVersions}</td>
+                        <td>{$vo.storeKeyName}({$vo.storeKeyId})</td>
+                        <td>{$device_status[$vo.deviceStatus]}</td>
+                        <td>
+                            {if condition="$vo['deviceOnline']!=1"}
+                            离线
+                            {else/}
+                            在线
+                            {/if}
+                        </td>
+                        <td>{$vo.updateTime_str}</td>
+                    </tr>
+                    {/foreach}
+                    </tbody>
+                </table>
+                <!--分页-->
+                {$cardevice_list->render()}
+            </div>
+        </div>
+    </div>
+</div>
+{/block}
+{block name="script"}
+<script>
+
+    var node_car = $("#car_type_list").clone(true);
+    $("#car_type_list").remove();
+    /**
+     * 终端车型设置
+     */
+    $('.ajax-car-common').on('click', function () {
+        var _href = $(this).attr('href');
+        var data_value = $(this).attr('data-value');
+        layer.open({
+            title: "选择终端车型",
+            shade: false,
+            content: node_car.html(),
+            btn: ['确定', '取消'],
+            yes: function (index) {
+                var data_value = $("#terminal_car_type").val();
+                $.ajax({
+                    url: _href,
+                    type: "GET",
+                    data: {
+                        car_type: data_value
+                    },
+                    dataType: 'json',
+                    success: function (info) {
+                        if (info.code === 0) {
+                            setTimeout(function () {
+                                window.location.reload();
+                            }, 1000);
+                        }
+                        layer.msg(info.info);
+                    }
+                });
+                layer.close(index);
+            }
+        });
+        // console.log(store_site_id);
+        $("#terminal_car_type").val(data_value);
+        return false;
+    });
+    var node_time = $("#time_code_list").clone(true);
+    $("#time_code_list").remove();
+    /**
+     * 终端车型设置
+     */
+    $('.ajax-time-common').on('click', function () {
+        var _href = $(this).attr('href');
+//        var data_value = $(this).attr('data-value');
+        layer.open({
+            title: "选择终端车型",
+            shade: false,
+            content: node_time.html(),
+            btn: ['确定', '取消'],
+            yes: function (index) {
+                var data_value = $("#terminal_time_code").val();
+                $.ajax({
+                    url: _href,
+                    type: "GET",
+                    data: {
+                        time_code: data_value
+                    },
+                    dataType: 'json',
+                    success: function (info) {
+                        if (info.code === 0) {
+                            setTimeout(function () {
+                                window.location.reload();
+                            }, 1000);
+                        }
+                        layer.msg(info.info);
+                    }
+                });
+                layer.close(index);
+            }
+        });
+        // console.log(store_site_id);
+//        $("#terminal_car_type").val(data_value);
+        return false;
+    });
+</script>
+{/block}

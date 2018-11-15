@@ -1,0 +1,203 @@
+{extend name="base" /}
+{block name="css"}
+<link rel="stylesheet" href="__STATIC__/mui/css/mui.min.css?rand={$css_rand}">
+<link rel="stylesheet" href="__STATIC__/mui/css/mui-icons-extra.css?rand={$css_rand}">
+{/block}
+{block name="body"}
+<body style="background-color: rgb(236, 236, 236); display: block;margin: 0;padding: 0">
+<!--字体设置-->
+<script type="text/javascript">
+    // “()()”表示自执行函数
+    (function (doc, win) {
+        var docEl = doc.documentElement,
+            // 手机旋转事件,大部分手机浏览器都支持 onorientationchange 如果不支持，可以使用原始的 resize
+            resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
+            recalc = function () {
+                //clientWidth: 获取对象可见内容的宽度，不包括滚动条，不包括边框
+                var clientWidth = docEl.clientWidth;
+                if (!clientWidth) return;
+                docEl.style.fontSize = 10 * (clientWidth / 320) + 'px';
+            };
+        recalc();
+        //判断是否支持监听事件 ，不支持则停止
+        if (!doc.addEventListener) return;
+        //注册翻转事件
+        win.addEventListener(resizeEvt, recalc, false);
+
+    })(document, window);
+</script>
+<header id="header" class="mui-bar mui-bar-nav" style="background: #ffdb30;color: #ffffff;">
+    <span id="goback" class="mui-icon mui-icon-back mui-pull-left"></span>
+    <h1 class="mui-title" style="color: #ffffff">推广渠道</h1>
+</header>
+<div style="width: 90%;margin: 2px 5%;position: absolute;top: 44px">
+    <span class="mui-badge mui-badge-success">点击右上角分享给好友或者朋友圈就有机会免费获得代金券</span>
+</div>
+<div class="qrcodeContent" style="display: block;position: absolute;left: 0;top: 0;right: 0;bottom: 0;overflow: hidden">
+    <div id="qrcode"></div>
+    <!--二维码-->
+    <div class="qrcodeCanvas" style="display: block;position: absolute;left: 0;top: 0;right: 0;bottom: 0;overflow: hidden">
+        <img class="imgBox"
+             src="http://img.youchedongli.cn/public/static/mobile/images/bg.jpg?x-oss-process=image/resize,w_390"
+             style="display: none;width: 100%;height: 100%"/>
+        <img class="imgCode"
+             src="http://img.youchedongli.cn/public/static/mobile/images/mycode.png?x-oss-process=image/resize,w_90"
+             style="display: none;width: 29%;height: 17%;"/>
+        <img class="imgIcon"
+             src="{$icon_url}"
+             style="display: none;width: 8%;height: 5%;"/>
+        <div id="qrcodeCanvas" style="width: 100%;height: 100%"></div>
+        {include file="user_message" /}
+        {include file="login" /}
+    </div>
+</div>
+<script type="text/javascript" src="__STATIC__/js/jquery2.0.min.js"></script>
+<script type="text/javascript" src="__STATIC__/js/jquery.qrcode.min.js"></script>
+<script type="text/javascript">
+    $(function () {
+        var name = "{$name}";
+        var url = "{$url}";
+        var icon_url = "{$icon_url}";
+        var address1 = "{$address1}";
+        var address2 = "{$address2}";
+        var qrcoded = $('#qrcode').qrcode({
+            render: "canvas",
+            width: 400,
+            height: 400,
+            text: url
+        });
+
+        $("#goback").on('click',function () {
+            window.history.back();
+        });
+        var c = qrcoded.find('canvas').get(0);
+        $(".imgCode").attr('src', c.toDataURL("image/jpeg"));
+        $("#qrcode").remove();
+        //生成画布
+        hecheng();
+        function hecheng() {
+            draw(function () {
+                document.getElementById('qrcodeCanvas').innerHTML = '<img src="' + base64[0] + '">';
+            })
+        }
+
+        var base64 = [];
+
+        function draw(fn) {
+            var imgArr = ['__STATIC__/mobile/images/bgx.jpg', $(".imgCode").attr('src'), icon_url];
+            var c = document.createElement('canvas'),
+                ctx = c.getContext('2d'),
+                len = imgArr.length;
+            c.width = $(".qrcodeCanvas").width();
+            c.height = $(".qrcodeCanvas").height();
+            ctx.rect(0, 0, c.width, c.height);
+            ctx.fillStyle = '#ccc';
+            ctx.fill();
+            function drawing(n) {
+                if (n < len) {
+                    var img = new Image;
+                    img.src = imgArr[n];
+                    img.onload = function () {
+                        if (n == 1) {
+                            var codeW = $(".imgCode").width(),
+                                codeH = $(".imgCode").height();
+//                            ctx(img,c.height*0.25,c.height*0.8,codeW,codeH);
+                            ctx.font = "normal normal 600 18px Arial";
+                            ctx.fillStyle = "white";
+                            ctx.textAlign = 'center';
+                            ctx.fillText("首次注册成功，立即送30代金券", c.height * 0.28, c.height * 0.78);
+                            ctx.font = "normal normal 600 15px Arial";
+                            ctx.fillText(name + "专属出行服务", c.height * 0.20, c.height * 0.815);
+                            ctx.font = "normal normal 600 17px Arial";
+                            ctx.textAlign = 'left';
+                            ctx.fillText("取车地点：", c.height * 0.04, c.height * 0.85);
+                            ctx.font = "normal normal 600 14px Arial";
+                            ctx.fillText(address1, c.height * 0.04, c.height * 0.89);
+                            ctx.fillText(address2, c.height * 0.04, c.height * 0.92);
+                            ctx.drawImage(img, c.height * 0.35, c.height * 0.79, codeW, codeH);
+                            ctx.font = "normal normal 600 15px Arial";
+                            ctx.fillText("长按识别二维码", c.height * 0.35, c.height * 0.988);
+                            drawing(n + 1);
+                        } else {
+                            if (n == 0) {
+                                ctx.drawImage(img, 0, 0, c.width, c.height);
+                                drawing(n + 1);
+                            } else {
+                                var iconcodeW = $(".imgIcon").width(),
+                                    iconcodeH = $(".imgIcon").height();
+                                ctx.drawImage(img, c.height * 0.41, c.height * 0.85, iconcodeW, iconcodeH);
+                                drawing(n + 1);
+                            }
+                        }
+                    }
+                } else {
+                    base64.push(c.toDataURL("image/jpeg"));
+                    fn();
+                }
+            }
+
+            drawing(0);
+        }
+    })
+</script>
+{if condition="$is_wxBrowser eq 'yes'"}
+<script src="http://res.wx.qq.com/open/js/jweixin-1.4.0.js?rand={$js_rand}"></script>
+<script>
+    /*
+     * 注意：
+     * 1. 所有的JS接口只能在公众号绑定的域名下调用，公众号开发者需要先登录微信公众平台进入“公众号设置”的“功能设置”里填写“JS接口安全域名”。
+     * 2. 如果发现在 Android 不能分享自定义内容，请到官网下载最新的包覆盖安装，Android 自定义分享接口需升级至 6.0.2.58 版本及以上。
+     * 3. 常见问题及完整 JS-SDK 文档地址：http://mp.weixin.qq.com/wiki/7/aaa137b55fb2e0456bf8dd9148dd613f.html
+     *
+     * 开发中遇到问题详见文档“附录5-常见错误及解决办法”解决，如仍未能解决可通过以下渠道反馈：
+     * 邮箱地址：weixin-open@qq.com
+     * 邮件主题：【微信JS-SDK反馈】具体问题
+     * 邮件内容说明：用简明的语言描述问题所在，并交代清楚遇到该问题的场景，可附上截屏图片，微信团队会尽快处理你的反馈。
+     */
+    wx.config({
+        debug: false,
+        appId: "{$jssdk['appid']}",
+        timestamp: "{$jssdk['timestamp']}",
+        nonceStr: "{$jssdk['nonceStr']}",
+        signature: "{$jssdk['signature']}",
+        jsApiList: [
+            'checkJsApi',
+            'onMenuShareTimeline',
+            'onMenuShareAppMessage'
+        ]
+    });
+
+    //自定义内容
+    wx.ready(function () {
+        wx.onMenuShareTimeline({
+            title: '共享汽车——优车出行，注册即用，全市上百个取还点，10天自动退押金', // 分享标题
+            link: '{$fxurl}', // 分享链接
+            imgUrl: 'http://img.youchedongli.cn/public/static/mobile/images/seller_logo.png?x-oss-process=image/resize,h_100',
+            success: function () {
+                // 用户确认分享后执行的回调函数
+            },
+            cancel: function () {
+                // 用户取消分享后执行的回调函数
+            }
+        });
+
+        wx.onMenuShareAppMessage({
+            title: '共享汽车——优车出行',
+            desc: '注册即用，全市上百个取还点，10天自动退押金',
+            link: '{$fxurl}',
+            imgUrl: 'http://img.youchedongli.cn/public/static/mobile/images/seller_logo.png?x-oss-process=image/resize,h_100',
+            success: function () {
+                // 用户确认分享后执行的回调函数
+            },
+            cancel: function () {
+                // 用户取消分享后执行的回调函数
+            }
+        });
+    });
+    wx.error(function (res) {
+        // alert(res.errMsg);
+    });
+</script>
+{/if}
+</body>
+{/block}

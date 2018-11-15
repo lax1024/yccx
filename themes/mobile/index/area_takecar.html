@@ -1,0 +1,101 @@
+{extend name="base" /}
+{block name="css"}
+<link rel="stylesheet" type="text/css" href="__STATIC__/mobile/css/area-takecar-css1.css?rand={$css_rand}">
+<link rel="stylesheet" type="text/css" href="__STATIC__/mobile/css/area-takecar-css2.css?rand={$css_rand}">
+<link rel="stylesheet" type="text/css" href="__STATIC__/mobile/css/area-takecar-css3.css?rand={$css_rand}">
+{/block}
+{block name="body"}
+<body style="background-color: rgb(236, 236, 236); display: block; overflow: hidden;" onselectstart="return false">
+<div id="page-view-area">
+    <article class="areaWrap" id="areabox">
+        <div id="divCityContent" style="opacity: 1;">
+            <div class="headSys bgW">
+                <p class="iph" style="display: none"></p>
+                <p class="headCap size16">
+                    <em id="goback" class="opaBtn size14">取消</em>
+                    <span id="area-title">取车区域</span>
+                    <em class="opaBtn size14"></em>
+                </p>
+            </div>
+            <div class="inputWrap bgW">
+                <p class="inputStr color9 size14" id="inputArea" style="opacity: 1;">
+                    <input id="cityKeyword2" class="cit color9 search_input abs_size nofastclick" to="h"
+                           placeholder="可输入城市搜索" maxlength="40">
+                    <span class="line"></span>
+                    <em class="isdIco searIco size16"></em>
+                    <input id="areaKeyword" type="text" placeholder="可输入地址 / 区域名进行搜索"
+                           class="main color9 size14 abs_size nofastclick" maxlength="40">
+                </p>
+                <p class="inputStrCity color9 size14" id="inputCity" style="display: none;">
+                    <input id="cityKeyword1" class="cit color9 search_input abs_size nofastclick" to="h"
+                           placeholder="可输入城市搜索" maxlength="40">
+                </p>
+                <div class="city-main">
+                    <div class="sub-list" id="searchList">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="divSubAreaContent" style="display: none;">
+            <div class="headSys bgW">
+                <p class="iph" style="display: none"></p>
+                <p class="headCap size16">
+                    <em class="isdIco backArr"></em>
+                    地铁站
+                    <em class="backEmp"></em>
+                </p>
+            </div>
+        </div>
+        <div class="areaCon main scrollCss" style="top: 90px; margin-top: 0px;">
+            <div id="scrollList">
+                <div id="mainList">
+                    <dl class="sortMod size14">
+                        <div class="areas-box">
+                            <div class="header">
+                                <i class="typeIco isdIco atype2"></i>
+                                <span class="title">火车站</span>
+                            </div>
+                            <div class="content">
+                            </div>
+                        </div>
+                        <div class="areas-box">
+                            <div class="header">
+                                <i class="typeIco isdIco atype1"></i>
+                                <span class="title">机场</span>
+                            </div>
+                            <div class="content">
+
+                            </div>
+                        </div>
+                        <div class="areas-box">
+                            <div class="header">
+                                <i class="typeIco isdIco atype4"></i>
+                                <span class="title">热门地区</span>
+                            </div>
+                            <div class="content">
+
+                            </div>
+                        </div>
+                        <div class="areas-box">
+                            <div class="header">
+                                <i class="typeIco isdIco atype3"></i>
+                                <span class="title">汽车站</span>
+                            </div>
+                            <div class="content">
+
+                            </div>
+                        </div>
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </article>
+</div>
+{include file="login" /}
+{include file="loading" /}
+<script type="text/javascript" src="__STATIC__/mobile/js/jquery.min.js"></script>
+<script type="text/javascript" src="__STATIC__/mobile/js/public-js.js?rand={$js_rand}"></script>
+<script type="text/javascript" src="__STATIC__/mobile/js/area-takecar-js.js?rand={$js_rand}"></script>
+</body>
+{/block}

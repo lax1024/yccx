@@ -1,0 +1,7 @@
+/** 定位图标 */
+.flag-user {
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    left: 8px;
+}

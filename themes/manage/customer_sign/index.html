@@ -1,0 +1,68 @@
+{extend name="base" /}
+{block name="body"}
+<div class="layui-body">
+    <!--tab标签-->
+    <div class="layui-tab layui-tab-brief">
+        <ul class="layui-tab-title">
+            <li class="layui-this">用户推荐站点管理</li>
+        </ul>
+        <div class="layui-tab-content">
+            <form class="layui-form layui-form-pane" action="{:url('manage/CustomerSign/index')}" method="get">
+                <div class="layui-inline">
+                    <label class="layui-form-label">站点类型</label>
+                    <div class="layui-input-inline">
+                        <select name="sign_type" lay-filter="appselect">
+                            {foreach name="sign_type_list" item="vo" key="ke" }
+                            <option value="{$ke}" {if condition="$sign_type==$ke" } selected="selected" {/if} >{$vo}</option>
+                            {/foreach}
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">关键词</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="keyword" value="{$keyword}" placeholder="请输入关键词" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <button class="layui-btn">搜索</button>
+                </div>
+            </form>
+            <br/>
+            <div class="layui-tab-item layui-show">
+                <table class="layui-table">
+                    <thead>
+                    <tr>
+                        <th style="width: 30px;">ID</th>
+                        <th>推荐点</th>
+                        <th>类型</th>
+                        <th>备注信息</th>
+                        <th>时间</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {foreach name="customer_sign_list" item="vo"}
+                    <tr>
+                        <td>{$vo.id}</td>
+                        <td>{$vo.address}</td>
+                        <td>{$vo.type_str}</td>
+                        <td>{$vo.remark}</td>
+                        <td>{$vo.add_time}</td>
+                    </tr>
+                    {/foreach}
+                    </tbody>
+                </table>
+                <!--分页-->
+                {$customer_sign_list->render()}
+            </div>
+        </div>
+    </div>
+</div>
+{/block}
+{block name="script"}
+<script>
+    form.on('select(appselect)', function (data) {
+        $(".layui-form-pane").submit();
+    });
+</script>
+{/block}

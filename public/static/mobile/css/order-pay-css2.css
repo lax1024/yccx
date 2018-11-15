@@ -1,0 +1,343 @@
+.keyboard-body {
+                          overflow: visible;
+                          box-sizing: content-box;
+                          -webkit-box-sizing: content-box
+                      }
+
+@font-face {
+    font-family: 'ucplugin-kb';
+    /*src: url('//s.qunarzz.com/payued/keyboard/font/0.0.1/keyboard.eot'),*/
+    /*url('//s.qunarzz.com/payued/keyboard/font/0.0.1/keyboard.woff') format('woff'),*/
+    /*url('//s.qunarzz.com/payued/keyboard/font/0.0.1/keyboard.ttf') format('truetype'),*/
+    /*url('//s.qunarzz.com/payued/keyboard/font/0.0.1/keyboard.svg#ucplugin-kb') format('svg')*/
+}
+
+@keyframes fade-in-out {
+    0% {
+        opacity: 0
+    }
+    0.1% {
+        opacity: 1
+    }
+    52% {
+        opacity: 1
+    }
+    52.1% {
+        opacity: 0
+    }
+    100% {
+        opacity: 0
+    }
+}
+
+@-webkit-keyframes fade-in-out {
+    0% {
+        opacity: 0
+    }
+    0.1% {
+        opacity: 1
+    }
+    52% {
+        opacity: 1
+    }
+    52.1% {
+        opacity: 0
+    }
+    100% {
+        opacity: 0
+    }
+}
+
+.keyboard-main {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: column;
+    flex-direction: column;
+    position: fixed;
+    left: 0;
+    bottom: -100%;
+    width: 100%;
+    height: 40%;
+    background: #f6f6f7;
+    transition: all .5s ease-in-out;
+    -webkit-transition: all .5s ease-in-out;
+    box-sizing: content-box
+}
+
+.keyboard-main.kb-inner {
+    position: relative;
+    top: 0;
+    left: 0;
+    height: 100%
+}
+
+.keyboard-main.kb-hide, .keyboard-main .kb-hide {
+    display: none !important
+}
+
+.keyboard-main .kb-virtual-input {
+    padding-left: 5px;
+    overflow: hidden;
+    height: 40px;
+    font-size: 26px;
+    line-height: 40px;
+    border-bottom: 1px solid #e0e0e0;
+    background: #f6f6f7
+}
+
+.keyboard-main .kb-virtual-input .kb-text-wrap {
+    margin-top: 0
+}
+
+.keyboard-main .kb-virtual-input .kb-placeholder {
+    top: 0
+}
+
+.keyboard-main ul {
+    margin: 0;
+    padding: 0
+}
+
+.keyboard-main ul li {
+    margin: 0;
+    padding: 0;
+    list-style: none
+}
+
+.keyboard-main .kb-hd, .keyboard-main .kb-ft {
+    position: relative;
+    height: 40px;
+    line-height: 40px
+}
+
+.keyboard-main .kb-hd {
+    border-bottom: 1px solid #e0e0e0
+}
+
+.keyboard-main .kb-ft {
+    border-top: 1px solid #e0e0e0
+}
+
+.keyboard-main .kb-hd .kb-left, .keyboard-main .kb-ft .kb-left {
+    position: absolute;
+    left: 0;
+    top: 0;
+    padding-left: 10px
+}
+
+.keyboard-main .kb-hd .kb-right, .keyboard-main .kb-ft .kb-right {
+    position: absolute;
+    right: 0;
+    top: 0;
+    padding-right: 10px
+}
+
+.keyboard-main .kb-hd .kb-title, .keyboard-main .kb-ft .kb-title {
+    display: block;
+    text-align: center
+}
+
+.keyboard-main .kb-content {
+    -webkit-box-flex: 1;
+    -webkit-flex: 1;
+    flex: 1;
+    height: .1px
+}
+
+.keyboard-main .kb-content .kb-table {
+    width: 100%;
+    height: 100%;
+    table-layout: fixed;
+    border-spacing: 6px;
+    background: #e0e0e0;
+    border-collapse: separate
+}
+
+.keyboard-main .kb-content .kb-row:first-child {
+    border-top: 0
+}
+
+.keyboard-main .kb-row .kb-item {
+    font-size: 25px;
+    color: #212121;
+    text-align: center;
+    border-radius: 5px;
+    background-color: #fff;
+    box-shadow: inset 0 -1px 0 0 #9e9e9e
+}
+
+.keyboard-main .kb-row .kb-item.kb-icon {
+    font-family: ucplugin-kb;
+    font-size: 32px
+}
+
+.keyboard-main .kb-row .kb-item.kb-backspace {
+    font-family: ucplugin-kb;
+    font-size: 40px
+}
+
+.keyboard-main .kb-row .kb-item:active {
+    background: #eee
+}
+
+.keyboard-main .kb-row .kb-item.kb-enter {
+    font-size: 21px;
+    color: #fff;
+    background-color: #00b4ca;
+    text-align: center;
+    box-shadow: inset 0 -1px 0 0 #007483
+}
+
+.keyboard-main .kb-row .kb-item.kb-enter:active {
+    background: #eee;
+    color: #00bcd4
+}
+
+.keyboard-main .kb-row .kb-item.kb-enter.kb-disabled {
+    background: #00b4ca;
+    color: rgba(255, 255, 255, .3)
+}
+
+@media screen and (orientation: landscape) {
+    .keyboard-main {
+        height: 60%
+    }
+
+    .keyboard-main .kb-content .kb-row {
+        height: 25px
+    }
+
+    .keyboard-main .kb-row .kb-item, .keyboard-main .kb-row .kb-item.kb-icon {
+        font-size: 18px
+    }
+
+    .keyboard-main .kb-hd, .keyboard-main .kb-ft {
+        height: 25px;
+        line-height: 25px
+    }
+}
+
+.input-main {
+    position: relative;
+    display: block;
+    width: 100%;
+    height: 100%;
+    color: #212121;
+    background: #fff;
+    overflow: hidden
+}
+
+.input-main.kb-disabled {
+    background: #ccc;
+    color: #aaa
+}
+
+.input-main i {
+    font-style: normal
+}
+
+.input-main .kb-hide {
+    display: none
+}
+
+.input-main::after {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 1em;
+    height: 100%;
+    font-family: ucplugin-kb;
+    font-size: 1.5em;
+    text-align: center
+}
+
+.input-main.kb-eye::before {
+    position: absolute;
+    top: 0;
+    right: 1em;
+    width: 1em;
+    height: 100%;
+    font-family: ucplugin-kb;
+    font-size: 1.2em;
+    text-align: center
+}
+
+.input-main.kb-eye-close:before {
+    content: '\f547'
+}
+
+.input-main .kb-eye-open {
+    color: #00bcd4
+}
+
+.input-main .kb-ctr-wrap {
+    position: absolute;
+    top: 0;
+    right: 12px;
+    height: 100%;
+    margin-top: 0;
+    background: #fff
+}
+
+.input-main .kb-del, .input-main .kb-eye {
+    margin-right: .2em;
+    font-family: ucplugin-kb;
+    font-size: 1.2em;
+    text-align: center;
+    color: #bdbdbd
+}
+
+.input-main .kb-placeholder {
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin-top: 0;
+    margin-left: 1px;
+    color: #bdbdbd
+}
+
+.input-main .kb-text-wrap {
+    position: absolute;
+    left: 0;
+    height: 100%;
+    padding-right: 50px;
+    font-family: sans-serif, system-ui;
+    color: #000;
+    white-space: nowrap
+}
+
+.input-main .kb-text {
+    margin-left: 0
+}
+
+.input-main .kb-cursor {
+    display: none;
+    position: relative;
+    animation: fade-in-out 1s linear infinite;
+    -webkit-animation: fade-in-out 1s linear infinite;
+    margin-top: -3px
+}
+
+.input-main .kb-cursor:after {
+    position: absolute;
+    left: -.11em;
+    content: '|';
+    width: .3em;
+    margin-top: 1px;
+    font-size: 1.4em;
+    font-weight: 300;
+    text-align: center;
+    color: black
+}
+
+.input-main .kb-cursor.kb-ios:after {
+    color: #426bf2;
+    font-size: 2em
+}
+
+.keyboard-main .kb-row .kb-item.kb-enter .kb-icon {
+    color: #fff
+}

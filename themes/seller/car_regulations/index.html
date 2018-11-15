@@ -1,0 +1,93 @@
+{extend name="base" /}
+{block name="body"}
+<div class="layui-body">
+    <!--tab标签-->
+    <div class="layui-tab layui-tab-brief">
+        <ul class="layui-tab-title">
+            <li class="layui-this">车辆违章管理</li>
+            <li class=""><a href="{:url('seller/CarRegulations/add')}">添加车辆违章</a></li>
+        </ul>
+        <div class="layui-tab-content">
+            <div class="layui-tab-item layui-show">
+                <form class="layui-form layui-form-pane" action="{:url('seller/CarRegulations/index')}" method="get">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">关键词</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="keyword" value="{$keyword}" placeholder="请输入关键词"
+                                   class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <button class="layui-btn">搜索</button>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">违章状态</label>
+                        <div class="layui-inline">
+                            <select name="state" lay-filter="statusselect">
+                                {if condition="$state==10"}
+                                <option value="10" selected>待处理</option>
+                                <option value="20">已处理</option>
+                                {else/}
+                                <option value="10">待处理</option>
+                                <option value="20" selected>已处理</option>
+                                {/if}
+                            </select>
+                        </div>
+                    </div>
+                </form>
+                <hr>
+                <table class="layui-table">
+                    <thead>
+                    <tr>
+                        <th style="width: 30px;">ID</th>
+                        <th>违章人员</th>
+                        <th>违章人电话</th>
+                        <th>违章车牌号</th>
+                        <th>违章信息</th>
+                        <th>违章时间</th>
+                        <th>录入时间</th>
+                        <th>处理时间</th>
+                        <th>处理备注</th>
+                        <th>处理状态</th>
+                        <th>处理人员</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {foreach name="car_regulations_list" item="vo"}
+                    <tr>
+                        <td>{$vo.id}</td>
+                        <td>{$vo.customer_name}</td>
+                        <td>{$vo.customer_phone}</td>
+                        <td>{$vo.licence_plate}</td>
+                        <td>{$vo.info}</td>
+                        <td>{$vo.start_time_str}</td>
+                        <td>{$vo.add_time}</td>
+                        <td>{$vo.end_time}</td>
+                        <td>{$vo.remark}</td>
+                        <td>{$vo.state_str}</td>
+                        <td>{$vo.seller_name}</td>
+                        <td>
+                            <a href="{:url('seller/CarRegulations/edit',['id'=>$vo['id']])}"
+                               class="layui-btn layui-btn-mini">编辑操作</a>
+                            <a href="{:url('seller/CarRegulations/delete',['id'=>$vo['id']])}"
+                               class="layui-btn layui-btn-danger layui-btn-mini ajax-common">删除</a>
+                        </td>
+                    </tr>
+                    {/foreach}
+                    </tbody>
+                </table>
+                <!--分页-->
+                {$car_regulations_list->render()}
+            </div>
+        </div>
+    </div>
+</div>
+{/block}
+{block name="script"}
+<script>
+    form.on('select(statusselect)', function (data) {
+        $(".layui-form-pane").submit();
+    });
+</script>
+{/block}

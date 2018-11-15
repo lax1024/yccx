@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en" style="height: 100%">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no"/>
+    <title>取车拍照</title>
+
+    <script type="text/javascript" src="__STATIC__/mobile/js/jquery.min.js"></script>
+    <script type="text/javascript" src="__STATIC__/mobile/js/public-js.js?rand={$js_rand}"></script>
+    <script>
+        var website = "http://www.youchedongli.cn";
+    </script>
+
+    <link rel="stylesheet" href="__STATIC__/mui/css/mui.min.css?rand={$css_rand}">
+    <link rel="stylesheet" href="__STATIC__/mui/css/mui-icons-extra.css?rand={$css_rand}">
+    <link rel="stylesheet" href="__STATIC__/mobile/css/take-car-pic-css.css?rand={$css_rand}">
+
+    <style>
+        ul {
+            font-size: 14px;
+            color: #8f8f94;
+        }
+
+        .mui-bar {
+            background-color: #f3e856;
+        }
+
+        .mui-icon-right-nav {
+            float: right;
+        }
+    </style>
+</head>
+<body style="width: 100%;height: 100%">
+<header class="mui-bar mui-bar-nav">
+    <span id="js_user_back" class="mui-icon mui-icon-arrowleft"></span>
+    <h1 class="mui-title">取车拍照</h1>
+</header>
+<div class="mui-content" style="text-align: center;margin-top: 20px">
+    <div class="mui-row">
+        <div class="mui-col-sm-1 mui-col-xs-1"></div>
+        <div data-index="0" class="mui-col-sm-2 mui-col-xs-2 js-use-car-pic border_bottom">左前</div>
+        <div data-index="1" class="mui-col-sm-2 mui-col-xs-2 js-use-car-pic">右前</div>
+        <div data-index="2" class="mui-col-sm-2 mui-col-xs-2 js-use-car-pic">左后</div>
+        <div data-index="3" class="mui-col-sm-2 mui-col-xs-2 js-use-car-pic">右后</div>
+        <div data-index="4" class="mui-col-sm-2 mui-col-xs-2 js-use-car-pic">内部</div>
+        <div class="mui-col-sm-1 mui-col-xs-1"></div>
+    </div>
+</div>
+<div style="width: 100%;height: 75%;position: fixed;top:15%;bottom: 10%;">
+    <div id="js_pic_parent" style="height: 75%;width: 100%;padding-left: 10px;padding-right: 10px;margin-top: 15px">
+        <!-- 左前图片 -->
+        <img id="js_pic_left_front" data-field="left_front" data-picUrl=""
+             style="width: 100%;height: 60%;display: block;"
+             src="http://img.youchedongli.cn/public/static/mobile/images/biekekaiyuey.jpg?x-oss-process=image/resize,h_280">
+        <!-- 右前图片 -->
+        <img id="js_pic_right_front" data-field="right_front" data-picUrl=""
+             style="width: 100%;height: 60%; display: none;"
+             src="http://img.youchedongli.cn/public/static/mobile/images/117.jpg?x-oss-process=image/resize,h_280">
+        <!-- 左后图片 -->
+        <img id="js_pic_left_back" data-field="left_back" data-picUrl="" style="width: 100%;height: 60%;display: none;"
+             src="http://img.youchedongli.cn/public/static/mobile/images/83.jpg?x-oss-process=image/resize,h_280">
+        <!-- 左后图片 -->
+        <img id="js_pic_right_back" data-field="right_back" data-picUrl=""
+             style="width: 100%;height: 60%;display: none;"
+             src="http://img.youchedongli.cn/public/static/mobile/images/239.jpg?x-oss-process=image/resize,h_280">
+        <!-- 内部图片 -->
+        <img id="js_pic_interior" data-field="interior" data-picUrl="" style="width: 100%;height: 60%;display: none;"
+             src="http://img.youchedongli.cn/public/static/mobile/images/261.jpg?x-oss-process=image/resize,h_280">
+        <div style="height: 20%;width: 100%;margin-top: 15px">
+            <div id="js_submit_use_car_pic" style="width: 100%;padding-top: 10px;padding-bottom:10px;text-align: center;background: #f3e856">提交
+            </div>
+        </div>
+        <div id="js_open_car_door" style="height: 20%;width: 100%;display: none">
+            <span style="text-align: center;background: #f3e856;float: right">开门拍照
+            </span>
+        </div>
+
+    </div>
+</div>
+<script type="text/javascript" src="__STATIC__/mobile/js/take-car-pic-js.js?rand={$js_rand}"></script>
+{if condition="$is_wxBrowser eq 'yes'"}
+<script src="http://res.wx.qq.com/open/js/jweixin-1.4.0.js?rand={$js_rand}"></script>
+<script>
+    /*
+     * 注意：
+     * 1. 所有的JS接口只能在公众号绑定的域名下调用，公众号开发者需要先登录微信公众平台进入“公众号设置”的“功能设置”里填写“JS接口安全域名”。
+     * 2. 如果发现在 Android 不能分享自定义内容，请到官网下载最新的包覆盖安装，Android 自定义分享接口需升级至 6.0.2.58 版本及以上。
+     * 3. 常见问题及完整 JS-SDK 文档地址：http://mp.weixin.qq.com/wiki/7/aaa137b55fb2e0456bf8dd9148dd613f.html
+     *
+     * 开发中遇到问题详见文档“附录5-常见错误及解决办法”解决，如仍未能解决可通过以下渠道反馈：
+     * 邮箱地址：weixin-open@qq.com
+     * 邮件主题：【微信JS-SDK反馈】具体问题
+     * 邮件内容说明：用简明的语言描述问题所在，并交代清楚遇到该问题的场景，可附上截屏图片，微信团队会尽快处理你的反馈。
+     */
+    wx.config({
+        debug: false,
+        appId: "{$jssdk['appid']}",
+        timestamp: "{$jssdk['timestamp']}",
+        nonceStr: "{$jssdk['nonceStr']}",
+        signature: "{$jssdk['signature']}",
+        jsApiList: [
+            'checkJsApi',
+            'chooseImage',
+            'uploadImage'
+        ]
+    });
+
+    wx.ready(function () {
+
+
+    });
+    wx.error(function (res) {
+        alert(res.errMsg);
+    });
+
+    $(function(){
+        var use_pic_img = $("#js_pic_parent").find("img");
+        use_pic_img.on("click", function () {
+            take_user_pic($(this).attr("id"), "order", "");
+            return false;
+        });
+    });
+
+    function take_user_pic(viewId, path, field) {
+        wx.chooseImage({
+            count: 1, // 默认9
+            sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
+            sourceType: ['camera'], // 调用相机拍照
+            // sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+            success: function (res) {
+                var localIds = res.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
+                $("#" + viewId).attr('src', localIds[0]);
+                wx.uploadImage({
+                    localId: localIds[0] + '',
+                    isShowProgressTips: 1,
+                    success: function (res) {
+                        // serverIdarr[serverIdindex] = res.serverId;
+                        // get_img_url(res.serverId, serverIdindex);
+                        // serverIdindex++;
+                        upload_use_car_pic(viewId, res.serverId, "jpg", path, field);
+                    },
+                    fail: function (res) {
+                        alert("上传失败" + res.errMsg);
+                    }
+                });
+
+            },
+            cancel: function (res) {
+
+            },
+            fail: function (res) {
+                alert(JSON.stringify(res));
+            }
+        });
+    }
+
+    function upload_use_car_pic(viewId, localIds, type, path, field) {
+        $.ajax({
+            url: website + "/api/Dynupload/upload.html",
+            type: "POST",
+            async: true,
+            data: {
+                sid: localIds,
+                type: type,
+                path: path,
+                field: field
+            },
+            timeout: 5000,
+            dataType: "json",
+            beforeSend: function (xhr) {
+
+            },
+            success: function (data) {
+                if (data.code == 0) {
+//                    alert("http://img.youchedongli.cn" + data.url+field);
+                    $("#" + viewId).attr('src', "http://img.youchedongli.cn" + data.url);
+                    $("#" + viewId).attr('data-picUrl', "http://img.youchedongli.cn" + data.url);
+                } else {
+                    Toast(data.info, 2000);
+                }
+            },
+            error: function (xhr, textStatus) {
+
+            },
+            complete: function () {
+
+            }
+        });
+    }
+</script>
+{/if}
+</body>
+</html>

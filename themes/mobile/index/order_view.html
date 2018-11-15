@@ -1,0 +1,157 @@
+{extend name="base" /}
+{block name="css"}
+<link rel="stylesheet" type="text/css" href="__STATIC__/mobile/css/order-view.css?rand={$css_rand}">
+{/block}
+{block name="body"}
+<body style="background-color: rgb(236, 236, 236); display: block;" onselectstart="return false">
+<div class="colFlex">
+    <div class="headSys colorF">
+        <p class="iph" style="display:none;"></p>
+        <p class="headCap size16">
+            <em class="backArr isdIco" id="goback"></em>
+            <span style="flex:1; text-align: center;margin-left:-22px;">优车动力</span>
+        </p>
+        <p class="detSta colorF">
+            <span class="staBri size24 js-order-status">已取消</span> 取车时请出示取车凭证和必要证件
+        </p>
+    </div>
+    <div id="myscrolller" style="top: 101px; min-height: 664px; overflow: hidden;">
+        <div class="detail-scroller">
+            <div class="mod">
+                <div class="priCom" line="hairB bgE1">
+                    <p class="flexSc">
+                    <span class="verFlex size15"> 订单金额
+                        <em class="orderPri colorPri">¥<dfn class="size20 js-order-amount"></dfn></em>
+                    </span>
+                        <em class="colorVi" id="js-feedetail">费用明细</em>
+                    </p></div>
+                <p class="orderOpa size16">
+                    <span class="orderBtn btnInv color9" id="js-order-left-btn">修改订单</span>
+                    <span class="orderBtn payBtn colorF" id="js-order-right-btn">再次预订</span>
+                </p>
+            </div>
+            <div class="mod">
+                <div class="vehBas"><img src=""
+                                         class="vehImg js-goods-img">
+                    <p class="vehInf"><span class="vehNam size18 js-goods-name"></span>
+                    </p>
+                </div>
+                <div class="pickTim" line="hairT bgE1">
+                    <p class="timPart">
+                        <span class="color9">取车时间</span>
+                        <span class="pickDa size18 js-acquire-time">03月07日 10:00</span></p>
+                    <span class="pickDur color9 size10 js-user-time">8天<i class="durArr"></i></span>
+                    <p class="timPart ret"><span class="color9">还车时间</span>
+                        <span class="pickDa size18 js-return-time">03月15日 08:00</span></p>
+                </div>
+                <div class="pickLoc js-acquire-div" line="hairT bgE1">
+                    <p class="color9 js-acquire-title">取车门店</p>
+                    <p class="supNam size15">
+                        <span class="verFlex supCon js-acquire-store-name">·机场服务点</span>
+                        <em class="isdIco fillVi st-map js-acquire-store-address" data-lat="26.545841"
+                            data-lng="106.797518" data-sname="机场服务点"
+                            data-addr="南明区龙洞堡机场T2航站楼"></em>
+                    </p>
+                    <p class="supOpt">
+                        <span class="supFie addr color9 ">门店地址</span>
+                        <span class="supCon main js-acquire-store-address-text">南明区龙洞堡机场T2航站楼</span>
+                    </p>
+                    <p class="supOpt"><span class="supFie color9">营业时间</span> <span
+                            class="supCon js-acquire-store-time">00:00-23:59</span>
+                    </p>
+                    <p class="supOpt"><span class="supFie color9">营业电话</span>
+                        <span class="supCon js-acquire-store-tel">
+                            15508983161;4006510600
+                        </span>
+                        <a href="tel:15508983161;4006510600" class="js-acquire-store-tel-a">
+                            <em class="isdIco telIco fillVi size16"></em>
+                        </a>
+                    </p>
+                </div>
+                <div class="pickLoc js-return-div" style="display: none" line="hairT bgE1"><p class="color9">还车门店</p>
+                    <p class="supNam size15">
+                        <span class="verFlex supCon js-return-store-name"></span>
+                        <em class="isdIco fillVi st-map js-return-store-address" data-lat="26.545841"
+                            data-lng="106.797518"></em>
+                    </p>
+                    <p class="supOpt">
+                        <span class="supFie addr color9 ">门店地址</span>
+                        <span class="supCon main js-return-store-address-text">南明区龙洞堡机场T2航站楼</span>
+                    </p>
+                    <p class="supOpt"><span class="supFie color9">营业时间</span>
+                        <span class="supCon js-return-store-time">00:00-23:59</span>
+                    </p>
+                    <p class="supOpt"><span class="supFie color9">营业电话</span>
+                        <span class="supCon js-return-store-tel">
+                            15508983161;4006510600
+                        </span>
+                        <a href="tel:15508983161;4006510600" class="js-return-store-tel-a">
+                            <em class="isdIco telIco fillVi size16"></em>
+                        </a>
+                    </p>
+                </div>
+            </div>
+            <div class="mod"><p class="modCap size18">预订信息</p>
+                <ul class="orderInf size15" line="hairT bgE1">
+                    <li class="ordOpt">
+                        <span class="ordFie dri color9">驾驶员</span>
+                        <p class="colFlex"><span class="js-vehicle-drivers"></span>
+                            <span class="ordCer size12 js-id-number">
+
+                            </span>
+                        </p>
+                    </li>
+                    <li class="ordOpt">
+                        <span class="ordFie color9">联系手机</span>
+                        <span class="js-mobile-phone"></span>
+                    </li>
+                    <li class="ordOpt">
+                        <span class="ordFie color9">订单号</span>
+                        <span class="js-order-sn"></span>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+        <div style="display:none" id="js-feedetailmask">
+            <div class="isd-pop rtn-pop" style="z-index: 3004;"><h3>费用明细</h3>
+                <p>租车费<span>¥&nbsp;<b class="js-goods-amount">570</b></span></p>
+                <p>基本保障服务<span>¥&nbsp;<b class="js-goods-basic">320</b></span></p>
+                <p>车行手续费<span>¥&nbsp;<b class="js-goods-procedure">30</b></span></p>
+                <p>异地还车<span>¥&nbsp;<b class="js-goods-remote">30</b></span></p>
+                <p class="tr">总额:<span>¥&nbsp;<b class="js-goods-all">848</b></span></p></div>
+        </div>
+        <div style="display:none" id="js-morenoticemask" class="bn">
+            <div class="isd-pop rtn-pop" style="z-index: 3004;overflow:auto;padding-top:20px;"><p
+                    style="word-break: break-all;margin: 10px 20px;font-size: 15px;    padding: 10px 0;"
+                    class="pline"><span
+                    style="width:60%">违章须知</span></p>
+                <p class="j_odesc ddesc" style="margin: 10px 20px;font-size: 15px;word-break: break-all;color: #666;">
+                    1、
+                    还车时门店向您收取一定金额的信用卡预授权作为违章押金，如无违章，在还车后45天内自动解冻（部分区域，如新疆，西藏，西宁，兰州，成都等，因为进藏区导致的违章信息查询存在滞后性，解冻时间可能需要60天）；<br><br>2、
+                    客服违章处理专员每周至少一次对公司所有门店车辆进行违章查询；在查询到您有违章后，会及时通知到您（电话、邮件或短消息等形式），同时扣除相应的违章押金；<br><br>3、
+                    你可以选择自行处理：在车辆年检前30天内自行处理违章(在当地政策法规允许的情况下）；<br><br>4、 <b>委托桐叶租车代办：将代办违章款项扣除后剩余违章押金退还；</b><br><br>5、
+                    违章逾期不处理的，违章押金将不予退还；
+                </p>
+                <p style="word-break: break-all;margin: 10px 20px;font-size: 15px;    padding: 10px 0;" class="pline">
+                    <span style="width:60%">保险说明</span></p>
+                <p class="j_odesc ddesc" style="margin: 10px 20px;font-size: 15px;word-break: break-all;color: #666;">
+                    1、基本保险覆盖内容：车辆损失险（车身损失）、车辆损失险（车辆报废）、车上人员责任险（驾驶员）、全车盗抢险。<br>1.1车辆损失险（车身损失）：承租方最高承担1500元（含1500元），保险公司及桐叶租车承担1500元以上部分；<br>1.2车辆损失险（车辆报废）和全车盗抢险：承租方承担20%，保险公司及桐叶租车承担80%；<br>1.3第三者责任险、车上人员责任险（驾驶员）<br>注：保险公司免赔/拒赔的部分由客户承担<br>2、不计免赔服务。不计免赔服务是基本保险的补充，购买不计免赔服务后，可免除"车辆损失险（车身损失）"应由客户承担的1500元费用。如上所述“保险公司认定不予赔偿的事故损失”，事故中的所有损失均须由客户自行承担。<br>3、理赔说明及事故处理细则<br>
+                </p>
+                <div align="right"><a target="_blank" href="/zijia/i/adv/insurance/tongye"></a></div>
+                <p></p>
+                <p style="word-break: break-all;margin: 10px 20px;font-size: 15px;    padding: 10px 0;" class="pline">
+                    <span style="width:60%">取还车说明</span></p>
+                <p class="j_odesc ddesc" style="margin: 10px 20px;font-size: 15px;word-break: break-all;color: #666;">
+                    1、携带您本人身份证原件、本人中国驾驶证正副本和本人国内信用卡办理取车手续（中国籍客户必须使用二代身份证，非中国籍客户可凭护照等其他有效证件办理取车）<br>2、身份证原件等证件信息必须与预定时填写的一致，否则可能会造成无法取车<br>3、取车时会刷取信用卡<b>一定金额</b>作为租车预授权，还车时结算订单费用，然后解冻预授权<br>4、还车时会重新刷取您信用卡<b>一定金额</b>作为违章预授权
+                </p></div>
+        </div>
+    </div>
+</div>
+{include file="login" /}
+{include file="loading" /}
+<script type="text/javascript" src="__STATIC__/mobile/js/jquery.min.js"></script>
+<script type="text/javascript" src="__STATIC__/mobile/js/public-js.js?rand={$js_rand}"></script>
+<script type="text/javascript" src="__STATIC__/mobile/js/order-view-js.js?rand={$js_rand}"></script>
+</body>
+{/block}

@@ -1,0 +1,99 @@
+{extend name="base" /}
+{block name="body"}
+<div class="layui-body">
+    <!--tab标签-->
+    <div class="layui-tab layui-tab-brief">
+        <ul class="layui-tab-title">
+            <li class="layui-this">车辆管理</li>
+        </ul>
+        <div class="layui-tab-content">
+            <div class="layui-tab-item layui-show">
+                <form class="layui-form layui-form-pane" action="{:url('manage/car/index')}" method="get">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">关键词</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="keyword" value="{$keyword}" placeholder="请输入关键词"
+                                   class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <button class="layui-btn">搜索</button>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">车辆状态</label>
+                        <div class="layui-inline">
+                            <select name="car_status" lay-filter="statusselect">
+                                <option value="0">未选择</option>
+                                {foreach name="car_status_list" item="vo" key="kv"}
+                                <option  value="{$kv}" {php} echo $kv==$car_status?"selected":"";{/php} >{$vo}</option>
+                                {/foreach}
+                            </select>
+                        </div>
+                    </div>
+                </form>
+                <hr>
+                <table class="layui-table">
+                    <thead>
+                    <tr>
+                        <th style="width: 30px;">ID</th>
+                        <th>店铺id</th>
+                        <th>店铺名称</th>
+                        <th>所在门店</th>
+                        <th>车型名称</th>
+                        <th>车牌号</th>
+                        <th>每日租金</th>
+                        <th>车辆状态</th>
+                        <th>车辆颜色</th>
+                        <th>车机编号</th>
+                        <th>租赁次数</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {foreach name="carcommon_list" item="vo"}
+                    <tr>
+                        <td>{$vo.id}</td>
+                        <td>{$vo.store_key_id}</td>
+                        <td>{$vo.store_key_name}</td>
+                        <td>{$vo.store_site_name}</td>
+                        <td>{$vo.cartype_name}</td>
+                        <td>{$vo.licence_plate}</td>
+                        <td>{$vo.day_price}</td>
+                        <td>{$vo.car_status_str}</td>
+                        <td>{$vo.car_color_str}</td>
+                        <td>{$vo.device_number}</td>
+                        <td>{$vo.rent_count}</td>
+                        <td>
+                            <a href="{:url('manage/car/edit',['id'=>$vo['id']])}"
+                               class="layui-btn layui-btn-normal layui-btn-mini">编辑审核</a>
+                            {if condition="$vo['car_status']!=3"}
+                            <a href="{:url('manage/car/lock',['id'=>$vo['id']])}"
+                               class="layui-btn layui-btn-danger layui-btn-mini ajax-common">下线</a>
+                            {/if}
+                            {if condition="$vo['car_status']!=4"}
+                            <a href="{:url('manage/car/del_lock',['id'=>$vo['id']])}"
+                               class="layui-btn layui-btn-danger layui-btn-mini ajax-common">上线</a>
+                            {/if}
+                            <a href="javascript:open_car_record('{$vo.id}','{$vo.device_number}','','','{$vo.licence_plate}')"
+                               class="layui-btn layui-btn-danger layui-btn-mini">查看记录</a>
+                            <a href="{:url('manage/car/delete',['id'=>$vo['id']])}"
+                               class="layui-btn layui-btn-danger layui-btn-mini ajax-common">删除</a>
+                        </td>
+                    </tr>
+                    {/foreach}
+                    </tbody>
+                </table>
+                <!--分页-->
+                {$carcommon_list->render()}
+            </div>
+        </div>
+    </div>
+</div>
+{/block}
+{block name="script"}
+<script>
+    form.on('select(statusselect)', function (data) {
+        $(".layui-form-pane").submit();
+    });
+</script>
+{/block}

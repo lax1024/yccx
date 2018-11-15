@@ -1,0 +1,414 @@
+body, html {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    background-color: #eeeeee
+}
+
+.content {
+    width: 100%;
+    height: 100%;
+    overflow: scroll;
+    overflow-x: hidden;
+}
+
+.circleProgress_wrapper {
+    width: 200px;
+    height: 200px;
+    position: relative;
+    transform: scale(0.75);
+/ / 设置缩放比例 -ms-transform: scale(0.75);
+    -webkit-transform: scale(0.75);
+    -o-transform: scale(0.75);
+    -moz-transform: scale(0.75);
+}
+
+.wrapper {
+    width: 100px;
+    height: 200px;
+    position: absolute;
+    top: 0;
+    overflow: hidden;
+}
+
+.right {
+    right: 0;
+}
+
+.left {
+    left: 0;
+}
+
+.contentHead {
+    background: #ffffff;
+    height: 25%;
+    margin-left: 10px;
+    margin-right: 10px;
+    border-radius: 20px;
+}
+
+.circleProgress {
+    width: 160px;
+    height: 160px;
+    border: 20px solid transparent;
+    border-radius: 50%;
+    position: absolute;
+    top: 0;
+    -webkit-transform: rotate(45deg);
+}
+
+.rightcircle {
+    border-top: 20px solid green;
+    border-right: 20px solid green;
+    right: 0;
+    /*-webkit-animation: circleProgressLoad_right 5s linear infinite;*/
+}
+
+.leftcircle {
+    border-bottom: 20px solid green;
+    border-left: 20px solid green;
+    left: 0;
+    /*-webkit-animation: circleProgressLoad_left 5s linear infinite;*/
+}
+
+/*@-webkit-keyframes circleProgressLoad_right {*/
+/*0% {*/
+/*border-top: 20px solid green;*/
+/*border-right: 20px solid green;*/
+/*-webkit-transform: rotate(45deg);*/
+/*}*/
+/*50% {*/
+/*border-top: 20px solid rgb(232, 232, 12);*/
+/*border-right: 20px solid rgb(232, 232, 12);*/
+/*border-left: 20px solid rgb(81, 197, 81);*/
+/*border-bottom: 20px solid rgb(81, 197, 81);*/
+/*-webkit-transform: rotate(225deg);*/
+/*}*/
+/*100% {*/
+/*border-left: 20px solid green;*/
+/*border-bottom: 20px solid green;*/
+/*-webkit-transform: rotate(225deg);*/
+/*}*/
+/*}*/
+
+/*@-webkit-keyframes circleProgressLoad_left {*/
+/*0% {*/
+/*border-bottom: 20px solid green;*/
+/*border-left: 20px solid green;*/
+/*-webkit-transform: rotate(45deg);*/
+/*}*/
+/*50% {*/
+/*border-bottom: 20px solid rgb(232, 232, 12);*/
+/*border-left: 20px solid rgb(232, 232, 12);*/
+/*border-top: 20px solid rgb(81, 197, 81);*/
+/*border-right: 20px solid rgb(81, 197, 81);*/
+/*-webkit-transform: rotate(45deg);*/
+/*}*/
+/*100% {*/
+/*border-top: 20px solid green;*/
+/*border-right: 20px solid green;*/
+/*border-bottom: 20px solid green;*/
+/*border-left: 20px solid green;*/
+/*-webkit-transform: rotate(225deg);*/
+/*}*/
+/*}*/
+
+.state_text {
+    font-size: 27px;
+    position: relative;
+    left: -1%;
+    top: 45%;
+    z-index: 200;
+}
+
+.head_container {
+    width: 100%;
+    height: 100%;
+    text-align: center;
+}
+
+.state_text_parent {
+    width: 100px;
+    height: 100px;
+    border: #00B83F solid 10px;
+    border-radius: 50%;
+    margin: auto;
+    text-align: center;
+    display: table;
+}
+
+.state_text_parent span {
+    display: table-cell;
+    vertical-align: middle;
+    font-size: 18px;
+}
+
+.timer_and_taximeter {
+    width: 100%;
+    height: 32%;
+    margin: 10px;
+}
+
+.timer_parent {
+    width: 49%;
+    height: 100%;
+    padding-top: 10px;
+    background: #eeeeee;
+    float: left;
+    display: inline-block;
+    border-bottom-left-radius: 15px;
+    border-top-left-radius: 15px
+}
+
+.taximeter_parent {
+    width: 49%;
+    height: 100%;
+    padding-top: 10px;
+    background: #eeeeee;
+    float: left;
+    display: inline-block;
+    border-bottom-right-radius: 15px;
+    border-top-right-radius: 15px
+}
+
+.timer_container_parent {
+    height: 50%;
+    width: 100%;
+}
+
+.timer_container {
+    height: 100%;
+    width: 100%;
+    display: table;
+}
+
+.timer {
+    color: #0a9fde;
+    font-size: 16px;
+    /*font-weight: bold;*/
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.timer_text_flag {
+    height: 50%;
+    width: 100%;
+}
+
+.timer_text_flag div {
+    height: 100%;
+    width: 100%;
+    display: table;
+}
+
+.timer_text_span {
+    display: table-cell;
+    vertical-align: middle;
+    font-size: 12px;
+}
+
+.timer_and_taximeter_midline hr {
+    height: 80%;
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.details_container {
+    width: 98%;
+    height: 48%;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.details_img_parent {
+    width: 100%;
+    height: 25%;
+    margin-top: 35px;
+    margin-bottom: 10px;
+}
+
+.details_img_parent img {
+    height: 100%;
+    width: 100%;
+}
+
+.carType_container {
+    height: 100%;
+    width: 68%;
+    display: inline-block;
+}
+
+.carType_name {
+    width: 100%;
+    height: 40%;
+    display: table
+}
+
+.carType_name span {
+    display: table-cell;
+    vertical-align: middle;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.carType_describe {
+    width: 100%;
+    height: 60%;
+    display: table;
+}
+
+.carType_describe span {
+    display: table-cell;
+    vertical-align: middle;
+    font-size: 16px;
+}
+
+.details_item {
+    height: 10%;
+    width: 100%;
+    display: inline-block;
+}
+
+.item_left {
+    height: 100%;
+    width: 30%;
+    display: inline-block;
+    /*float: left;*/
+}
+
+.details_item span {
+    /*display: table-cell;*/
+    /*vertical-align: middle;*/
+    font-size: 16px;
+}
+
+.item_right {
+    height: 100%;
+    width: 69%;
+    display: inline-block;
+    /*float: left;*/
+}
+
+.details_store {
+     height: 40%;
+     width: 100%;
+     margin-top: 10px;
+ }
+
+.store_name {
+    height: 100%;
+    width: 30%;
+    display: table;
+    float: left;
+}
+
+.store_name span {
+    font-size: 16px;
+}
+
+.store_message {
+    height: 100%;
+    width: 70%;
+    display: table;
+    float: left;
+}
+
+.store_message_item {
+    height: 20%;
+    width: 100%;
+}
+
+.store_message_item span {
+    display: table-cell;
+    vertical-align: middle;
+    font-size: 16px;
+}
+
+.driver_details {
+    height: 30%;
+    width: 100%;
+    margin-top: 10px;
+}
+
+.driver_title {
+    height: 100%;
+    width: 30%;
+    display: table;
+    float: left;
+}
+
+.driver_title span {
+    font-size: 16px;
+}
+
+.driver_details_container {
+    height: 100%;
+    width: 70%;
+    display: table;
+    float: left;
+}
+
+.driver_details_item {
+    height: 33.4%;
+    width: 100%;
+}
+
+.driver_details_item span {
+    display: table-cell;
+    vertical-align: middle;
+    font-size: 16px;
+}
+
+.order_menu {
+    height: 8%;
+    width: 100%;
+    display: table;
+    position: fixed;
+    bottom: 0px;
+}
+
+.order_menu div {
+    text-align: center;
+    font-size: 18px;
+    display: table-cell;
+    vertical-align: middle;
+    height: 100%;
+    width: 50%;
+}
+
+#js_right_usercar_menu {
+    height: 50%;
+    width: 16%;
+    position: fixed;
+    right: 0px;
+    top: 20%;
+    z-index: 200;
+    font-size: 1.0rem;
+    text-align: center;
+
+}
+
+#js_right_usercar_menu div {
+    margin-top: 10px;
+    height: 2.75rem;
+    width: 3.75rem;
+    color: #fff;
+    border-radius: 23px;
+    text-align: center;
+    line-height: 1.3rem;
+    display: table;
+}
+
+#js_right_usercar_menu span {
+    display: table-cell;
+    vertical-align: middle;
+}
+
+#js_right_usercar_menu img {
+    display: table-cell;
+    vertical-align: middle;
+}
+
+#js_ele_lock{width: 95%;height: 10%;}
+
+#js_ele_lock div{width: 20%;height:100%;float: left;display: flex;justify-content:center;align-items:center;}

@@ -1,0 +1,630 @@
+{extend name="base" /}
+{block name="css"}
+<link rel="stylesheet" href="__STATIC__/mui/css/mui.min.css?rand={$css_rand}">
+<link rel="stylesheet" href="__STATIC__/mui/css/mui-icons-extra.css?rand={$css_rand}">
+<link rel="stylesheet" href="__STATIC__/mui/css/app-self.css?rand={$css_rand}">
+{/block}
+{block name="body"}
+<style>
+
+    .title {
+        margin: 20px 15px 10px;
+        color: #6d6d72;
+        font-size: 15px;
+    }
+
+    .oa-contact-cell.mui-table .mui-table-cell {
+        padding: 11px 0;
+        vertical-align: middle;
+    }
+
+    .oa-contact-cell {
+        position: relative;
+        margin: -11px 0;
+    }
+
+    .oa-contact-avatar {
+        width: 75px;
+    }
+
+    .oa-contact-avatar img {
+        border-radius: 50%;
+    }
+
+    .oa-contact-content {
+        width: 100%;
+    }
+
+    .oa-contact-name {
+        margin-right: 20px;
+    }
+
+    .oa-contact-name, oa-contact-position {
+        float: left;
+    }
+
+    .mui-control-content {
+        background-color: white;
+        height: 100%;
+    }
+
+    .mui-control-content .mui-loading {
+        margin-top: 50px;
+    }
+
+    .mui-table-view-cell {
+        padding: 5px 8px;
+    }
+
+    .mui-table-view-cell .mui-media-object {
+        margin-top: 3%;
+        margin-right: 12%
+    }
+
+    html {
+        height: 100%;
+    }
+
+    .mui-slider-img-content {
+        position: absolute;
+        bottom: 10px;
+        left: 10px;
+        right: 10px;
+        color: white;
+        text-align: center;
+        line-height: 21px
+    }
+</style>
+<body style="height: 100%">
+<div class="mui-navbar-inner mui-bar mui-bar-nav mui-navbar-center">
+    <button type="button" class="mui-left mui-action-back mui-btn  mui-btn-link mui-btn-nav mui-pull-left">
+        <span class="mui-icon mui-icon-left-nav"></span>
+    </button>
+    <h1 class="mui-center mui-title">车辆完成维护</h1>
+</div>
+<div class="mui-content" id="page_div" style="height: 100%;">
+    <div id="return_task_div">
+        <div style="width: 98%;height: 77px;background: rgba(255,255,255,0.8);border-radius: 10px;">
+            <div style="width: 100%;height: 77px">
+                <div style="width: 40%;height: 100%;float: left;">
+                    <div style="width: 100%;float: top;">
+                        <img id="task_car_img" style="width: 86%;margin-left: 10%;margin-top: 18px"
+                             src="http://img.youchedongli.cn/public/car_show_image/X/%E6%96%B0%E8%83%BD%E6%BA%90/EC200.png?x-oss-process=image/resize,w_275">
+                    </div>
+                </div>
+                <div style="width: 59%;height: 100%;float: right;margin-left: 1%">
+                    <div style="height: 21px;width: 100%;">
+                        <div style="height: 21px;margin-top: 12px;width: 100%;display: flex;align-items: center;vertical-align: center;">
+                            <img style="height: 20px;width: 15px"
+                                 src="../../.././public/static/mobile/images/ele_flag.png">
+                            <span style="margin-left: 2px" id="task-car_energy">35%</span>
+                            <span style="margin-left: 2px" id="task-car_driving_mileage">（50km）</span>
+                        </div>
+                    </div>
+                    <div style="height: 21px;width: 100%;margin-top: 2px">
+                        <div style="display: flex;vertical-align: center;align-items: center">
+                            <span style="font-size: 16px" id="task-car_cartype_name">奇瑞EQ</span><span
+                                style="margin-left: 2px" id="task-car_licence_plate">(贵A196CX)</span>
+                        </div>
+                        <div style="margin-top: 2px;height: 23px">
+                            <span style="color: #ff8730;font-size: 18px;font-weight: bold"
+                                  id="task-car_day_price">5.8</span>
+                            <span> 元/h + </span>
+                            <span style="color: #ff8730;font-size: 18px;font-weight: bold"
+                                  id="task-car_km_price">0.9</span>
+                            <span> 元/km</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="mui-content" style="background-color:#fff;padding-top: 0;margin-top: 0">
+            <ul id="js_pic_parent" class="mui-table-view mui-grid-view js_car_pic_choose">
+                <li class="mui-table-view-cell mui-media mui-col-xs-4">
+                    <img id="js_pic_inner" class="mui-media-object"
+                         data-picUrl="http://img.youchedongli.cn/public/static/mobile/images/car_pic_inner.png"
+                         src="http://img.youchedongli.cn/public/static/mobile/images/car_pic_inner.png?rand=2018"
+                         style="height: 65px">
+                    <div class="mui-media-body">前内</div>
+                </li>
+                <li class="mui-table-view-cell mui-media mui-col-xs-4">
+                    <img id="js_pic_back_inner" class="mui-media-object"
+                         data-picUrl="http://img.youchedongli.cn/public/static/mobile/images/car_pic_inner.png"
+                         src="http://img.youchedongli.cn/public/static/mobile/images/car_pic_inner.png?rand=2018"
+                         style="height: 65px">
+                    <div class="mui-media-body">后内</div>
+                </li>
+                <li class="mui-table-view-cell mui-media mui-col-xs-4">
+                    <img id="js_pic_back" class="mui-media-object"
+                         data-picUrl="http://img.youchedongli.cn/public/static/mobile/images/car_pic_back.png"
+                         src="http://img.youchedongli.cn/public/static/mobile/images/car_pic_back.png?rand=2018"
+                         style="height: 65px">
+                    <div class="mui-media-body">后方</div>
+                </li>
+                <li class="mui-table-view-cell mui-media mui-col-xs-6">
+                    <img id="js_pic_left_front" class="mui-media-object"
+                         data-picUrl="http://img.youchedongli.cn/public/static/mobile/images/car_pic_left_front.png"
+                         src="http://img.youchedongli.cn/public/static/mobile/images/car_pic_left_front.png?rand=2018"
+                         style="height: 100px">
+                    <div class="mui-media-body">左前</div>
+                </li>
+                <li class="mui-table-view-cell mui-media mui-col-xs-6">
+                    <img id="js_pic_right_front" class="mui-media-object"
+                         data-picUrl="http://img.youchedongli.cn/public/static/mobile/images/car_pic_right_front.png"
+                         src="http://img.youchedongli.cn/public/static/mobile/images/car_pic_right_front.png?rand=2018"
+                         style="height: 100px">
+                    <div class="mui-media-body">右前</div>
+                </li>
+            </ul>
+        </div>
+        <div style="width: 100%;margin-top: 10px;text-align: left">
+            <div class="mui-row" style="font-size: 14px">
+                <div class="mui-col-sm-3 mui-col-xs-3">
+                    <span style="float: left;padding:10px 0;margin-left: 3px">还车点：</span>
+                </div>
+                <div class="mui-col-sm-9 mui-col-xs-9" style="text-align: left">
+                    <select class="mui-btn mui-btn-block" id="return_store_id"
+                            style="font-size: 14px;float: left;width: 90%;padding: 7px 0">
+                        <option value="0">自动获取</option>
+                    </select>
+                </div>
+                <div class="mui-col-sm-3 mui-col-xs-3">
+                    <span style="float: left;padding:10px 0;margin-left: 3px">维护内容：</span>
+                </div>
+                <div class="mui-col-sm-9 mui-col-xs-9" style="text-align: left">
+                    <select id="order_type" class="mui-btn mui-btn-block"
+                            style="font-size: 14px;float: left;width: 90%;padding: 7px 0">
+                        {foreach name="order_type" item="vo" key="ke"}
+                        <option value="{$ke}">{$vo}</option>
+                        {/foreach}
+                    </select>
+                </div>
+                <div class="mui-col-sm-3 mui-col-xs-3">
+                    <span style="float: left;padding:10px 0;margin-left: 3px">车辆状态：</span>
+                </div>
+                <div class="mui-col-sm-9 mui-col-xs-9" style="text-align: left">
+                    <select id="car_status" class="mui-btn mui-btn-block"
+                            style="font-size: 14px;float: left;width: 90%;padding: 7px 0">
+                        {foreach name="car_status" item="vo" key="ke"}
+                        {if condition="$ke == 4"}
+                        <option value="{$ke}" selected>{$vo}</option>
+                        {else/}
+                        <option value="{$ke}">{$vo}</option>
+                        {/if}
+                        {/foreach}
+                    </select>
+                </div>
+            </div>
+            <div class="mui-row" style="font-size: 14px">
+                <div class="mui-col-sm-1 mui-col-xs-1">
+                </div>
+                <div class="mui-col-sm-10 mui-col-xs-10">
+                    <textarea style="font-size: 14px" id="notes" placeholder="异常报备信息填写"></textarea>
+                </div>
+                <div class="mui-col-sm-1 mui-col-xs-1">
+                </div>
+            </div>
+            <div style="width: 100%;margin-top: 10px;text-align: center">
+                <button type="button" class="mui-btn mui-btn-success car-cmd-btn" data-cmd="1">取车(开门供电)</button>
+                <button type="button" class="mui-btn mui-btn-warning car-cmd-btn" data-cmd="2">还车(关门断电)</button>
+            </div>
+            <div style="width: 100%;margin-top: 5px;text-align: center;margin-bottom: 10px">
+                <button type="button" class="mui-btn mui-btn-success mui-btn-outlined car-cmd-btn" data-cmd="3">供电
+                </button>
+                <button type="button" class="mui-btn mui-btn-warning mui-btn-outlined car-cmd-btn" data-cmd="4">断电
+                </button>
+                <button type="button" class="mui-btn mui-btn-success mui-btn-outlined car-cmd-btn" data-cmd="5">开门
+                </button>
+                <button type="button" class="mui-btn mui-btn-danger mui-btn-outlined car-cmd-btn" data-cmd="6">关门
+                </button>
+            </div>
+            <div style="width: 100%;margin-top: 10px;margin-bottom: 10px;text-align: center">
+                <button id="order_end_unusual" type="button"
+                        style="width: 45%;margin: 0 1%;height: 45px;font-size: 16px" class="mui-btn mui-btn-danger">异常报备
+                </button>
+                <button id="order_end" type="button" style="width: 45%;margin: 0 1%;height: 45px;font-size: 16px"
+                        class="mui-btn mui-btn-success" data-cmd="2">提交数据
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="__STATIC__/mui/js/mui.min.js"></script>
+<script type="text/javascript" src="__STATIC__/mui/js/mui.previewimage.js?rand={$js_rand}"></script>
+<script type="text/javascript" src="__STATIC__/mui/js/mui.zoom.js?rand={$js_rand}"></script>
+{if condition="$is_wxBrowser eq 'yes'"}
+<script src="http://res.wx.qq.com/open/js/jweixin-1.4.0.js?rand={$js_rand}"></script>
+<script>
+    var is_up_end = true;
+    var pointx;
+    /*
+     * 注意：
+     * 1. 所有的JS接口只能在公众号绑定的域名下调用，公众号开发者需要先登录微信公众平台进入“公众号设置”的“功能设置”里填写“JS接口安全域名”。
+     * 2. 如果发现在 Android 不能分享自定义内容，请到官网下载最新的包覆盖安装，Android 自定义分享接口需升级至 6.0.2.58 版本及以上。
+     * 3. 常见问题及完整 JS-SDK 文档地址：http://mp.weixin.qq.com/wiki/7/aaa137b55fb2e0456bf8dd9148dd613f.html
+     *
+     * 开发中遇到问题详见文档“附录5-常见错误及解决办法”解决，如仍未能解决可通过以下渠道反馈：
+     * 邮箱地址：weixin-open@qq.com
+     * 邮件主题：【微信JS-SDK反馈】具体问题
+     * 邮件内容说明：用简明的语言描述问题所在，并交代清楚遇到该问题的场景，可附上截屏图片，微信团队会尽快处理你的反馈。
+     */
+    wx.config({
+        debug: false,
+        appId: "{$jssdk['appid']}",
+        timestamp: "{$jssdk['timestamp']}",
+        nonceStr: "{$jssdk['nonceStr']}",
+        signature: "{$jssdk['signature']}",
+        jsApiList: [
+            'checkJsApi',
+            'openLocation',
+            'chooseImage',
+            'uploadImage'
+        ]
+    });
+    wx.ready(function () {
+        var use_pic_img = $("#js_pic_parent").find("img");
+        use_pic_img.on("click", function () {
+            take_user_pic($(this).attr("id"), "task", "");
+            return false;
+        });
+        wx.getLocation({
+            success: function (res) {
+                var latitude = res.latitude; //纬度
+                var longitude = res.longitude; //经度
+                localStorage.setItem("old_marker_self_lat", latitude);
+                localStorage.setItem("old_marker_self_lng", longitude);
+                pointx = wgs2bd(parseFloat(latitude), parseFloat(longitude));
+                get_store_list(pointx[1], pointx[0]);
+            },
+            cancel: function (res) {
+                // alert('用户拒绝授权获取地理位置');
+            },
+            fail: function (res) {
+//                alert(JSON.stringify(res));
+            }
+        });
+    });
+    wx.error(function (res) {
+        //alert(res.errMsg);
+    });
+
+    function take_user_pic(viewId, path, field) {
+        if (!is_up_end) {
+            return;
+        }
+        wx.chooseImage({
+            count: 1, // 默认9
+            sizeType: ['compressed'], // 可以指定是原图还是压缩图，默认二者都有
+            sourceType: ['camera'], // 调用相机拍照
+            // sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+            success: function (res) {
+                var localIds = res.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
+                // $("#" + viewId).attr('src', localIds[0]);
+                is_up_end = false;
+                wx.uploadImage({
+                    localId: localIds[0] + '',
+                    isShowProgressTips: 1,
+                    success: function (res) {
+                        upload_use_car_pic(viewId, res.serverId, "jpg", path, field);
+                    },
+                    fail: function (res) {
+                        is_up_end = true;
+                        mui.alert("上传失败" + res.errMsg, '提示');
+                    }
+                });
+            },
+            cancel: function (res) {
+            },
+            fail: function (res) {
+            }
+        });
+    }
+
+    function upload_use_car_pic(viewId, localIds, type, path, field) {
+        $.ajax({
+            url: website + "/api/Dynupload/upload.html",
+            type: "POST",
+            async: true,
+            data: {
+                sid: localIds,
+                type: type,
+                path: path,
+                field: field
+            },
+            timeout: 5000,
+            dataType: "json",
+            success: function (data) {
+                is_up_end = true;
+                if (data.code == 0) {
+                    $("#" + viewId).attr('src', "http://img.youchedongli.cn" + data.url);
+                    $("#" + viewId).attr('data-picUrl', "http://img.youchedongli.cn" + data.url);
+                } else {
+                    Toast(data.info, 2000);
+                }
+            },
+            error: function (xhr, textStatus) {
+                is_up_end = true;
+            }
+        });
+    }
+</script>
+{/if}
+<script>
+    var order_id = {$order_id};
+    var car_id = {$car_id};
+    /**
+     * 完成任务
+     */
+    $("#order_end").on('click', function () {
+        get_elesite(car_id);
+    });
+
+    /**
+     * 异常报备
+     */
+    $("#order_end_unusual").on('click', function () {
+        var return_store_id = $("#return_store_id").val();
+        if (return_store_id != 0) {
+            var notes = $("#notes").val();
+            if (notes != "") {
+                return_task(1, notes);
+            } else {
+                mui.alert("请填写报备内容", '提示');
+            }
+        } else {
+            mui.alert("请选择车辆目前的站点", '提示');
+        }
+    });
+
+    function return_task(is_unusual, notes) {
+        var pic_error = ["前内", "后内", "左前", "右前", "后方"];
+        var return_img = new Array();
+        var flag = false;
+        var use_pic_img = $("#js_pic_parent").find("img");
+        for (var i = 0; i < use_pic_img.length; i++) {
+            if (use_pic_img.eq(i).attr("data-picUrl") == "") {
+                mui.alert(pic_error[i] + "图片为空", '提示');
+                flag = false;
+                return;
+            } else {
+                return_img[i] = $(use_pic_img[i]).attr("data-picUrl");
+                flag = true;
+            }
+        }
+        var order_type = $("#order_type").val();
+        var return_store_id = $("#return_store_id").val();
+        var car_status = $("#car_status").val();
+        if (return_store_id == 0) {
+            mui.alert("请选择还车点", '提示');
+        }
+        if (flag) {
+            $.ajax({
+                url: website + "/api/operation_car/submit_order_operation.html",
+                type: "POST",
+                async: true,
+                data: {
+                    order_id: order_id,
+                    return_img: return_img,
+                    order_type: order_type,
+                    store_id: return_store_id,
+                    car_status: car_status,
+                    is_unusual: is_unusual,
+                    notes: notes
+                },
+                outTime: 10000,
+                dataType: "json",
+                success: function (data_temp) {
+                    if (parseInt(data_temp.code) === 0) {
+                        window.location.href = "index.html";
+                    } else {
+                        mui.alert(data_temp.info, '提示');
+                    }
+                }, error: function () {
+                    mui.alert("提交失败", '提示');
+                }
+            });
+        }
+    }
+
+    //获取站点
+    function get_elesite(car_id) {
+        $.ajax({
+            url: website + "/api/operation_car/get_elesite.html",
+            type: "GET",
+            data: {
+                car_id: car_id
+            },
+            outTime: 5000,
+            dataType: "json",
+            success: function (data_temp) {
+                // console.log("成功");
+                if (parseInt(data_temp.code) === 0) {
+                    $("#return_store_id").val(data_temp.data);
+                    return_task(0, "");
+                } else {
+                    mui.alert(data_temp.info, '提示');
+                }
+            }
+        });
+    }
+
+    function get_store_list(lng, lat) {
+        $.ajax({
+            url: website + "/api/car/get_elesite_list.html",
+            type: "POST",
+            async: true,
+            data: {
+                car_id: car_id,
+                lat: lat,
+                lng: lng
+            },
+            outTime: 10000,
+            dataType: "json",
+            success: function (data_temp) {
+                // console.log("成功");
+                if (parseInt(data_temp.code) === 0) {
+                    $("#return_store_id").html("<option value='0'>自动选择</option>");
+                    for (var i = 0; i < data_temp.data.length; i++) {
+                        var item = $("<option value='" + data_temp.data[i].id + "'>" + data_temp.data[i].store_name + "</option>");
+                        item.appendTo($("#return_store_id"));
+                    }
+                }
+            }
+        });
+    }
+
+    /**
+     * 获取车辆信息
+     */
+    function get_car_task_info(goods_id) {
+        $.ajax({
+            url: website + "/api/Car/get_car_id_task.html",
+            type: "POST",
+            async: true,
+            data: {
+                id: goods_id
+            },
+            outTime: 5000,
+            dataType: "json",
+            success: function (data_temp) {
+                // console.log("成功");
+                if (parseInt(data_temp.code) === 0) {
+                    $("#task-car_energy").text(data_temp.data.energy + "%");
+                    $("#task-car_cartype_name").text(data_temp.data.cartype_name);
+                    $("#task-car_licence_plate").text("(" + data_temp.data.licence_plate + ")");
+                    $("#task-car_driving_mileage").text("(" + data_temp.data.driving_mileage + "km)");
+                    $("#task-car_day_price").text(data_temp.data.day_price);
+                    $("#task-car_km_price").text(data_temp.data.km_price);
+                    getPicLastOrder(goods_id);
+                }
+            }
+        });
+    }
+
+    //获取上一个订单还车时拍的照片
+    function getPicLastOrder(goods_id) {
+        $.ajax({
+            url: website + "/api/Order/get_car_order_img.html",
+            type: "GET",
+            async: true,
+            data: {
+                goods_id: goods_id
+            },
+            timeout: 5000,
+            dataType: "json",
+            success: function (data) {
+                if (parseInt(data.code) == 0) {
+                    var data = data.data;
+                    $("#js_last_pic_left_front").attr("src", data.left_front);
+                    $("#js_last_pic_left_front").attr("data-preview-src", data.left_front);
+                    $("#js_last_pic_left_front").attr("data-preview-group", "pic_last_order");
+
+                    $("#js_last_pic_right_front").attr("src", data.right_front);
+                    $("#js_last_pic_right_front").attr("data-preview-src", data.left_front);
+                    $("#js_last_pic_right_front").attr("data-preview-group", "pic_last_order");
+
+                    $("#js_last_pic_car_back").attr("src", data.car_back);
+                    $("#js_last_pic_car_back").attr("data-preview-src", data.left_front);
+                    $("#js_last_pic_car_back").attr("data-preview-group", "pic_last_order");
+                }
+            }
+        });
+    }
+
+    /**
+     * 调用第三方导航软件实现导航
+     * @param lat  目的地纬度
+     * @param lng  目的地经度
+     */
+    function go_openLocation(lat, lng) {
+        var ponitx = wgs2gcj(lat, lng);//将gps坐标转为百度地图坐标
+        wx.openLocation({
+            latitude: ponitx[0], // 纬度，浮点数，范围为90 ~ -90
+            longitude: ponitx[1], // 经度，浮点数，范围为180 ~ -180。
+            name: '车辆位置', // 位置名
+            address: '请按照导航去取车', // 地址详情说明
+            scale: 18, // 地图缩放级别,整形值,范围从1~28。默认为最大
+            infoUrl: '' // 在查看位置界面底部显示的超链接,可点击跳转
+        });
+    }
+
+    var in_cmd = true;
+    /**
+     * 执行车辆控制操作
+     */
+    $(".car-cmd-btn").on("click", function () {
+        var cmd = $(this).attr("data-cmd");
+        var btnArray = ['否', '确认'];
+        mui.confirm('确定要执行操作吗？', '消息提醒', btnArray, function (e) {
+            if (e.index == 1) {
+                car_cmd(cmd);
+            }
+        })
+    });
+
+    function car_cmd(cmd_type) {
+        if (!in_cmd) {
+            return;
+        }
+        in_cmd = false;
+        $.ajax({
+            url: website + "/api/operation_car/car_cmd.html",
+            type: "GET",
+            async: true,
+            data: {
+                order_id: order_id,
+                cmd: cmd_type
+            },
+            outTime: 10000,
+            dataType: "json",
+            success: function (data_temp) {
+                in_cmd = true;
+                mui.alert(data_temp.info, '消息提示');
+            }, error: function () {
+                alert("失败");
+                in_cmd = true;
+            }
+        });
+    }
+
+    //导航
+    $("#js_car_navi").on("click", function () {
+        var navi_lat = $(this).attr("data-lat");
+        var navi_lng = $(this).attr("data-lng");
+        go_openLocation(parseFloat(navi_lat), parseFloat(navi_lng));
+    });
+    if (parseInt(order_id) != 0) {
+        $(".mui-bar-tab").find(".mui-tab-item").removeClass('mui-active');
+        $("#go_task").addClass('mui-active');
+        $("#page_div").find(".mui-control-content").removeClass('mui-active');
+        $("#tabbar-with-chat").addClass("mui-active");
+        $("#take_task_div").hide();
+        $("#return_task_div").show();
+        get_car_task_info(car_id);
+    }
+
+
+    //物理返回按钮
+    // pushHistory();//进栈
+    //物理返回键的点击事件监听
+    window.addEventListener("popstate", function (e) {
+        // alert("1");
+        if (document.querySelector(".mui-preview-in")) {
+            mui.previewImage().close();
+            // pushHistory();
+        } else {
+            window.history.back();
+        }
+    }, false);
+    // //将上一个页面进栈
+    // function pushHistory() {
+    //     var state = {
+    //         title: "title",
+    //         url: "#"
+    //     };
+    //     window.history.pushState(state, "title", "#");
+    // }
+</script>
+</body>
+{/block}
+

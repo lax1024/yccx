@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>绘制记录</title>
+    <script src="http://libs.baidu.com/jquery/1.9.0/jquery.js"></script>
+    <script type="text/javascript"
+            src="http://api.map.baidu.com/api?v=2.0&ak=DplTpLn9EpGEIwimAKUNscH6YWGAyoH3"></script>
+    <link rel="stylesheet" href="http://api.map.baidu.com/library/DrawingManager/1.4/src/DrawingManager_min.css"/>
+    <link rel="stylesheet" href="__JS__/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="__CSS__/font-awesome.min.css">
+    <style type="text/css">
+        body, html {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            font-family: "微软雅黑";
+        }
+
+        #allmap {
+            width: 100%;
+            height: 500px;
+            overflow: hidden;
+        }
+
+        #result {
+            width: 100%;
+            font-size: 12px;
+        }
+
+        dl, dt, dd, ul, li {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        p {
+            font-size: 12px;
+        }
+
+        dt {
+            font-size: 14px;
+            font-family: "微软雅黑";
+            font-weight: bold;
+            border-bottom: 1px dotted #000;
+            padding: 5px 0 5px 5px;
+            margin: 5px 0;
+        }
+
+        dd {
+            padding: 5px 0 0 5px;
+        }
+
+        li {
+            line-height: 28px;
+        }
+    </style>
+</head>
+<body>
+<div style="width: 100%;">
+    <form class="layui-form layui-container" action="{:url('index/common/car_record',['id'=>$id])}" method="get">
+        <div style="width: 100%;min-height: 38px;background: white">
+            <input type="text" id="stime" name="stime" style="float: left;width: 150px" value="{$stime}"
+                   placeholder="开始时间"
+                   class="layui-input datetime">
+            <input type="text" id="etime" name="etime" style="float: left;width: 150px" value="{$etime}"
+                   placeholder="结束时间"
+                   class="layui-input datetime">
+            <div style="float: left;width: 100px" id="speed">
+                <select name="speed">
+                    <option value="1" {php} echo $speed==1?"selected":"";{/php}>1倍</option>
+                    <option value="3" {php} echo $speed==3?"selected":"";{/php}>3倍</option>
+                    <option value="5" {php} echo $speed==5?"selected":"";{/php}>5倍</option>
+                    <option value="10" {php} echo $speed==10?"selected":"";{/php}>10倍</option>
+                </select>
+            </div>
+            <div style="float: right;width: 100px;margin-right: 200px">
+                <label class="layui-form-label">实时数据</label>
+                <div class="layui-input-block">
+                    <input type="checkbox" name="real" {php} echo $real ? "checked":""; {/php} lay-skin="switch" lay-text="开|关" lay-filter="switchTest" value="0">
+                </div>
+            </div>
+            <input type="text" hidden name="real" id="real" >
+            <button class="layui-btn" id="submit_btn" lay-submit lay-filter="*">查询</button>
+        </div>
+    </form>
+</div>
+<div id="allMap" style="height: 700px; width: 100%; background: #0a9fde">
+    <div id="map" style="width: 100%;height: 100%;">
+    </div>
+</div>
+<script type="text/javascript">
+    //定义全局变量
+    var website = 'http://' + window.location.host;
+</script>
+<script src="__JS__/jquery.min.js"></script>
+<script src="__JS__/layui/lay/dest/layui.all.js"></script>
+<script type="text/javascript">
+    /**
+     * 通用日期时间选择
+     */
+    $('.datetime').on('click', function () {
+        laydate({
+            elem: this,
+            istime: true,
+            format: 'YYYY-MM-DD hh:mm:ss'
+        })
+    });
+    var times = 1000 / parseInt({$speed});
+    var device_number = '{$device_number}';
+    var real = {$real};
+    var arrPoisjson = {$route_data};
+    var carMk = null;//先将终点坐标展示的mark对象定义
+    var arrPois = Array();
+    var myIcon2 = new BMap.Icon(
+        'http://img.youchedongli.cn/public/static/images/route_car.png',
+        new BMap.Size(52, 26),
+        {anchor: new BMap.Size(27, 13)});//初始化终点坐标图标
+    //Demo
+    layui.use('form', function () {
+        var form = layui.form();
+        form.on('switch(switchTest)', function (data) {
+            if (real == 1) {
+                real = 0;
+            } else {
+                real = 1;
+            }
+            $("#real").val(real);
+            $("#submit_btn").click();
+        });
+    });
+    $(function () {
+        setInterval(function () {
+            $("#allMap").css("height", $(document.body).height());
+        },2000);
+
+        // 百度地图API功能
+        var map = new BMap.Map("map");
+        map.enableScrollWheelZoom();
+
+        //循环，将数据添加到数组
+        $.each(arrPoisjson, function (index, item) {
+            var _t = wgs2bd(parseFloat(item.latitude), parseFloat(item.longitude));
+            arrPois.push(new BMap.Point(_t[1], _t[0]));
+        });
+
+        //将数组倒序
+        arrPois = arrPois.reverse();
+        function initMap() {
+            //设置地图中心和级别
+            //将变量转为数组
+            if (parseInt(real) != 1) {
+                map.centerAndZoom(arrPois[arrPois.length / 2], 12);
+                /**添加终点和起点的标记**/
+                addMarker(arrPois[0], '终点');
+                addMarker(arrPois[arrPois.length - 1], '起点');
+                //创建线路
+                var polyline = new BMap.Polyline(
+                    arrPois,//所有的GPS坐标点
+                    {
+                        strokeColor: "#00AA33", //线路颜色
+                        strokeWeight: 4,//线路大小
+                        //         线路类型(虚线)
+                        strokeStyle: "solid"  //轨迹线为虚线
+                    });
+                //绘制线路
+                map.addOverlay(polyline);
+            }
+        }
+
+        /**
+         * 标记
+         * @param {Object} point
+         */
+        function addMarker(point, name) {
+            var marker = new BMap.Marker(point);
+            var label = new BMap.Label(name, {
+                offset: new BMap.Size(20, -10)
+            });
+            marker.setLabel(label);
+            map.addOverlay(marker);
+        }
+
+//初始化地图
+        initMap();
+        if (parseInt(real) == 1) {
+            $("#stime").hide();
+            $("#etime").hide();
+            $("#submit_btn").hide();
+            $("#speed").hide();
+            updataMap(map, 0);
+            setInterval(function () {
+                updataMap(map, 1);
+            }, 2500);
+        } else {
+            //运动轨迹
+            getRoute(carMk, arrPois, times);
+        }
+        function getRoute(carMk, route, time) {
+            var i = 0;
+            carMk = new BMap.Marker(route[i], {icon: myIcon2});  // 创建标注
+            var interval = setInterval(function () {
+                if (i >= route.length - 1) {
+                    clearInterval(interval);
+                    return;
+                }
+                i = i + 1;
+                addMarkerCarMarker(carMk, route[route.length - i], map, route[route.length - i - 1]);//添加图标
+            }, time);
+        }
+
+        /**
+         *
+         * @param point  上一个位置(起始位置)
+         * @param name
+         * @param map   百度地图
+         * @param mapInit   下一个位置(目标位置)
+         */
+        function addMarkerCarMarker(carMk, point, map, mapInit) {
+//
+            var point_temp = new BMap.Point(mapInit.lng, mapInit.lat);
+            map.centerAndZoom(mapInit, 15);
+            carMk.setPosition(point_temp);
+            var rota = getRotation(point, mapInit);
+            carMk.setRotation(rota);
+            map.addOverlay(carMk);               // 将标注添加到地图中
+        }
+
+        /**
+         *在每个点的真实步骤中设置小车转动的角度
+         *@param{BMap.Point} curPos 起点
+         *@param{BMap.Point} targetPos 终点
+         */
+        function getRotation(curPos, targetPos) {
+            var x1 = curPos.lng;
+            var y1 = curPos.lat;
+            var x2 = targetPos.lng;
+            var y2 = targetPos.lat;
+            var deg = 0;
+            if (x1 != x2) {
+                var tan = (y2 - y1) / (x2 - x1),
+                    atan = Math.atan(tan);
+                deg = atan * 360 / (2 * Math.PI);
+                if (x2 < x1) {
+                    deg = -deg + 180;
+                } else {
+                    deg = -deg;
+                }
+                if (-deg < 0) {
+                    return 360 + deg;
+                }
+                return deg;
+            } else {
+                var disy = y2 - y1;
+                var bias = 0;
+                if (disy > 0)
+                    bias = -1;
+                else
+                    bias = 1;
+
+                deg = -bias * 90;
+                if (deg < 0) {
+                    return 360 + deg;
+                }
+                return deg;
+            }
+        }
+
+    });
+
+    function updataMap(map, updadte) {
+        $.ajax({
+            url: website + "/api/car_device/get_car_log.html",
+            type: "POST",
+            async: true,
+            data: {
+                device_number: device_number
+            },
+            timeout: 5000,
+            dataType: "json",
+            beforeSend: function (xhr) {
+            },
+            success: function (data) {
+                if (data.code == 0) {
+                    var point = data.data;
+                    var _t = wgs2bd(parseFloat(point.latitude), parseFloat(point.longitude));
+                    point.latitude = _t[1];
+                    point.longitude = _t[0];
+                    map.removeOverlay(carMk);
+                    carMk = new BMap.Marker(point, {icon: myIcon2});  // 创建标注
+                    var point_temp = new BMap.Point(_t[1], _t[0]);
+                    if (updadte == 0) {
+                        map.centerAndZoom(point_temp, 15);
+                    }
+                    carMk.setPosition(point_temp);
+                    carMk.setRotation(point.direction - 87);
+                    map.addOverlay(carMk);
+                }
+            },
+            error: function (xhr, textStatus) {
+            },
+            complete: function () {
+            }
+        });
+    }
+
+    //////////////////////////////////////////
+    //////////////转换核心代码////////////////
+    //////////////////////////////////////////
+    var pi = 3.14159265358979324;
+    var a = 6378245.0;
+    var ee = 0.00669342162296594323;
+    var x_pi = 3.14159265358979324 * 3000.0 / 180.0;
+
+
+    //世界大地坐标转为百度坐标
+    function wgs2bd(lat, lon) {
+        var wgs2gcjR = wgs2gcj(lat, lon);
+        var gcj2bdR = gcj2bd(wgs2gcjR[0], wgs2gcjR[1]);
+        return gcj2bdR;
+    }
+
+    function gcj2bd(lat, lon) {
+        var x = lon, y = lat;
+        var z = Math.sqrt(x * x + y * y) + 0.00002 * Math.sin(y * x_pi);
+        var theta = Math.atan2(y, x) + 0.000003 * Math.cos(x * x_pi);
+        var bd_lon = z * Math.cos(theta) + 0.0065;
+        var bd_lat = z * Math.sin(theta) + 0.006;
+        var result = [];
+        result.push(bd_lat);
+        result.push(bd_lon);
+        return result;
+    }
+
+    function bd2gcj(lat, lon) {
+        var x = lon - 0.0065, y = lat - 0.006;
+        var z = Math.sqrt(x * x + y * y) - 0.00002 * Math.sin(y * x_pi);
+        var theta = Math.atan2(y, x) - 0.000003 * Math.cos(x * x_pi);
+        var gg_lon = z * Math.cos(theta);
+        var gg_lat = z * Math.sin(theta);
+        var result = [];
+        result.push(gg_lat);
+        result.push(gg_lon);
+        return result;
+    }
+
+    function wgs2gcj(lat, lon) {
+        var dLat = transformLat(lon - 105.0, lat - 35.0);
+        var dLon = transformLon(lon - 105.0, lat - 35.0);
+        var radLat = lat / 180.0 * pi;
+        var magic = Math.sin(radLat);
+        magic = 1 - ee * magic * magic;
+        var sqrtMagic = Math.sqrt(magic);
+        dLat = (dLat * 180.0) / ((a * (1 - ee)) / (magic * sqrtMagic) * pi);
+        dLon = (dLon * 180.0) / (a / sqrtMagic * Math.cos(radLat) * pi);
+        var mgLat = lat + dLat;
+        var mgLon = lon + dLon;
+        var result = [];
+        result.push(mgLat);
+        result.push(mgLon);
+        return result;
+    }
+
+    function transformLat(lat, lon) {
+        var ret = -100.0 + 2.0 * lat + 3.0 * lon + 0.2 * lon * lon + 0.1 * lat * lon + 0.2 * Math.sqrt(Math.abs(lat));
+        ret += (20.0 * Math.sin(6.0 * lat * pi) + 20.0 * Math.sin(2.0 * lat * pi)) * 2.0 / 3.0;
+        ret += (20.0 * Math.sin(lon * pi) + 40.0 * Math.sin(lon / 3.0 * pi)) * 2.0 / 3.0;
+        ret += (160.0 * Math.sin(lon / 12.0 * pi) + 320 * Math.sin(lon * pi / 30.0)) * 2.0 / 3.0;
+        return ret;
+    }
+
+    function transformLon(lat, lon) {
+        var ret = 300.0 + lat + 2.0 * lon + 0.1 * lat * lat + 0.1 * lat * lon + 0.1 * Math.sqrt(Math.abs(lat));
+        ret += (20.0 * Math.sin(6.0 * lat * pi) + 20.0 * Math.sin(2.0 * lat * pi)) * 2.0 / 3.0;
+        ret += (20.0 * Math.sin(lat * pi) + 40.0 * Math.sin(lat / 3.0 * pi)) * 2.0 / 3.0;
+        ret += (150.0 * Math.sin(lat / 12.0 * pi) + 300.0 * Math.sin(lat / 30.0 * pi)) * 2.0 / 3.0;
+        return ret;
+    }
+
+</script>
+</body>
+</html>

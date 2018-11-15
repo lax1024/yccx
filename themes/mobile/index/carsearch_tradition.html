@@ -1,0 +1,162 @@
+{extend name="base" /}
+{block name="css"}
+<link type="text/css" rel="stylesheet" href="__STATIC__/mobile/css/search-css1.css?rand={$css_rand}"/>
+<link type="text/css" rel="stylesheet" href="__STATIC__/mobile/css/search-css2.css?rand={$css_rand}"/>
+<link type="text/css" rel="stylesheet" href="__STATIC__/mobile/css/search-css3.css?rand={$css_rand}"/>
+<link type="text/css" rel="stylesheet" href="__STATIC__/mobile/css/search-css4.css?rand={$css_rand}"/>
+<link type="text/css" rel="stylesheet" href="__STATIC__/mobile/css/timer.css?rand={$css_rand}">
+{/block}
+{block name="body"}
+<body class="page" style="background-color: rgb(243, 243, 243); color: rgb(51, 51, 51); display: block; overflow: auto;"
+      onselectstart="return false">
+<div class="listWrap">
+    <div class="headStrip list">
+        <div class="headSys">
+            <p class="iph" style="display: none"></p>
+            <div class="headCap">
+                <em class="isdIco isdBack size25 back" id="goback"></em>
+                <p class="selOpt size10">
+                    <span class="w1">
+                        <label class="time-l">
+                            <em to="h" id="ptime">取 03/12 14:00</em>
+                            <em to="h" id="rtime">还 03/14 10:00</em>
+                        </label>
+                        <em class="isdIco color9 size10"></em>
+                    </span>
+                    <span class="w2">
+                        <label class="area-l" data-type="1">
+                            <em>取车区域</em>
+                            <em to="h" id="parea">海南兵工大酒店</em>
+                        </label>
+                        <em class="isdIco color9 size10"></em>
+                    </span>
+                    <span class="w2">
+                        <label class="area-l" data-type="2">
+                            <em>还车区域</em>
+                            <em to="h" id="rarea">海南兵工大酒店</em>
+                        </label>
+                        <em class="isdIco color9 size10"></em>
+                    </span>
+                </p>
+            </div>
+        </div>
+    </div>
+    <p id="sortTabList" class="sorTab sort-tab" line="hairT bgEc">
+        <span class="colorVi" id="day_price">
+            价格低
+            <em class="isdIco"></em>
+            高
+            <em class="sign isdIco"></em>
+        </span>
+        <span line="hairL bgEc" id="distance" class="">
+            距离近
+            <em class="isdIco"></em>
+            远
+            <em class="sign isdIco hide"></em>
+        </span>
+        <span line="hairL bgEc" id="synthesis" class="">
+           <em class=""></em>
+            综合排序
+            <em class="sign isdIco hide"></em>
+        </span>
+    </p>
+
+    <div class="main-wrapper">
+        <div class="listFilter" line="hairT bgD" style="display: none">
+            <div class="inner-container" id="list_Filter">
+                <div class="content" style="width: 462px;">
+                    <span data-index="免信用卡" class="">
+                        <em class="isdIco  car-hide"></em>免信用卡
+                    </span>
+                    <span data-index="沪牌" class="">
+                        <em class="isdIco  car-hide"></em>沪牌
+                    </span>
+                    <span data-index="送车上门" class="">
+                        <em class="isdIco  car-hide"></em>送车上门
+                    </span>
+                    <span data-index="新车" class="">
+                        <em class="isdIco  car-hide"></em>新车
+                    </span>
+                    <span data-index="手动挡" class="">
+                        <em class="isdIco  car-hide"></em>手动挡
+                    </span>
+                    <span data-index="非大陆居民" class="">
+                        <em class="isdIco  car-hide"></em>非大陆居民
+                    </span>
+                </div>
+            </div>
+            <label class="crePop size15 colorF" id="cardTypeTip" style="display: none; left: 8px;"><em
+                    class="isdIco clo size12"></em></label></div>
+        <div line="hairT bgD"><p class="tipCreditStr" style="display:none;"><em class="isdIco ti size18"></em> <span
+                to="h">当前条件无支持免信用卡供应商，已为您推荐其他车型</span></p>
+            <!-- <p class="car-tip"> <img src="../static/pics/baoxian.png"/> <span to="h">车辆已投保，无需额外支付基本保险和手续费</span> </p> -->
+            <div class="listCon">
+                <div class="nav vehicle-nav" id="listCon-nav">
+                    <p class="curr" data-index="1">热销</p>
+                    <p class="" data-index="2">经济型</p>
+                    <p class="" data-index="3">舒适型</p>
+                    <p class="" data-index="4">SUV</p>
+                    <p class="" data-index="5">商务车</p>
+                    <p class="" data-index="6">豪华型</p>
+                    <p class="" data-index="7">跑车</p>
+                    <p class="" data-index="8">小型巴士</p>
+                    <p class="" data-index="9">其他</p>
+                </div>
+                <dl class="main vehiclelist-wrapper" style="height: 488px;" id="vehiclelist">
+                    <dd class="vehCard" style="display: none">
+                        <div class="vehBase">
+                            <div class="vehLeft">
+                                <img src="__STATIC__/mobile/images/117.jpg">
+                            </div>
+                            <div class="main">
+                                <p class="bri">
+                                    <span class="typ size16"></span>
+                                </p>
+                                <span class="desc" style="display: none">
+                                </span>
+                                <span class="type">
+
+                                </span>
+                            </div>
+                        </div>
+                        <ul class="sub" line="hairT bgD">
+                            <li class="vehSup veh-info" >
+                                <div class="inner" line="hairT bgEc">
+                                    <div class="main"><p class="bri "><span class="nam size14">聚隆租车</span>
+                                        <span class="comt size10">  4.8分                                               </span>
+                                    </p>
+                                        <p class="sit color6 size11">
+                                            <span class="colorGre">免费送车上门</span>
+                                        </p>
+                                        <p class="mark"><span class="markLab gray size10">车况佳</span>
+                                            <span class="markLab gray size10">24h营业</span>
+                                            <span class="markLab gray size10">手机支架</span>
+                                            <span class="markLab gray size10">送饮用水</span>
+                                            <span class="markLab gray size10">3万公里内新车</span>
+                                        </p>
+                                    </div>
+                                    <p class="pri size11">
+                                        <span class="aver colorOr">¥<em class="size18 js-day-price">50</em>元/天</span>
+                                        <span class="tp mgt3">总价¥235</span>
+                                        <span class="tp">含手续费,基本保障服务</span>
+                                    </p>
+                                </div>
+                            </li>
+                        </ul>
+                    </dd>
+                    <!--<dt class="nomStr colorC size11"> 到底了~</dt>-->
+                    <div class="main"><p class="filtCol color6 filter-label fill-label"></p></div>
+                </dl>
+            </div>
+        </div>
+    </div>
+</div>
+{include file="login" /}
+{include file="seltime" /}
+{include file="loading" /}
+<script type="text/javascript" src="__STATIC__/mobile/js/jquery.min.js"></script>
+<script type="text/javascript" src="__STATIC__/mobile/js/public-js.js?rand={$js_rand}"></script>
+<script type="text/javascript" src="__STATIC__/mobile/js/carsearch-tradition-js.js?rand={$js_rand}"></script>
+<script type="text/javascript" src="__STATIC__/mobile/js/jquery.selector-px.js?rand={$js_rand}"></script>
+</body>
+{/block}

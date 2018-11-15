@@ -1,0 +1,82 @@
+{extend name="base" /}
+{block name="body"}
+<div class="layui-body">
+    <!--tab标签-->
+    <div class="layui-tab layui-tab-brief">
+        <ul class="layui-tab-title">
+            <li class=""><a href="{:url('manage/customer/index')}">用户管理</a></li>
+            <li class="layui-this">注册位置</li>
+        </ul>
+        <div class="layui-tab-content">
+            <div class="layui-tab-item layui-show">
+                <form class="layui-form layui-form-pane" action="{:url('manage/customer/map')}" method="get">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">起始时间</label>
+                        <div class="layui-inline">
+                            <input type="text" name="start_time" value="{$start_time}"
+                                   placeholder="起始时间"
+                                   class="layui-input datetime-ymd">
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">结束时间</label>
+                        <div class="layui-inline">
+                            <input type="text" name="end_time" value="{$end_time}"
+                                   placeholder="结束时间"
+                                   class="layui-input datetime-ymd">
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <button class="layui-btn">刷新</button>
+                    </div>
+                </form>
+                <hr>
+                <div id="container" style="width: 100%;height: 400px"></div>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}
+{block name="js"}
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=84chcOlNtuGKpKkIfp0oprKRveLSXEnj"></script>
+<script type="text/javascript" src="http://api.map.baidu.com/library/Heatmap/2.0/src/Heatmap_min.js"></script>
+<script type="text/javascript" src="__STATIC__/pile/js/tools/gps-transform.js?rand={$js_rand}"></script>
+{/block}
+{block name="script"}
+<script>
+    form.on('select(statusselect)', function (data) {
+        $(".layui-form-pane").submit();
+    });
+    $('.datetime-ymd').on('click', function () {
+        laydate({
+            elem: this,
+            istime: true,
+            format: 'YYYY-MM-DD'
+        })
+    });
+    var MAP = new BMap.Map("container");          // 创建地图实例
+    var POINT = new BMap.Point(106.67624, 26.468231);  // 创建点坐标
+    MAP.centerAndZoom(POINT, 12);                 // 初始化地图，设置中心点坐标和地图级别
+    MAP.addControl(new BMap.ScaleControl());//比例尺
+    MAP.addControl(new BMap.NavigationControl());//缩放控件
+    MAP.enableScrollWheelZoom(true);//鼠标缩放
+    //门店位置数组
+    var map_point = new Array();
+    //门店Marker数组
+    var map_marker = new Array();
+    var map_data = {$customer_data};
+    for (var i = 0; i < map_data.length; i++) {
+        var map_position = map_data[i].position;
+        var point_temp = wgs2bd(parseFloat(map_position[1]), parseFloat(map_position[0]));
+        map_point[i] = new BMap.Point(point_temp[1], point_temp[0]);
+        map_marker[i] = new BMap.Marker(map_point[i]);
+        MAP.addOverlay(map_marker[i]);
+    }
+
+    setInterval(function () {
+        var h = $(".layui-body").css('height');
+        $("#container").css("height", h);
+    }, 3000);
+
+</script>
+{/block}

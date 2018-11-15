@@ -1,0 +1,74 @@
+{extend name="base" /}
+{block name="body"}
+<div class="layui-body">
+    <!--tab标签-->
+    <div class="layui-tab layui-tab-brief">
+        <ul class="layui-tab-title">
+            <li class="layui-this">错误代码管理</li>
+            <li class=""><a href="{:url('manage/ApiCode/add',['pid'=>$pid])}">添加错误代码</a></li>
+        </ul>
+        <div class="layui-tab-content">
+            <form class="layui-form layui-form-pane" action="{:url('manage/ApiCode/index')}" method="get">
+                <div class="layui-inline">
+                    <label class="layui-form-label">应用</label>
+                    <div class="layui-input-inline">
+                        <select name="pid" lay-filter="appselect">
+                            {foreach name="apiclass_list" item="vo"}
+                            <option value="{$vo.id}" {if condition="$pid==$vo.id" } selected="selected" {/if} >{$vo.app_name}</option>
+                            {/foreach}
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">关键词</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="keyword" value="{$keyword}" placeholder="请输入关键词" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <button class="layui-btn">搜索</button>
+                </div>
+            </form>
+            <hr>
+            <div class="layui-tab-item layui-show">
+                <table class="layui-table">
+                    <thead>
+                    <tr>
+                        <th style="width: 30px;">ID</th>
+                        <th>代码编号</th>
+                        <th>简介</th>
+                        <th>地址</th>
+                        <th>更新时间</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {foreach name="apicode_list" item="vo"}
+                    <tr>
+                        <td>{$vo.id}</td>
+                        <td>{$vo.api_code}</td>
+                        <td>{$vo.api_code_intro}</td>
+                        <td>{$vo.api_url}</td>
+                        <td>{$vo.update_time}</td>
+                        <td>
+                            <a href="{:url('manage/ApiCode/edit',['id'=>$vo['id']])}" class="layui-btn layui-btn-normal layui-btn-mini">编辑</a>
+                            <a href="{:url('manage/ApiCode/delete',['id'=>$vo['id']])}" class="layui-btn layui-btn-danger layui-btn-mini ajax-delete">删除</a>
+                        </td>
+                    </tr>
+                    {/foreach}
+                    </tbody>
+                </table>
+                <!--分页-->
+                {$apicode_list->render()}
+            </div>
+        </div>
+    </div>
+</div>
+{/block}
+{block name="script"}
+<script>
+    form.on('select(appselect)', function (data) {
+        $(".layui-form-pane").submit();
+    });
+</script>
+{/block}

@@ -1,0 +1,211 @@
+/** 百度地图控件 */
+.map-content {
+    height: 100%;
+    width: 100%;
+}
+
+/** 界面最上方的区域限制 */
+.body-top-area {
+    height: 45px;
+    width: 100%;
+    /*background: #ffffff;*/
+    background: rgb(252, 204, 49);
+    position: absolute;
+    top: 0;
+    /*color: rgb(255, 185, 43);*/
+    color: rgb(255, 255, 255);
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+/** 界面最上方的区域限制的左右两块 */
+.body-top-item {
+    height: 100%;
+    width: 50%;
+    float: left;
+}
+
+.body-top-item div {
+    height: 30px;
+    width: 100%;
+    margin-top: 7px;
+}
+
+.body-top-item span {
+    font-size: 14px;
+    line-height: 30px;
+}
+/** 用户操作图标(定位、建议) */
+.flag-user {
+    width: 30px;
+    height: 30px;
+    position: fixed;
+    left: 8px;
+}
+
+/** 百度地图标注点击出现的弹窗 */
+.popup-map-marker {
+    width: 98%;
+    margin-left: 1%;
+    position: absolute;
+    bottom: 50px;
+    background: rgba(255,255,255,0.8);
+    border-radius: 5px;
+    border-bottom: #999999 solid 2px;
+    display: none;
+}
+
+/** 弹窗右上角的关闭按钮(叉)父容器 */
+.popup-map-close {
+    width: 100%;
+    height: 20px;
+}
+
+/** 弹窗右上角的关闭按钮(叉) */
+.popup-map-close span {
+    width: 20px;
+    height: 100%;
+    float: right;
+    text-align: center;
+    line-height: 20px;
+    margin-right: 10px;
+    font-size: 28px;
+}
+
+/** 弹窗的上部分(标题) */
+.content-popup-title {
+    height: 65px;
+    width: 100%;
+    border-bottom: #999999 solid 2px;
+}
+
+/** 弹窗的上部分(标题)左边部分 */
+.content-popup-title-left {
+    height: 100%;
+    width: 70%;
+    float: left;
+}
+
+/** 弹窗的上部分(标题)左边部分中的店名部分 */
+.title-left-name {
+    width: 100%;
+    padding-left: 10px;
+}
+
+/** 弹窗的上部分(标题)左边部分中的地址部分 */
+.title-left-address {
+    width: 100%;
+    padding-left: 10px;
+    font-size: 12px;
+}
+
+/** 弹窗的上部分(标题)右边部分 */
+.content-popup-title-right {
+    height: 100%;
+    width: 30%;
+    float: left;
+}
+
+/** 弹窗的上部分(标题)右边部分中的图片 */
+.content-popup-title-right img {
+    height: 98%;
+    width: 98%;
+    margin-left: 1%;
+    margin-top: 1%;
+}
+
+/** 弹窗的中间部分(主体) */
+.content-popup-body {
+    height: auto;
+    width: 100%;
+    margin-top: 6px;
+}
+
+/** 弹窗的中间部分(主体)的左边部分 */
+.body-left {
+    width: 60%;
+    height: auto;
+    float: left;
+}
+
+.body-left div {
+    padding-left: 5px;
+    margin-top: 1px;
+    font-size: 14px;
+}
+
+.body-left-span {
+    border: rgb(0, 255, 0) solid 1px;
+    padding: 1px 3px;
+    border-radius: 2px;
+}
+
+/** 弹窗的中间部分(主体)的右边部分 */
+.body-right {
+    width: 40%;
+    height: auto;
+    float: left;
+}
+
+/** 弹窗的中间部分(主体)的右边图片父容器 */
+.body-right-top {
+    height: 50px;
+    width: 100%;
+    text-align: center;
+    line-height: 50px;
+}
+
+/** 弹窗的中间部分(主体)的右边图片 */
+.body-right-top img {
+    height: 50px;
+    width: 50px;
+}
+
+/** 弹窗的中间部分(主体)的右边图片标题 */
+.body-right-bottom {
+    height: 40px;
+    width: 100%;
+    font-size: 14px;
+    text-align: center;
+    line-height: 40px;
+}
+
+/** 弹窗的下部分(脚) */
+.content-popup-bottom {
+    height: auto;
+    width: 100%;
+}
+
+/** 弹窗的下部分(脚)文字父容器 */
+.content-popup-bottom div {
+    padding-left: 5px;
+    margin-top: 15px;
+}
+
+/** 弹窗的下部分(脚)文字 */
+.content-popup-bottom span {
+    padding: 3px 5px;
+    color: red;
+    font-size: 14px;
+}
+
+/** 扫码充电按钮 */
+.charge-by-code {
+    height: 40px;
+    width: 60%;
+    margin-left: 20%;
+    position: absolute;
+    bottom: 5px;
+    background-image: url('http://img.youchedongli.cn/public/static/pile/images/charge_by_code.png');
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+}
+
+/** 扫码充电按钮的文字 */
+.charge-by-code div {
+    height: 100%;
+    width: 65%;
+    margin-left: 35%;
+    line-height: 40px;
+    font-size: 16px;
+}

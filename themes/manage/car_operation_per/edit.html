@@ -1,0 +1,69 @@
+{extend name="base" /}
+{block name="body"}
+<div class="layui-body">
+    <!--tab标签-->
+    <div class="layui-tab layui-tab-brief">
+        <ul class="layui-tab-title">
+            <li class=""><a href="{:url('manage/CarOperationPer/index')}">运营人员管理</a></li>
+            <li class=""><a href="{:url('manage/CarOperationPer/add')}">添加运营人员</a></li>
+            <li class="layui-this">编辑运营人员</li>
+        </ul>
+        <div class="layui-tab-content">
+            <div class="layui-tab-item layui-show">
+                <form class="layui-form form-container" action="{:url('manage/CarOperationPer/update')}" method="post">
+                    <div id="p2"></div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">姓名</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="name" value="{$car_operation_per_data['name']}" required
+                                   lay-verify="required" placeholder="请输入姓名" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">电话</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="phone" value="{$car_operation_per_data['phone']}" required
+                                   lay-verify="required" placeholder="请输电话" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">级别</label>
+                            <div class="layui-input-block">
+                                {if condition="$car_operation_per_data['grade']==0"}
+                                <input type="radio" name="grade" value="0" title="普通运维" checked="checked">
+                                <input type="radio" name="grade" value="1" title="管理人员">
+                                {else/}
+                                <input type="radio" name="grade" value="0" title="普通运维">
+                                <input type="radio" name="grade" value="1" title="管理人员" checked="checked">
+                                {/if}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">状态</label>
+                            <div class="layui-input-block">
+                                {if condition="$car_operation_per_data['status']==0"}
+                                <input type="radio" name="status" value="0" title="开启" checked="checked">
+                                <input type="radio" name="status" value="1" title="关闭">
+                                {else/}
+                                <input type="radio" name="status" value="0" title="开启">
+                                <input type="radio" name="status" value="1" title="关闭" checked="checked">
+                                {/if}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <div class="layui-input-block">
+                            <input hidden name="id" value="{$car_operation_per_data['id']}">
+                            <button class="layui-btn" lay-submit lay-filter="*">保存</button>
+                            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}

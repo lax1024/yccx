@@ -1,0 +1,255 @@
+{extend name="base" /}
+{block name="body"}
+<style>
+    .area_div .layui-input-inline {
+        width: 160px;
+    }
+</style>
+<div class="layui-body">
+    <!--tab标签-->
+    <div class="layui-tab layui-tab-brief">
+        <ul class="layui-tab-title">
+            <li class=""><a href="{:url('manage/storeCharging/index')}">店铺管理</a></li>
+            <li class="layui-this">添加店铺</li>
+        </ul>
+        <div class="layui-tab-content">
+            <div class="layui-tab-item layui-show">
+                <form class="layui-form form-container" action="{:url('manage/storeCharging/save')}" method="post">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">店铺名称</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="store_name" value="" required
+                                   lay-verify="required"
+                                   placeholder="请输入店铺名称" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">店铺说明</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="store_intro" value=""
+                                   placeholder="请输入店铺说明" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">快充桩个数</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="num_quick" value="0"
+                                   placeholder="请输入快充桩个数" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">慢充桩个数</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="num_slow" value="0"
+                                   placeholder="请输入慢充桩个数" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">充电桩功率</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="power" value="30KW-120KW"
+                                   placeholder="请输入充电桩功率(30KW-120KW)" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">充电桩电价</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="charging_price" value="1.6"
+                                   placeholder="请输充电桩电价" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">店铺停车费</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="parting_price" value="0"
+                                   placeholder="请输停车费" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">平台提点</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="commission" value="3"
+                                   placeholder="请输入平台提点(%)" class="layui-input">
+                        </div>
+                        <div class="layui-form-mid layui-word-aux">(%)</div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">店铺标签</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="store_tag" value="" placeholder="（选填）请输入店铺标签(、隔开)"
+                                   class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">适合车型</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="car_accept" value="" placeholder="请输入适合车型（、线隔开）"
+                                   class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">不适合车型</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="car_unaccept" value="" placeholder="请输入不适合车型（、线隔开）"
+                                   class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">店铺归属</label>
+                        <div class="layui-input-inline">
+                            <select name="store_pid" lay-verify="required">
+                                {foreach name="store_site_list" item="vo"}
+                                <option value="{$vo.id}">{neq name="vo.level" value="1"}|{php}for($i=1;$i<$vo['level'];$i++){echo '--';}{/php}{/neq}{$vo.store_name}</option>
+                                {/foreach}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">店铺横幅</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="store_banner" value="" placeholder="（选填）请上传图片"
+                                   class="layui-input layui-input-inline" id="thumb_store_banner">
+                            <input type="file" name="file" accept="image/png"
+                                   onclick="upload_img('/index.php/api/upload/upload.html','thumb_store_banner')"
+                                   class="layui-upload-file">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">店铺图集</label>
+                        <div class="layui-input-block">
+                            <button type="button" id="upload-photo-btn" class="layui-btn">上传图集</button>
+                            <div id="photo-container"></div>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">店铺负责人</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="store_principal" value="" placeholder="（选填）请输入店铺负责人"
+                                   class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">联系电话</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="store_tel" value=""
+                                   placeholder="（选填）请输入联系电话"
+                                   class="layui-input">
+                        </div>
+                    </div>
+                    <div id="p2" class="area_div">
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">店铺地址</label>
+                        <div class="layui-input-block">
+                            <input type="text" id="address" name="address" value="" placeholder="（选填）请输入客户地址"
+                                   class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">地理坐标</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="store_longitude" id="lng_input" hidden
+                                   value="{$store['location_longitude']}">
+                            <input type="text" name="store_latitude" id="lat_input" hidden
+                                   value="{$store['location_latitude']}">
+                            <label class="layui-form-label" style="text-align: left;width: 120px"> 经度:<span
+                                    id="lng"></span></label>
+                            <label class="layui-form-label" style="text-align: left;width: 120px"> 纬度:<span
+                                    id="lat"></span></label>
+                            <a href="javascript:pickup_location('lng','lat')" class="layui-btn">选择坐标</a>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">是否是区域点</label>
+                        <div class="layui-input-block">
+                            <input type="radio" name="is_area" value="0" title="是">
+                            <input type="radio" name="is_area" value="1" title="不是" checked="checked">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">店铺状态</label>
+                        <div class="layui-input-block">
+                            <input type="radio" name="store_status" value="0" title="正常" checked="checked">
+                            <input type="radio" name="store_status" value="1" title="关闭">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <div class="layui-input-block">
+                            <button class="layui-btn" lay-submit lay-filter="*">保存</button>
+                            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}
+{block name="js"}
+<script src="__JS__/ueditor/ueditor.config.js"></script>
+<script src="__JS__/ueditor/ueditor.all.min.js"></script>
+<script type="text/javascript" src="__JS__/picker.js"></script>
+{/block}
+{block name="script"}
+<script>
+    $(function () {
+        var picker = layui.picker;
+        var p2 = new picker();
+        p2.set({
+            elem: '#p2',
+            url: "{:url('api/Area/get_province_list')}",
+            canSearch: true,
+            codeConfig: {
+                "default": false
+            }
+        }).render();
+    });
+</script>
+<script>
+    function upload_img(url, id) {
+        layui.upload({
+            url: url,
+            type: 'image',
+            ext: 'jpg|png|gif|bmp',
+            success: function (data) {
+                if (data.error === 0) {
+                    document.getElementById(id).value = data.url;
+                } else {
+                    layer.msg(data.message);
+                }
+            }
+        });
+    }
+</script>
+<script>
+    $(function () {
+        var ue = UE.getEditor('content'),
+            uploadEditor = UE.getEditor('upload-photo-btn'),
+            photoListItem,
+            uploadImage;
+        uploadEditor.ready(function () {
+            uploadEditor.setDisabled();
+            uploadEditor.hide();
+            uploadEditor.addListener('beforeInsertImage', function (t, arg) {
+                $.each(arg, function (index, item) {
+                    photoListItem = '<div class="photo-list"><input type="text" name="store_imgs[]" value="' + item.src + '" class="layui-input layui-input-inline">';
+                    photoListItem += '<button type="button" class="layui-btn layui-btn-danger remove-photo-btn">移除</button></div>';
+
+                    $('#photo-container').append(photoListItem).on('click', '.remove-photo-btn', function () {
+                        $(this).parent('.photo-list').remove();
+                    });
+                });
+            });
+        });
+
+        $('#upload-photo-btn').on('click', function () {
+            uploadImage = uploadEditor.getDialog("insertimage");
+            uploadImage.open();
+        });
+
+        $(".remove-photo-btn").on('click', function () {
+            $(this).parent('.photo-list').remove();
+        });
+    });
+</script>
+{/block}

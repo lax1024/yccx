@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>优车动力商户系统</title>
+    <meta name="description" content="优车动力商户系统">
+    <link rel="stylesheet" href="__JS__/layui/css/layui.css">
+    <style>
+        .header {
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            min-height: 780px;
+            min-width: 1024px;
+            background: url(__STATIC__/images/seller_index1.png) no-repeat #56bc94;
+            background-size: 100%;
+            text-align: center;
+        }
+
+        .header .my_div {
+            position: relative;
+            top: 0;
+            z-index: 10;
+            min-height: 800px;
+            width: 80%;
+            background: url('__STATIC__/images/seller_index2x.png') no-repeat;
+            background-size: 100%;
+            display: inline-block;
+        }
+
+        .header .my_div .my_in {
+            position: absolute;
+            top: 25%;
+            left: 50%;
+            width: 40%;
+            z-index: 11;
+            display: inline-block;
+            min-height: 400px;
+        }
+
+        .layui-form-label {
+            width: 60px;
+        }
+
+        .layui-tab-title .layui-this {
+            min-width: 296px;
+        }
+
+        .layui-tab-title {
+            border-bottom: 1px solid #666;
+            width: 400px;
+        }
+
+        .layui-tab {
+            margin-top: 70px;
+        }
+
+        .layui-input-inline {
+            width: 260px;
+        }
+    </style>
+</head>
+<body>
+<div class="header">
+    <div class="my_div">
+        <div class="my_in">
+            <div class="layui-tab layui-tab-brief">
+                <ul class="layui-tab-title">
+                    <li class="layui-this">登录</li>
+                    <li class="">注册</li>
+                </ul>
+                <div class="layui-tab-content">
+                    <div class="layui-tab-item layui-show">
+                        <form class="layui-form form-container" action="{:url('api/Login/login_seller')}"
+                              method="post">
+                            <div class="layui-form-item layui-show">
+                                <label class="layui-form-label">用户名</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="seller_name" value="" required lay-verify="required"
+                                           placeholder="请输入用户名" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">密码</label>
+                                <div class="layui-input-inline">
+                                    <input type="password" name="password" value="" required lay-verify="required"
+                                           placeholder="请输入密码" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">验证码</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="verify" required lay-verify="required" class="layui-input">
+                                    <img src="{:captcha_src()}" style="margin-top: 10px" alt="点击更换" title="点击更换"
+                                         onclick="this.src='{:captcha_src()}?time='+Math.random()" class="captcha">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <button class="layui-btn" style="min-width: 395px;" lay-submit lay-filter="*">登录
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="layui-tab-item">
+                        <form class="layui-form form-container" action="{:url('api/Login/register_seller')}"
+                              method="post">
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">用户名</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="seller_name" value="" required lay-verify="required"
+                                           placeholder="请输入用户名" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">密码</label>
+                                <div class="layui-input-inline">
+                                    <input type="password" name="password" value="" required lay-verify="required"
+                                           placeholder="请输入密码" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">手机号</label>
+                                <div class="layui-input-inline" style="width: 258px">
+                                    <div style="display: inline-block;width: 150px">
+                                        <input type="text" name="mobile" id="js-tel" maxlength="18" required
+                                               lay-verify="phone"
+                                               value=""
+                                               placeholder="（选填）请输入手机号"
+                                               class="layui-input">
+                                    </div>
+                                    <div style="display: inline-block">
+                                        <a class="layui-btn" id="cp_check_phone">验证码</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">验证码</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="code" value="" placeholder="请输入验证码" required
+                                           lay-verify="required"
+                                           class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <button class="layui-btn" style="min-width: 395px;" lay-submit lay-filter="*">注册
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="__JS__/jquery.min.js"></script>
+<script src="__JS__/layui/lay/dest/layui.all.js"></script>
+<script>
+    form = layui.form();
+    /**
+     * 通用表单提交(AJAX方式)
+     */
+    form.on('submit(*)', function (data) {
+        $.ajax({
+            url: data.form.action,
+            type: data.form.method,
+            data: $(data.form).serialize(),
+            success: function (data) {
+                if (data.code === 0) {
+                    setTimeout(function () {
+                        location.href = data.url;
+                    }, 1000);
+                }
+                layer.msg(data.info);
+            }
+        });
+
+        return false;
+    });
+    $(function () {
+        $("#cp_check_phone").on('click', function () {
+            get_code($("#js-tel").val());
+        });
+
+        function get_code(tel) {
+            if (tel == '') {
+                alert('请填写手机号码');
+                return;
+            }
+            $.ajax({
+                url: "{:url('api/Login/get_verify_code')}",
+                type: "post",
+                data: {
+                    mobile: tel,
+                    condition: 'no_ver'
+                },
+                dataType: "json",
+                success: function (info) {
+                    if (parseInt(info.code) == 0) {
+                        check_phone_time();
+                    } else {
+                        alert(info.info);
+                    }
+                }
+            });
+        }
+
+        var tiems = 59;
+        var timeint = null;
+
+        function check_phone_time() {
+            $("#cp_check_phone").addClass('disabled');
+            timeint = setInterval(function () {
+                if (tiems <= 0) {
+                    window.clearInterval(timeint);
+                    $("#cp_check_phone").removeClass('disabled');
+                    $("#cp_check_phone").text('验证手机');
+                    tiems = 59;
+                } else {
+                    $("#cp_check_phone").text("时间(" + tiems + ")");
+                    tiems--;
+                }
+            }, 1000);
+        }
+    });
+</script>
+</body>
+</html>

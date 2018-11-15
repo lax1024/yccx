@@ -1,0 +1,159 @@
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no"/>
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=84chcOlNtuGKpKkIfp0oprKRveLSXEnj"></script>
+    <script type="text/javascript" src="__STATIC__/mobile/js/jquery.min.js"></script>
+    <script type="text/javascript" src="__STATIC__/mobile/js/public-js.js?rand={$js_rand}"></script>
+    <script type="text/javascript" src="__STATIC__/mobile/js/gps-transform-js.js?rand={$js_rand}"></script>
+    <title>地图找门店</title>
+    <link rel="stylesheet" href="__STATIC__/mobile/css/index-css2.css?rand={$css_rand}" type="text/css">
+    <link rel="stylesheet" href="__STATIC__/mobile/css/map-choose-store-css.css?rand={$css_rand}">
+    <script>
+        var website = 'http://' + window.location.host;
+        var marker_self;
+        var is_up_location = false;
+    </script>
+
+</head>
+<body>
+
+<div id="js_marker_store_pop"
+     style="width: 100%;height: 36%;position:fixed;z-index: 999;background: #cccccc;bottom:0px;display: none;border-radius: 10px;font-size: 14px">
+    <span id="js_marker_store_close" class="close_btn_pop">×</span>
+    <div style="padding-left: 8px;padding-right: 10px">
+        <div style="width: 100%;padding-top: 3%;">
+            <div style="width: 49%;float: left"><span style="font-weight: bold;font-size: 15px">门店：</span><span id="js_marker_store_name">优车出行</span></div>
+            <div style="width: 49%;float: right"><span style="font-weight: bold;font-size: 15px">还车范围：</span><span id="js_marker_store_range">2公里</span></div>
+        </div>
+        <div style="width: 100%;padding-top: 5%"><span style="font-weight: bold;font-size: 15px">门店说明：</span><span
+                id="js_marker_store_explain" style="line-height: 20px">把伤口坚决反对好噶肯定会送收到回复，该还车点有充电桩，还车时先把充电枪插上，谢谢合作！</span></div>
+        <div style="width: 100%;padding-top: 3%"><span style="font-weight: bold;font-size: 15px">有无充电桩：</span><span id="js_marker_store_pile_site">有(还车时先把充电枪插上，谢谢合作！)</span>
+        </div>
+        <div style="width: 100%;padding-top: 3%"><span style="font-weight: bold;font-size: 15px">距离：</span><span
+                id="js_marker_store_distance">7.62公里</span></div>
+        <div style="width: 100%;padding-top: 3%"><span style="font-weight: bold;font-size: 15px">地址：</span><span
+                id="js_marker_store_address">花溪大学城·群升大智慧</span></div>
+    </div>
+    <span id="js_marker_store_id" style="display: none"></span>
+    <span id="js_marker_store_lat" style="display: none"></span>
+    <span id="js_marker_store_lng" style="display: none"></span>
+
+    <div
+            style="width: 100%;position: absolute;bottom: 0px;background: #f3e856;text-align: center;float: left;font-size: 15px;">
+        <div id="js_go_navi" style="width: 50%;height:100%;float: left;background: #0AAB6F;padding-top: 10px;padding-bottom: 10px">导航去还车</div>
+        <div id="js_choose_this_store" style="width: 50%;float:left;padding-top: 10px;padding-bottom: 10px">设为还车点</div>
+    </div>
+</div>
+
+<div id="l-map"></div>
+<div class="headCap">
+    <p class="iph"></p>
+    <p class="sys">
+    <span class="topBack colorF">
+        <em class="searIco"></em>
+    </span>
+    </p>
+</div>
+</body>
+
+{if condition="$is_wxBrowser eq 'yes'"}
+<script src="http://res.wx.qq.com/open/js/jweixin-1.4.0.js?rand={$js_rand}"></script>
+<script>
+    /*
+     * 注意：
+     * 1. 所有的JS接口只能在公众号绑定的域名下调用，公众号开发者需要先登录微信公众平台进入“公众号设置”的“功能设置”里填写“JS接口安全域名”。
+     * 2. 如果发现在 Android 不能分享自定义内容，请到官网下载最新的包覆盖安装，Android 自定义分享接口需升级至 6.0.2.58 版本及以上。
+     * 3. 常见问题及完整 JS-SDK 文档地址：http://mp.weixin.qq.com/wiki/7/aaa137b55fb2e0456bf8dd9148dd613f.html
+     *
+     * 开发中遇到问题详见文档“附录5-常见错误及解决办法”解决，如仍未能解决可通过以下渠道反馈：
+     * 邮箱地址：weixin-open@qq.com
+     * 邮件主题：【微信JS-SDK反馈】具体问题
+     * 邮件内容说明：用简明的语言描述问题所在，并交代清楚遇到该问题的场景，可附上截屏图片，微信团队会尽快处理你的反馈。
+     */
+    wx.config({
+        debug: false,
+        appId: "{$jssdk['appid']}",
+        timestamp: "{$jssdk['timestamp']}",
+        nonceStr: "{$jssdk['nonceStr']}",
+        signature: "{$jssdk['signature']}",
+        jsApiList: [
+            'checkJsApi',
+            'openLocation',
+            'getLocation'
+        ]
+    });
+
+    wx.ready(function (res) {
+        if (marker_self != null) {
+            marker_self.remove();
+        }
+        weixinLocation();
+    });
+
+    wx.error(function (res) {
+//        alert(JSON.stringify(res));
+    });
+</script>
+<script>
+
+
+    /**
+     * 调用第三方导航软件实现导航
+     * @param lat  目的地纬度
+     * @param lng  目的地经度
+     */
+    function go_openLocation(lat, lng) {
+        var ponitx = wgs2gcj(lat, lng);//将gps坐标转为百度地图坐标
+        wx.openLocation({
+            latitude: ponitx[0], // 纬度，浮点数，范围为90 ~ -90
+            longitude: ponitx[1], // 经度，浮点数，范围为180 ~ -180。
+            name: '还车地址', // 位置名
+            address: '请按照导航去还车', // 地址详情说明
+            scale: 18, // 地图缩放级别,整形值,范围从1~28。默认为最大
+            infoUrl: '' // 在查看位置界面底部显示的超链接,可点击跳转
+        });
+    }
+    //微信定位
+    function weixinLocation() {
+        wx.getLocation({
+            success: function (res) {
+                is_up_location = true;
+                var latitude = res.latitude; //纬度
+                var longitude = res.longitude; //经度
+                localStorage.setItem("old_marker_self_lat", latitude);
+                localStorage.setItem("old_marker_self_lng", longitude);
+
+                var poi = new BMap.Point(longitude, latitude);
+                setTimeout(function () {
+                    var convertor = new BMap.Convertor();
+                    var pointArr = [];
+                    pointArr.push(poi);
+                    convertor.translate(pointArr, 1, 5, function (data) {
+                        if (data.status === 0) {
+                            if (marker_self != null) {
+                                marker_self.remove();
+                            }
+                            var myIcon;
+                            myIcon = new BMap.Icon("http://img.youchedongli.cn/public/static/mobile/images/marker_self.png", new BMap.Size(20, 20));
+                            marker_self = new BMap.Marker(data.points[0], {icon: myIcon});
+                            map.addOverlay(marker_self);
+                            map.setCenter(data.points[0]);
+                            localStorage.setItem("marker_self_lat", data.points[0].lat);
+                            localStorage.setItem("marker_self_lng", data.points[0].lng);
+                        }
+                    })
+                }, 1000);
+            },
+            cancel: function (res) {
+                alert('用户拒绝授权获取地理位置');
+            },
+            fail: function (res) {
+//                alert(JSON.stringify(res));
+            }
+        });
+    }
+</script>
+{/if}
+<script type="text/javascript" src="__STATIC__/mobile/js/map-choose-store-js.js?rand={$js_rand}"></script>
+</html>

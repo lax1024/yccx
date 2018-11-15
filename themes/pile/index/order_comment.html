@@ -1,0 +1,262 @@
+{extend name="base" /}
+{block name="css"}
+<link rel="stylesheet" href="__STATIC__/mui/css/mui.min.css">
+<link rel="stylesheet" href="__STATIC__/mui/css/mui-icons-extra.css?rand={$css_rand}">
+<link rel="stylesheet" href="__STATIC__/pile/css/order-comment.css?rand={$css_rand}">
+{/block}
+{block name="body"}
+<style>
+</style>
+
+<body style="overflow: scroll">
+<header class="mui-bar mui-bar-nav" style="background: #ffd31c;">
+    <span id="js_goback" class="mui-icon mui-icon-contact mui-icon-left-nav" style="color: white"></span>
+    <h1 class="mui-title" style="color: white">充电评价</h1>
+</header>
+<
+<div style="height: auto;width: 100%;overflow: scroll;margin-bottom: 100px;margin-top: 5px">
+    <div class="mui-content">
+        <ul class="mui-table-view">
+            <li class="mui-table-view-cell mui-media">
+                <img class="comment-order-finished"
+                     src="http://img.youchedongli.cn/public/static/mobile/images/pile_order_finished.png?rand=20180622">
+                <div class="content-store-detail">
+                    <div class="content-store-manange">
+                        <img src="http://img.youchedongli.cn/public/static/mobile/images/pile_store_manange.png?rand=20180622">
+                    </div>
+                    <span>优车酷中曹司店</span>
+                    <span class="mui-icon mui-icon-arrowdown"></span>
+                    <span class="mui-icon mui-icon-trash" style="float: right"></span>
+                </div>
+                <img class="mui-media-object mui-pull-left" style="width: 80px;height: 45px"
+                     src="http://img.youchedongli.cn/public/static/mobile/images/logo_pile_store.png?rand=20180622">
+                <div class="mui-media-body comment-order-details">
+                    <span class="font14">优车酷中曹司店/中曹司慢充09(P1)</span>
+                    <p class='mui-ellipsis'>2018/08/03 08:03</p>
+                    <div>
+                        <span class="font14">充电量</span>
+                        <span class="font14" style="color: rgb(255,152,1)">13.50(度)</span>
+                    </div>
+                    <div>
+                        <span class="font14">总费用</span>
+                        <span class="font14" style="color: rgb(255,152,1)">￥23.05</span>
+                    </div>
+                </div>
+
+                <div class="comment-body">
+                    <div class="body-title">优车酷中曹司店充电评价</div>
+                    <div class="body-title-tips">
+                        满意请给5星
+                    </div>
+                    <div id="js_comment_starts" class="body-starts-list">
+                        <div>
+                            <img data-index="0"
+                                 src="http://img.youchedongli.cn/public/static/mobile/images/order_nocomment_start.png">
+                        </div>
+                        <div>
+                            <img data-index="1"
+                                 src="http://img.youchedongli.cn/public/static/mobile/images/order_nocomment_start.png">
+                        </div>
+                        <div>
+                            <img data-index="2"
+                                 src="http://img.youchedongli.cn/public/static/mobile/images/order_nocomment_start.png">
+                        </div>
+                        <div>
+                            <img data-index="3"
+                                 src="http://img.youchedongli.cn/public/static/mobile/images/order_nocomment_start.png">
+                        </div>
+                        <div>
+                            <img data-index="4"
+                                 src="http://img.youchedongli.cn/public/static/mobile/images/order_nocomment_start.png">
+                        </div>
+                    </div>
+                    <div class="comment-tag-div">
+                        <div>
+                            <span class="comment_tag">充电速度</span>
+                        </div>
+                        <div>
+                            <span class="comment_tag">充电快捷</span>
+                        </div>
+                        <div>
+                            <span class="comment_tag">价格合适</span>
+                        </div>
+                    </div>
+                </div>
+
+                <textarea id="js_text_comment" rows="5" placeholder="亲，您对本次充电还满意吗？"
+                          style="width: 100%;margin-top: 10px;border:none;border-radius:5px;background:rgb(230,230,230);font-size: 14px;margin-bottom: 10px"></textarea>
+
+                <div style="width: 100%;height: auto">
+                    <div id="js_voice_comment_flag"
+                         class="mui-btn mui-btn-primary mui-icon mui-icon-mic comment-btn-flag">
+                        语音评价
+                    </div>
+                    <div id="js_voice_comment_play" class="mui-btn mui-btn-primary comment-btn-play">
+                        语音播放
+                    </div>
+                </div>
+
+                <div class="mui-input-row mui-checkbox mui-left">
+                    <label style="font-size: 14px">匿名评价</label>
+                    <input type="checkbox" id="js_anonymity_comment">
+                </div>
+            </li>
+        </ul>
+    </div>
+    <div class="mui-row order_comment_button"
+         style="text-align: center;width: 100%;  position: fixed; top: 325px;">
+        <button style="background-color:rgb(248,219,47);color: #333333;width: 95%;font-size: 20px;padding: 8px 0"
+                type="button" id="js_submit_comment" class="mui-btn  mui-btn-yellow">
+            提交评价
+        </button>
+    </div>
+    <div id="js_voice_comment_model"
+         style="height: 120px;width: 80%;position: fixed;bottom: 30%;left: 10%;border: #0a8ddf solid 1px;border-radius: 5px;background:rgb(204, 204, 204);padding-top: 10px;display: none">
+
+        <div style="position: absolute;height: 30px;top: 10px;left: 10px;right: 10px">
+            <span style="float:left;">时长：<span id="js_voice_time">0/60秒</span></span>
+            <span id="js_close_voice_comment_model" style="float: right;">X</span>
+        </div>
+
+        <div id="js_voice_comment"
+             style="position: absolute;width: 90px;height: 90px;background: #eeeeee;border: #0a8ddf solid 1px;border-radius: 45px;top: 15px;left: 35%;font-size: 18px;text-align: center;line-height: 90px">
+            按住录音
+        </div>
+    </div>
+</div>
+<script>
+    var voice_sid;
+    var voice_id;
+    var voice_url;
+    var t = 0;
+    var timer;
+</script>
+<script type="text/javascript" src="__STATIC__/pile/js/order-comment.js?rand={$js_rand}"></script>
+
+<script src="http://res.wx.qq.com/open/js/jweixin-1.4.0.js?rand={$js_rand}"></script>
+{if condition="$is_wxBrowser eq 'yes'"}
+<script>
+    /**
+     * 注意：
+     * 1. 所有的JS接口只能在公众号绑定的域名下调用，公众号开发者需要先登录微信公众平台进入“公众号设置”的“功能设置”里填写“JS接口安全域名”。
+     * 2. 如果发现在 Android 不能分享自定义内容，请到官网下载最新的包覆盖安装，Android 自定义分享接口需升级至 6.0.2.58 版本及以上。
+     * 3. 常见问题及完整 JS-SDK 文档地址：http://mp.weixin.qq.com/wiki/7/aaa137b55fb2e0456bf8dd9148dd613f.html
+     *
+     * 开发中遇到问题详见文档“附录5-常见错误及解决办法”解决，如仍未能解决可通过以下渠道反馈：
+     * 邮箱地址：weixin-open@qq.com
+     * 邮件主题：【微信JS-SDK反馈】具体问题
+     * 邮件内容说明：用简明的语言描述问题所在，并交代清楚遇到该问题的场景，可附上截屏图片，微信团队会尽快处理你的反馈。
+     */
+    wx.config({
+        debug: false,
+        appId: "{$jssdk['appid']}",
+        timestamp: "{$jssdk['timestamp']}",
+        nonceStr: "{$jssdk['nonceStr']}",
+        signature: "{$jssdk['signature']}",
+        jsApiList: [
+            'startRecord',
+            'stopRecord',
+            'playVoice',
+            'pauseVoice',
+            'stopVoice',
+            'uploadVoice',
+            'downloadVoice'
+        ]
+    });
+
+    wx.ready(function () {
+        //检查JsApi
+        wx.checkJsApi({
+            jsApiList: [
+                'startRecord',
+                'stopRecord',
+                'playVoice',
+                'pauseVoice',
+                'stopVoice',
+                'uploadVoice',
+                'downloadVoice'
+            ],
+            success: function (res) {
+                // alert(JSON.stringify(res));
+            },
+            fail: function () {
+                // alert("检查JsApi失败");
+            }
+        });
+        var Tim;
+        $("#js_voice_comment").on("touchstart", function () {
+            Tim = setTimeout(function () {
+                t = 0;
+                $("#js_voice_time").text(t + "/60秒");
+                wx.startRecord({
+                    success: function (res) {
+                        voice_id = res.localId;
+                        timer = setInterval(function () {
+                            t++;
+                            $("#js_voice_time").text(t + "/60秒");
+                        }, 1000);
+                    },
+                    cancel: function () {
+                        alert('用户拒绝授权录音');
+                    }
+                });
+            }, 1500);
+            return false;
+        });
+
+        $("#js_voice_comment").on("touchend", function () {
+            window.clearTimeout(Tim);
+            if (t >= 1) {
+                wx.stopRecord({
+                    success: function (res) {
+                        voice_id = res.localId;
+                        wx.uploadVoice({
+                            localId: voice_id,
+                            success: function (res) {
+                                voice_sid = res.serverId;
+                                $("#js_voice_comment_model").fadeOut(500);
+                                $.ajax({
+                                    url: WEBSITE + "/api/Dynupload/upload_voice.html",
+                                    type: "GET",
+                                    async: true,
+                                    data: {
+                                        sid: voice_sid
+                                    },
+                                    timeout: 5000,
+                                    dataType: "json",
+                                    success: function (data) {
+                                        if (parseInt(data.code) == 0) {
+                                            $("#js_voice_comment_play").show();
+                                            $("#js_voice_time").text("0/60秒");
+                                            Toast('上传语音成功!', 2000);
+                                            voice_url = data.url;
+                                        } else {
+                                            Toast(data.info, 2000);
+                                        }
+                                    }
+                                });
+                            }
+                        });
+                    }
+                });
+            } else {
+                Toast("录音时间太短", 2000);
+            }
+            clearTimeout(timer);
+            return false;
+        });
+
+        $("#js_voice_comment_play").on("click", function () {
+            wx.playVoice({
+                localId: voice_id // 需要播放的音频的本地ID，由stopRecord接口获得
+            });
+        });
+    });
+
+    wx.error(function (res) {
+        alert(JSON.stringify(res));
+    });
+</script>
+{/if}
+</body>
+{/block}

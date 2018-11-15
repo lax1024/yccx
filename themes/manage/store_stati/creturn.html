@@ -1,0 +1,133 @@
+{extend name="base" /}
+{block name="body"}
+<div class="layui-body">
+    <!--tab标签-->
+    <div class="layui-tab layui-tab-brief">
+        <ul class="layui-tab-title">
+            <li class=""><a href="{:url('manage/StoreStati/index')}">还车情况</a></li>
+            <li class="layui-this">还车情况</li>
+            <li class=""><a href="{:url('manage/StoreStati/stand')}">空置情况</a></li>
+            <li class=""><a href="{:url('manage/StoreStati/order_list')}">订单收益</a></li>
+        </ul>
+        <div class="layui-tab-content">
+            <div class="layui-tab-item layui-show">
+                <div id="main_day" style="width: 100%;height: 280px">
+                </div>
+                <div id="main_week" style="width: 100%;height: 280px">
+                </div>
+                <div id="main_month" style="width: 100%;height: 280px">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}
+{block name="js"}
+<script src="__JS__/echarts/echarts.min.js"></script>
+{/block}
+{block name="script"}
+<script>
+    setInterval(function () {
+        $("#main").css("height", $(document.body).height());
+    }, 2000);
+    var myChart = echarts.init(document.getElementById('main_day'));
+    var option = {
+        title: {
+            text: '昨天还车统计图',
+            subtext: '分析一段时间段还车情况'
+        },
+        tooltip: {
+            trigger: 'axis'
+        },
+        legend: {
+            data: ['昨天还车情况']
+        },
+        xAxis: {
+            type: 'category',
+            boundaryGap: false,
+            data: {$return_store['day']}
+        },
+        yAxis: {
+            type: 'value',
+            axisLabel: {
+                formatter: '{value} 次'
+            }
+        },
+        series: [
+            {
+                name: '还车情况',
+                type: 'line',
+                data: {$return_data['day']}
+            }
+        ]
+    };
+    // 使用刚指定的配置项和数据显示图表。
+    myChart.setOption(option);
+    var myChart = echarts.init(document.getElementById('main_week'));
+    var option = {
+        title: {
+            text: '上周还车统计图',
+            subtext: '分析上周还车情况'
+        },
+        tooltip: {
+            trigger: 'axis'
+        },
+        legend: {
+            data: ['上周还车情况']
+        },
+        xAxis: {
+            type: 'category',
+            boundaryGap: false,
+            data: {$return_store['week']}
+        },
+        yAxis: {
+            type: 'value',
+            axisLabel: {
+                formatter: '{value} 次'
+            }
+        },
+        series: [
+            {
+                name: '还车情况',
+                type: 'line',
+                data: {$return_data['week']}
+            }
+        ]
+    };
+    // 使用刚指定的配置项和数据显示图表。
+    myChart.setOption(option);
+    var myChart = echarts.init(document.getElementById('main_month'));
+    var option = {
+        title: {
+            text: '上个月还车统计图',
+            subtext: '分析上个月还车情况'
+        },
+        tooltip: {
+            trigger: 'axis'
+        },
+        legend: {
+            data: ['上个月还车情况']
+        },
+        xAxis: {
+            type: 'category',
+            boundaryGap: false,
+            data: {$return_store['month']}
+        },
+        yAxis: {
+            type: 'value',
+            axisLabel: {
+                formatter: '{value} 次'
+            }
+        },
+        series: [
+            {
+                name: '还车情况',
+                type: 'line',
+                data: {$return_data['month']}
+            }
+        ]
+    };
+    // 使用刚指定的配置项和数据显示图表。
+    myChart.setOption(option);
+</script>
+{/block}

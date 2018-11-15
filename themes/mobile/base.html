@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta http-equiv="expires" content="0">
+    <meta name="viewport"
+          content="width=device-width,height=device-height,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes"><!-- 设置Web应用以全屏模式运行 -->
+    <meta name="apple-mobile-web-app-status-bar-style" content="black"><!-- 隐藏状态栏 -->
+    <meta name="format-detection" content="telephone=no"><!-- 告诉设备忽略将页面中的数字识别为电话号码 -->
+    <meta name=apple-mobile-web-app-title content={$seo_title}>
+    <meta name="keywords" content="{$seo_keyword}"/>
+    <meta name="description" content="{$seo_description}"/>
+    <script type="text/javascript">
+        //定义全局变量
+        var website = 'http://' + window.location.host;
+        /**
+         1. 禁用动态添加脚本，防止广告加载
+         */
+        (function () {
+            var createElement = document.createElement;
+            document.createElement = function (tag) {
+                switch (tag) {
+                    case 'script':
+                        console.log('禁用动态添加脚本，防止广告加载');
+                        break;
+                    default:
+                        return createElement.apply(this, arguments);
+                }
+            }
+        })();
+    </script>
+    <script type="text/javascript" src="__STATIC__/mobile/js/jquery.min.js"></script>
+    <script type="text/javascript" src="__STATIC__/mobile/js/gps-transform-js.js?rand={$js_rand}"></script>
+    <script type="text/javascript" src="__STATIC__/mobile/js/public-js.js?rand={$js_rand}"></script>
+    <title>{$seo_title}</title>
+    {block name="css"}{/block}
+    {block name="js"}{/block}
+</head>
+{block name="body"}
+
+{/block}
+</html>

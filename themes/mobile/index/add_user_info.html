@@ -1,0 +1,316 @@
+{extend name="base" /}
+{block name="css"}
+<link type="text/css" rel="stylesheet" href="__STATIC__/mobile/css/index-css5.css?rand={$css_rand}">
+<link rel="stylesheet" type="text/css" href="__STATIC__/mobile/css/add-user-info-css.css?rand={$css_rand}">
+<link rel="stylesheet" type="text/css" href="__STATIC__/mobile/css/index-loading.css?rand={$css_rand}">
+<link rel="stylesheet" href="__STATIC__/mui/css/mui.min.css?rand={$css_rand}">
+<link rel="stylesheet" href="__STATIC__/mui/css/mui-icons-extra.css?rand={$css_rand}">
+{/block}
+{block name="body"}
+<style>
+    .mui-table-view.mui-grid-view .mui-table-view-cell .mui-media-body {
+        margin-top: 0;
+        height: 30px;
+        background: #f3e856;
+        padding: 8px 0;
+        color: white;
+    }
+
+    .mui-input-row label {
+        font-size: 14px;
+        width: 30%;
+    }
+
+    .mui-input-row .mui-input-clear {
+        font-size: 14px;
+        width: 70%;
+    }
+
+    .div_gray {
+        -webkit-filter: grayscale(100%);
+        -moz-filter: grayscale(100%);
+        -ms-filter: grayscale(100%);
+        -o-filter: grayscale(100%);
+
+        filter: grayscale(100%);
+
+        filter: gray;
+    }
+</style>
+<body style="background-color: rgb(236, 236, 236); display: block;">
+<div>
+    <div class="flexCo">
+        <header id="header" class="mui-bar mui-bar-nav">
+            <span id="goback" class="mui-btn mui-btn-blue mui-btn-link mui-pull-left">取消</span>
+            <h1 class="mui-title">完善用户信息</h1>
+            <span style="display: none" class="mui-btn mui-btn-blue mui-btn-link mui-pull-right">完成</span>
+        </header>
+        <div style="overflow: scroll;margin-top: 50px">
+            {if condition="$customer_data['customer_status']==2||$customer_data['customer_status']==3||$customer_data['customer_status']==4"}
+            <div class="mui-content"
+                 style="background-color:#ffdb30;padding-top: 3px;padding-bottom: 1px;display:block">
+                <h5 style="margin-left: 15px;">{$customer_data['customer_remark']}</h5>
+            </div>
+            {/if}
+            <div class="mui-content" style="background-color:#fff;padding-top: 5px">
+                <h5 style="margin-left: 15px;">1.居民身份证</h5>
+                <ul id="js_pic_parent" class="mui-table-view mui-grid-view js_car_pic_choose">
+                    <li class="mui-table-view-cell mui-media mui-col-xs-6 " style="padding-top: 2px">
+                        <p id="js_pic_idcard_front_tip">等待上传</p>
+                        <img id="js_pic_idcard_front" class="mui-media-object"
+                             data-img="{$customer_data['id_number_image_front']}"
+                             src="__OSSIMG__{$customer_data['id_number_image_front']}"
+                             onerror="javascript:this.src='http://img.youchedongli.cn/public/static/mobile/images/idcard_front.png?x-oss-process=image/resize,h_100';"
+                             style="height: 100px">
+                        <div class="mui-media-body">人脸页</div>
+                    </li>
+                    <li class="mui-table-view-cell mui-media mui-col-xs-6 div_gray" style="padding-top: 2px">
+                        <p id="js_pic_idcard_back_tip">等待上传</p>
+                        <img id="js_pic_idcard_back" class="mui-media-object"
+                             data-img="{$customer_data['id_number_image_reverse']}"
+                             src="__OSSIMG__{$customer_data['id_number_image_reverse']}"
+                             onerror="javascript:this.src='http://img.youchedongli.cn/public/static/mobile/images/idcard_back.png?x-oss-process=image/resize,h_100';"
+                             style="height: 100px">
+                        <div class="mui-media-body">国徽页</div>
+                    </li>
+                </ul>
+                <form class="mui-input-group">
+                    <div class="mui-input-row">
+                        <label>姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名：</label>
+                        <input id="js_idcard_name" type="text" value="{$customer_data['customer_name']}"
+                               class="mui-input-clear" placeholder="请输入姓名">
+                    </div>
+                    <div class="mui-input-row">
+                        <label>身份证号：</label>
+                        <input id="js_idcard_num" type="text" value="{$customer_data['id_number']}"
+                               class="mui-input-clear" placeholder="请输入身份证号">
+                    </div>
+                    <div style="display: none">
+                        <input id="js_id_number_time" value="{$customer_data['id_number_time']}" type="text">
+                    </div>
+                </form>
+            </div>
+            <div class="mui-content" style="background-color:#fff;margin-top: 10px;padding-top: 5px">
+                <h5 style="margin-left: 15px">2.机动车驾驶证</h5>
+                <ul class="mui-table-view mui-grid-view js_car_pic_choose">
+                    <li class="mui-table-view-cell mui-media mui-col-xs-6 div_gray" style="padding-top: 2px">
+                        <p id="js_pic_license_front_tip">等待上传</p>
+                        <img id="js_pic_license_front" class="mui-media-object"
+                             data-img="{$customer_data['driver_license_image_front']}"
+                             src="__OSSIMG__{$customer_data['driver_license_image_front']}"
+                             onerror="javascript:this.src='http://img.youchedongli.cn/public/static/mobile/images/license_home.png?x-oss-process=image/resize,h_100';"
+                             style="height: 100px">
+                        <div class="mui-media-body">驾驶证主页</div>
+                    </li>
+                    <li class="mui-table-view-cell mui-media mui-col-xs-6 div_gray" style="padding-top: 2px">
+                        <p id="js_pic_license_back_tip">等待上传</p>
+                        <img id="js_pic_license_back" class="mui-media-object"
+                             data-img="{$customer_data['driver_license_image_attach']}"
+                             src="__OSSIMG__{$customer_data['driver_license_image_attach']}"
+                             onerror="javascript:this.src='http://img.youchedongli.cn/public/static/mobile/images/license_vice.png?x-oss-process=image/resize,h_100';"
+                             style="height: 100px">
+                        <div class="mui-media-body">驾驶证副页</div>
+                    </li>
+                </ul>
+                <form class="mui-input-group">
+                    <div class="mui-input-row">
+                        <label>档案编号：</label>
+                        <input id="js_driver_license" type="text" value="{$customer_data['driver_license']}"
+                               class="mui-input-clear" placeholder="请输入档案编号">
+                    </div>
+                </form>
+                <div style="display: none">
+                    <input id="js_driver_license_name" value="{$customer_data['driver_license_name']}" type="text">
+                    <input id="js_driver_license_number" value="{$customer_data['driver_license_number']}" type="text">
+                    <input id="js_driver_license_time" value="{$customer_data['driver_license_time']}" type="text">
+                </div>
+            </div>
+            <div class="mui-content" style="background-color:#fff;margin-top: 10px;padding-top: 5px">
+                <h5 style="margin-left: 15px">3.用户照片</h5>
+                <ul class="mui-table-view mui-grid-view js_car_pic_choose">
+                    <li class="mui-table-view-cell mui-media mui-col-xs-6 div_gray" style="padding-top: 2px">
+                        <p id="js_pic_customer_front_tip">等待上传</p>
+                        <img id="js_pic_customer_front" class="mui-media-object"
+                             data-img="{$customer_data['customer_front']}"
+                             src="__OSSIMG__{$customer_data['customer_front']}"
+                             onerror="javascript:this.src='http://img.youchedongli.cn/public/static/mobile/images/pic_user.png?x-oss-process=image/resize,h_100';"
+                             style="height: 100px">
+                        <div class="mui-media-body">用户正面照</div>
+                    </li>
+                </ul>
+            </div>
+            {if condition="$customer_data['customer_status']==0||$customer_data['customer_status']==3"}
+            <div id="div_sure" style="background-color:#fff;margin-top: 10px;padding-top: 10px;padding-bottom: 10px">
+                <button type="button" id="sure" disabled="disabled" style="width: 90%;margin: 0 5%" class="mui-btn ">
+                    提交实名制
+                </button>
+            </div>
+            {else/}
+            <div id="div_no" style="z-index:100;position: absolute;top: 50px;left: 0;right: 0;bottom: 0">
+
+            </div>
+            {/if}
+            <div class="mui-content" style="height: 40px;width: 100%">
+            </div>
+        </div>
+    </div>
+</div>
+<div id="maskbody" style="display: none;">
+    <div class="sliPop">
+        <dl class="valCer size15 item-list">
+            <dt class="size17" line="hairB bgEc">选择有效证件</dt>
+            <dd line="hairB bgEc" data-index="0" data-type="1">身份证
+                <em class="isdIco colorGre size18"></em>
+            </dd>
+            <dd line="hairB bgEc" data-index="1" data-type="2">护照</dd>
+            <dd line="hairB bgEc" data-index="2" data-type="7">回乡证</dd>
+            <dd line="hairB bgEc" data-index="3" data-type="8">台胞证</dd>
+        </dl>
+    </div>
+</div>
+<div class="view cui-mask" style="display: none;" id="ui-view-61"></div>
+<script type="text/javascript" src="__STATIC__/mobile/js/jquery.min.js"></script>
+<script type="text/javascript" src="__STATIC__/mobile/js/public-js.js?rand={$js_rand}"></script>
+<script type="text/javascript" src="__STATIC__/mui/js/mui.min.js?rand={$js_rand}"></script>
+<script type="text/javascript" src="__STATIC__/mobile/js/add-user-info-js.js?rand={$js_rand}"></script>
+{include file="login" /}
+{include file="loading" /}
+</body>
+{if condition="$is_wxBrowser eq 'yes'"}
+<script src="http://res.wx.qq.com/open/js/jweixin-1.4.0.js?rand={$js_rand}"></script>
+<script>
+    /*
+     * 注意：
+     * 1. 所有的JS接口只能在公众号绑定的域名下调用，公众号开发者需要先登录微信公众平台进入“公众号设置”的“功能设置”里填写“JS接口安全域名”。
+     * 2. 如果发现在 Android 不能分享自定义内容，请到官网下载最新的包覆盖安装，Android 自定义分享接口需升级至 6.0.2.58 版本及以上。
+     * 3. 常见问题及完整 JS-SDK 文档地址：http://mp.weixin.qq.com/wiki/7/aaa137b55fb2e0456bf8dd9148dd613f.html
+     *
+     * 开发中遇到问题详见文档“附录5-常见错误及解决办法”解决，如仍未能解决可通过以下渠道反馈：
+     * 邮箱地址：weixin-open@qq.com
+     * 邮件主题：【微信JS-SDK反馈】具体问题
+     * 邮件内容说明：用简明的语言描述问题所在，并交代清楚遇到该问题的场景，可附上截屏图片，微信团队会尽快处理你的反馈。
+     */
+    wx.config({
+        debug: false,
+        appId: "{$jssdk['appid']}",
+        timestamp: "{$jssdk['timestamp']}",
+        nonceStr: "{$jssdk['nonceStr']}",
+        signature: "{$jssdk['signature']}",
+        jsApiList: [
+            'checkJsApi',
+            'chooseImage',
+            'uploadImage'
+        ]
+    });
+
+    //自定义内容
+    wx.ready(function () {
+        $("#div_no").on('click',function () {
+            mui.alert("当前状态不能修改提交信息","温馨提示");
+            return false;
+        });
+        //身份证正面
+        $("#js_pic_idcard_front").on("click", function () {
+            if (!$(this).parent().hasClass('div_gray')) {
+                choose_drver_pic("js_pic_idcard_front");
+            }else {
+                mui.alert("请按顺序上传照片","温馨提示");
+            }
+            return false;
+        });
+        //身份证反面
+        $("#js_pic_idcard_back").on("click", function () {
+            if (!$(this).parent().hasClass('div_gray')) {
+                choose_drver_pic("js_pic_idcard_back");
+            }else {
+                mui.alert("请按顺序上传照片","温馨提示");
+            }
+            return false;
+        });
+        //驾驶证主页
+        $("#js_pic_license_front").on("click", function () {
+            if (!$(this).parent().hasClass('div_gray')) {
+                choose_drver_pic("js_pic_license_front");
+            }else {
+                mui.alert("请按顺序上传照片","温馨提示");
+            }
+            return false;
+        });
+        //驾驶证副页
+        $("#js_pic_license_back").on("click", function () {
+            if (!$(this).parent().hasClass('div_gray')) {
+                choose_drver_pic("js_pic_license_back");
+            }else {
+                mui.alert("请按顺序上传照片","温馨提示");
+            }
+            return false;
+        });
+        //用户正面照
+        $("#js_pic_customer_front").on("click", function () {
+            if (!$(this).parent().hasClass('div_gray')) {
+                choose_user_pic("js_pic_customer_front");
+            }else {
+                mui.alert("请按顺序上传照片","温馨提示");
+            }
+            return false;
+        });
+    });
+    wx.error(function (res) {
+//        alert(res.errMsg);
+    });
+
+    function choose_drver_pic(viewId) {
+        wx.chooseImage({
+            count: 1, // 默认9
+            sizeType: ['compressed'], // 可以指定是原图还是压缩图，默认二者都有
+            //sourceType: ['camera'], // 可以指定来源是相册还是相机，默认二者都有
+            sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+            success: function (res) {
+                var localIds = res.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
+                // $("#"+viewId).attr('src', localIds[0]);
+                wx.uploadImage({
+                    localId: localIds[0] + '',
+                    isShowProgressTips: 1,
+                    success: function (res) {
+                        if (viewId == "js_pic_idcard_front" || viewId == "js_pic_idcard_back") {
+                            distinguish_idcard_by_pic(viewId, res.serverId);
+                        }
+                        if (viewId == "js_pic_license_front" || viewId == "js_pic_license_back") {
+                            distinguish_license_by_pic(viewId, res.serverId);
+                        }
+                    },
+                    fail: function (res) {
+                        mui.alert("上传失败" + res.errMsg, "提示");
+                    }
+                });
+
+            }
+        });
+    }
+
+    function choose_user_pic(viewId) {
+        wx.chooseImage({
+            count: 1, // 默认9
+            sizeType: ['compressed'], // 可以指定是原图还是压缩图，默认二者都有
+            sourceType: ['camera'], // 可以指定来源是相册还是相机，默认二者都有
+            // sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+            success: function (res) {
+                var localIds = res.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
+                // $("#"+viewId).attr('src', localIds[0]);
+                wx.uploadImage({
+                    localId: localIds[0] + '',
+                    isShowProgressTips: 1,
+                    success: function (res) {
+                        submit_driver_pic(viewId, res.serverId, "jpg", "customerfront", "customer_front");
+                    },
+                    fail: function (res) {
+                        mui.alert("上传失败" + res.errMsg, "提示");
+                    }
+                });
+
+            }
+        });
+    }
+</script>
+{/if}
+{/block}

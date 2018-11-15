@@ -1,0 +1,71 @@
+{extend name="base" /}
+{block name="css"}
+<link rel="stylesheet" type="text/css" href="__STATIC__/mobile/css/order-mine-css1.css?rand={$css_rand}">
+<link rel="stylesheet" type="text/css" href="__STATIC__/mobile/css/order-mine-css2.css?rand={$css_rand}">
+{/block}
+{block name="body"}
+<body style="background-color: rgb(240, 242, 244); color: rgb(34, 34, 34); display: block;"
+      onselectstart="return false">
+<div class="baseWrap">
+    <div class="headStr">
+        <p class="iph" style="display: none"></p>
+        <div class="headCap size16">
+            <em class="orIco opt size25" id="back"></em>
+            <span class="myorderOpa">我的订单</span>
+            {if condition="$customer_id eq ''"}
+            <em class="texOpa colorVi size14" style="opacity: 1;" id="js-btnLogin">登录</em>
+            {/if}
+        </div>
+    </div>
+    <div id="order" class="" style="height: 100%; overflow:auto;">
+        <ul class="orderCol" id="js-order-ul"
+            style="margin-top: 49px">
+            <!-- 待支付订单 -->
+            <li class="js-order-item" style="display: none">
+                <p class="vehNam">
+                    <em class="orIco colorF size14"></em>
+                    <span class="main size16 js-goods-name"></span>
+                    <span class="main size16 js-order-goods-type"></span>
+                    <span class="colorOr js-order-status"></span>
+                </p>
+                <div class="orderCon" line="hairT bgEc">
+                    <div class="main">
+                        <p class="term">车牌号：
+                            <span class="js-car-licence-plate"></span>
+                        </p>
+                        <p class="term">取车：<span class="js-acquire-time"></span>
+                            <span class="js-acquire-store-name">机场服务点</span>
+                        </p>
+                        <p class="term">还车：<span class="js-return-time"></span>
+                            <span class="js-return-store-name">机场服务点</span>
+                        </p>
+                        <p class="term color9 js-store-key-name">桐叶租车</p>
+                    </div>
+                    <span class="term js-order-amount">¥0</span>
+                    <span class="term">(含异地还车费<span class="js-extra-cost"></span>)</span>
+                </div>
+                <div class="orderCon strTime js-remain" style="display: block;opacity: 1;">请在剩余时间<span
+                        class="colorOr js-remain-time">21分27秒</span>内完成支付，逾期将自动取消订单
+                </div>
+                <p class="orderOpa size15" line="hairT bgEc">
+                    <span class="consult colorVi js-order-info js-consult-btn">
+                        客服
+                    </span>
+
+                    <span class="consult colorVi js-order-info js-comment-btn">
+                        评价
+                    </span>
+                    <span class="consult colorVi js-order-info js-pay-btn">立即支付
+                    </span>
+                </p>
+            </li>
+        </ul>
+    </div>
+</div>
+{include file="login" /}
+{include file="loading" /}
+<script type="text/javascript" src="__STATIC__/mobile/js/jquery.min.js"></script>
+<script type="text/javascript" src="__STATIC__/mobile/js/public-js.js?rand={$js_rand}"></script>
+<script type="text/javascript" src="__STATIC__/mobile/js/order-mine-js.js?rand={$js_rand}"></script>
+</body>
+{/block}

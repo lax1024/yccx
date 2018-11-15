@@ -1,0 +1,239 @@
+{extend name="base" /}
+{block name="css"}
+<link type="text/css" rel="stylesheet" href="__STATIC__/mobile/css/index-css5.css?rand={$css_rand}">
+<link rel="stylesheet" type="text/css" href="__STATIC__/mobile/css/addcontact-css.css?rand={$css_rand}">
+{/block}
+{block name="body"}
+<body style="background-color: rgb(236, 236, 236); display: block;">
+<div>
+    <div class="flexCo">
+        <div class="headStrip white flexCo" line="hairB bgD2">
+            <p class="iph" style="display: none"></p>
+            <p class="headCap size16">
+                <em class="opaAre textL size14 cancel-btn" id="goback">取消</em>
+                新增驾驶员
+                <em class="opaAre textR size14 ok-btn" id="sure">完成</em>
+            </p>
+        </div>
+        <div class="fillCon flexMa">
+            <div class="addDriCard size15">
+                <div class="fmForm">
+                    <p class="inner sin" line="hairB bgEc">
+                        <span class="formFie color9">驾驶员</span>
+                        <input id="userName" type="text"
+                               name=""
+                               placeholder="姓名与有效证件保持一致"
+                               class="flexMa size15 name-input"
+                               style="text-transform:uppercase;">
+                    </p>
+                </div>
+                <div class="fmForm">
+                    <p class="inner sin" line="hairB bgEc">
+                        <span class="formFie color9">联系手机</span>
+                        <input id="userTel" type="tel"
+                               name=""
+                               placeholder="接受预订短信和门店电话"
+                               class="flexMa size15 tel-input"
+                               maxlength="11">
+                    </p>
+                </div>
+                <div class="fmForm">
+                    <p class="inner sin">
+                        <span class="formFie color9 cardtype-icon mg15" data-type="1">
+                            <span class="card-name">身份证</span>
+                            <!--<em class="isdIco colorC size12 card-dropdown-icon"></em>-->
+                        </span>
+                        <input id="userCardNum" type="text" name=""
+                               placeholder="驾驶员证件号码"
+                               class="flexMa size15 idnum-input"
+                               maxlength="18"
+                               style="text-transform:uppercase;">
+                        <!--<em class="persIco isdIco size27 fillVi">&#xe328;</em>-->
+                        <!--<em class="clearTex isdIco size18 color9"></em>-->
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="fillCon flexMa" style="display: none">
+            <div class="addDriCard size15">
+                <div class="fmForm2">
+                    <p>上传证件图片</p>
+                </div>
+                <div class="addDriCardPic">
+                    <div class="pic">
+                        <div class="pic_container">
+                            <div class="driPicture">
+                                <img id="js_pic_license_front"
+                                     src="../../.././public/static/mobile/images/driver_license_front.png">
+                            </div>
+                            <div class="driCardType"><span>驾驶证主页</span></div>
+                        </div>
+                    </div>
+                    <div class="pic">
+                        <div class="pic_container">
+                            <div class="driPicture">
+                                <img id="js_pic_license_back"
+                                     src="../../.././public/static/mobile/images/driver_license_back.png">
+                            </div>
+                            <div class="driCardType"><span>驾驶证副页</span></div>
+                        </div>
+                    </div>
+                    <div class="pic">
+                        <div class="pic_container">
+                            <div class="driPicture">
+                                <img id="js_pic_idcard_front"
+                                     src="../../.././public/static/mobile/images/driver_idcard_front.png">
+                            </div>
+                            <div class="driCardType"><span>身份证正面</span></div>
+                        </div>
+                    </div>
+                    <div class="pic" style="margin-bottom: 50px">
+                        <div class="pic_container">
+                            <div class="driPicture">
+                                <img id="js_pic_idcard_back"
+                                     src="../../.././public/static/mobile/images/driver_idcard_back.png">
+                            </div>
+                            <div class="driCardType"><span>身份证反面</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="maskbody" style="display: none;">
+    <div class="sliPop">
+        <dl class="valCer size15 item-list">
+            <dt class="size17" line="hairB bgEc">选择有效证件</dt>
+            <dd line="hairB bgEc" data-index="0" data-type="1">身份证
+                <em class="isdIco colorGre size18"></em>
+            </dd>
+            <dd line="hairB bgEc" data-index="1" data-type="2">护照</dd>
+            <dd line="hairB bgEc" data-index="2" data-type="7">回乡证</dd>
+            <dd line="hairB bgEc" data-index="3" data-type="8">台胞证</dd>
+        </dl>
+    </div>
+</div>
+<div class="view cui-mask" style="display: none;" id="ui-view-61"></div>
+{include file="login" /}
+{include file="loading" /}
+<script type="text/javascript" src="__STATIC__/mobile/js/jquery.min.js"></script>
+<script type="text/javascript" src="__STATIC__/mobile/js/public-js.js?rand={$js_rand}"></script>
+<script type="text/javascript" src="__STATIC__/mobile/js/addcontact-js.js?rand={$js_rand}"></script>
+</body>
+{if condition="$is_wxBrowser eq 'yes'"}
+{/if}
+<script src="http://res.wx.qq.com/open/js/jweixin-1.4.0.js?rand={$js_rand}"></script>
+<script>
+    /*
+     * 注意：
+     * 1. 所有的JS接口只能在公众号绑定的域名下调用，公众号开发者需要先登录微信公众平台进入“公众号设置”的“功能设置”里填写“JS接口安全域名”。
+     * 2. 如果发现在 Android 不能分享自定义内容，请到官网下载最新的包覆盖安装，Android 自定义分享接口需升级至 6.0.2.58 版本及以上。
+     * 3. 常见问题及完整 JS-SDK 文档地址：http://mp.weixin.qq.com/wiki/7/aaa137b55fb2e0456bf8dd9148dd613f.html
+     *
+     * 开发中遇到问题详见文档“附录5-常见错误及解决办法”解决，如仍未能解决可通过以下渠道反馈：
+     * 邮箱地址：weixin-open@qq.com
+     * 邮件主题：【微信JS-SDK反馈】具体问题
+     * 邮件内容说明：用简明的语言描述问题所在，并交代清楚遇到该问题的场景，可附上截屏图片，微信团队会尽快处理你的反馈。
+     */
+    wx.config({
+        debug: false,
+        appId: "{$jssdk['appid']}",
+        timestamp: "{$jssdk['timestamp']}",
+        nonceStr: "{$jssdk['nonceStr']}",
+        signature: "{$jssdk['signature']}",
+        jsApiList: [
+            'checkJsApi',
+            'chooseImage',
+            'uploadImage'
+        ]
+    });
+
+    //自定义内容
+    wx.ready(function () {
+        //驾驶证主页
+        $("#js_pic_license_front").on("click",function () {
+            choose_drver_pic("js_pic_license_front","driver_license","driver_license_image_front");
+        });
+        //驾驶证副页
+        $("#js_pic_license_back").on("click",function () {
+            choose_drver_pic("js_pic_license_back","driver_license","driver_license_image_attach");
+        });
+        //身份证正面
+        $("#js_pic_idcard_front").on("click",function () {
+            choose_drver_pic("js_pic_idcard_front","id_number","id_number_image_front");
+        });
+        //身份证反面
+        $("#js_pic_idcard_back").on("click",function () {
+            choose_drver_pic("js_pic_idcard_back","id_number","id_number_image_reverse");
+        });
+    });
+    wx.error(function (res) {
+        alert(res.errMsg);
+    });
+
+    function choose_drver_pic(viewId,path,field) {
+        wx.chooseImage({
+            count: 1, // 默认9
+            sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
+            sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+            success: function (res) {
+                var localIds = res.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
+                $("#"+viewId).attr('src', localIds[0]);
+                wx.uploadImage({
+                    localId: localIds[0] + '',
+                    isShowProgressTips: 1,
+                    success: function (res) {
+                        // serverIdarr[serverIdindex] = res.serverId;
+                        // get_img_url(res.serverId, serverIdindex);
+                        // serverIdindex++;
+                        submit_driver_pic(viewId,res.serverId,"jpg",path,field);
+                    },
+                    fail: function (res) {
+                        alert("上传失败" + res.errMsg);
+                    }
+                });
+
+            },
+            cancel: function (res) {
+
+            },
+            fail: function (res) {
+                alert(JSON.stringify(res));
+            }
+        });
+    }
+
+    function submit_driver_pic(viewId,localIds,type,path,field) {
+        $.ajax({
+            url:website+"/api/Dynupload/upload",
+            type:"POST",
+            async:true,
+            data:{
+                sid:localIds,
+                type:type,
+                path:path,
+                field:field
+            },
+            timeout:5000,
+            dataType:"json",
+            beforeSend:function (xhr) {
+
+            },
+            success:function (data) {
+                if(data.code == 0){
+                    $("#"+viewId).attr('src', "http://img.youchedongli.cn" + data.url);
+                }else{
+                    Toast(data.info,2000);
+                }
+            },
+            error:function (xhr,textStatus) {
+
+            },
+            complete:function () {
+
+            }
+        });
+    }
+</script>
+{/block}

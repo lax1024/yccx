@@ -1,0 +1,194 @@
+{extend name="base" /}
+{block name="body"}
+<style>
+    .area_div .layui-input-inline {
+        width: 160px;
+    }
+</style>
+<div class="layui-body">
+    <!--tab标签-->
+    <div class="layui-tab layui-tab-brief">
+        <ul class="layui-tab-title">
+            <li class=""><a href="{:url('manage/seller/index')}">商户管理员管理</a></li>
+            <li class="layui-this">添加商户管理员</li>
+        </ul>
+        <div class="layui-tab-content">
+            <div class="layui-tab-item layui-show">
+                <form class="layui-form form-container" action="{:url('manage/seller/save')}" method="post">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">电话号码</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="mobile_phone" value="" required lay-verify="required"
+                                   placeholder="请输入手机号码" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">密码</label>
+                        <div class="layui-input-block">
+                            <input type="password" name="login_password" value="" required lay-verify="required"
+                                   placeholder="请输入密码" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">重复密码</label>
+                        <div class="layui-input-block">
+                            <input type="password" name="confirm_password" value="" required lay-verify="required"
+                                   placeholder="请再次输入密码" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">真实姓名</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="seller_name" value="" placeholder="（选填）请输入真实姓名"
+                                   class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">身份证号码</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="id_number" id="id_number" value="" placeholder="（选填）请输入身份证号码"
+                                   class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">身份证图片正面</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="id_number_image_front" value="" placeholder="（选填）请上传图片"
+                                   class="layui-input layui-input-inline" id="thumb_id_number_front">
+                            <input type="file" name="file" accept="image/png"
+                                   onclick="upload_img('/index.php/api/upload/upload.html?type=id_number','thumb_id_number_front')"
+                                   class="layui-upload-file">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">身份证图片反面</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="id_number_image_reverse" value="" placeholder="（选填）请上传图片"
+                                   class="layui-input layui-input-inline" id="thumb_id_number_reverse">
+                            <input type="file" name="file" accept="image/png"
+                                   onclick="upload_img('/index.php/api/upload/upload.html?type=id_number','thumb_id_number_reverse')"
+                                   class="layui-upload-file">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">客户邮箱</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="email" value="" placeholder="（选填）请输入客户邮箱" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">客户昵称</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="seller_nickname" value="" placeholder="（选填）请输入客户昵称"
+                                   class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">客户性别</label>
+                        <div class="layui-input-block">
+                            <input type="radio" name="seller_sex" value="1" title="男" checked="checked">
+                            <input type="radio" name="seller_sex" value="0" title="女">
+                        </div>
+                    </div>
+                    <div id="p2" class="area_div">
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">客户地址</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="address" value="" placeholder="（选填）请输入客户地址" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">驾驶证档案编号</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="driver_license" id="driver_license" value=""
+                                   placeholder="（选填）请输入客户驾驶证档案编号"
+                                   class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">驾驶证档案编号图片正面</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="driver_license_image_front" value="" placeholder="（选填）请上传图片"
+                                   class="layui-input layui-input-inline" id="thumb_driver_license_front">
+                            <input type="file" name="file" accept="image/png"
+                                   onclick="upload_img('/index.php/api/upload/upload.html?type=driver_license','thumb_driver_license_front')"
+                                   class="layui-upload-file">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">驾驶证档案编号图片副页</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="driver_license_image_attach" value="" placeholder="（选填）请上传图片"
+                                   class="layui-input layui-input-inline" id="thumb_driver_license_attach">
+                            <input type="file" name="file" accept="image/png"
+                                   onclick="upload_img('/index.php/api/upload/upload.html?type=driver_license','thumb_driver_license_attach')"
+                                   class="layui-upload-file">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">客户QQ</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="qq" value="" placeholder="（选填）请输入客户QQ" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">客户微信号</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="wechar" value="" placeholder="（选填）请输入客户微信号" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">状态</label>
+                        <div class="layui-input-block">
+                            <input type="radio" name="seller_status" value="1" title="正常" checked="checked">
+                            <input type="radio" name="seller_status" value="2" title="锁定">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <div class="layui-input-block">
+                            <button class="layui-btn" lay-submit lay-filter="*">保存</button>
+                            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}
+{block name="js"}
+<script type="text/javascript" src="__JS__/picker.js"></script>
+{/block}
+{block name="script"}
+<script>
+    $(function () {
+        var picker = layui.picker;
+        var p2 = new picker();
+        p2.set({
+            elem: '#p2',
+            url:"{:url('api/Area/get_province_list')}",
+            canSearch: true,
+            codeConfig: {
+                "default": false
+            }
+        }).render();
+    });
+</script>
+<script>
+    function upload_img(url, id) {
+        layui.upload({
+            url: url,
+            type: 'image',
+            ext: 'jpg|png|gif|bmp',
+            success: function (data) {
+                if (data.error === 0) {
+                    document.getElementById(id).value = data.url;
+                } else {
+                    layer.msg(data.message);
+                }
+            }
+        });
+    }
+</script>
+{/block}

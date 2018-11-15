@@ -1,0 +1,209 @@
+{extend name="base" /}
+{block name="body"}
+<div class="layui-body">
+    <!--tab标签-->
+    <div class="layui-tab layui-tab-brief">
+        <ul class="layui-tab-title">
+            <li class="layui-this">订单管理</li>
+            <!--<li class=""><a href="{:url('manage/order/add')}">添加订单</a></li>-->
+        </ul>
+        <div class="layui-tab-content">
+            <div class="layui-tab-item layui-show">
+                <form class="layui-form layui-form-pane" action="{:url('manage/order/index')}" method="get">
+                    <div class="layui-inline">
+                        <div class="layui-inline">
+                            <div class="layui-input-inline" style="width: 200px">
+                                <div class="layui-form-mid ">订单统计：</div>
+                                <div class="layui-form-mid ">{$order_amount}元</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <div class="layui-inline">
+                            <div class="layui-input-inline" style="width: 200px">
+                                <div class="layui-form-mid">退款统计：</div>
+                                <div class="layui-form-mid">{$refund_amount}元</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <div class="layui-inline">
+                            <div class="layui-input-inline" style="width: 200px">
+                                <div class="layui-form-mid ">合计统计：</div>
+                                <div class="layui-form-mid ">{$order_amount-$refund_amount}元</div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr/>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">支付类型</label>
+                        <div class="layui-input-inline">
+                            <select name="payment_code" lay-filter="statusselect">
+                                <option value="0">未选择</option>
+                                {foreach name="payment_code_list" item="vo" key="kv"}
+                                <option value="{$kv}" {php} echo $kv==$payment_code?"selected":"";{/php}>{$vo}</option>
+                                {/foreach}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">起始时间</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="start_time" value="{$start_time}"
+                                   placeholder="起始时间"
+                                   class="layui-input datetime">
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">结束时间</label>
+                        <div class="layui-inline">
+                            <input type="text" name="end_time" value="{$end_time}"
+                                   placeholder="结束时间"
+                                   class="layui-input datetime">
+                        </div>
+                    </div>
+                    <hr/>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">关键词</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="keyword" value="{$keyword}" placeholder="请输入关键词"
+                                   class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <button class="layui-btn">搜索</button>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">订单状态</label>
+                        <div class="layui-inline">
+                            <select name="order_status" lay-filter="statusselect">
+                                <option value="-1">未选择</option>
+                                {if condition="$order_status==80"}
+                                <option value="80" selected>提前还车申请</option>
+                                {else/}
+                                <option value="80">提前还车申请</option>
+                                {/if}
+                                {foreach name="order_status_list" item="vo" key="kv"}
+                                <option value="{$kv}" {php} echo $kv==$order_status?"selected":"";{/php}>{$vo}</option>
+                                {/foreach}
+                                {if condition="$order_status==90"}
+                                <option value="90" selected>申请退款</option>
+                                {else/}
+                                <option value="90">申请退款</option>
+                                {/if}
+                                {if condition="$order_status==100"}
+                                <option value="100" selected>退款完成</option>
+                                {else/}
+                                <option value="100">退款完成</option>
+                                {/if}
+                            </select>
+                        </div>
+                    </div>
+                </form>
+                <hr>
+                <table class="layui-table">
+                    <thead>
+                    <tr>
+                        <th style="width: 3%">ID</th>
+                        <th style="width: 10%">订单号/支付单号</th>
+                        <th>客户id</th>
+                        <th>桩名称</th>
+                        <th>编号（抢号）</th>
+                        <th>单价</th>
+                        <th>总费用</th>
+                        <th>支付方式</th>
+                        <th>订单状态</th>
+                        <th>是否评论</th>
+                        <th>付款时间</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {foreach name="order_list" item="vo"}
+                    <tr>
+                        <td>{$vo.id}</td>
+                        <td>订单号:{$vo.order_sn} <br/> 支付号:{$vo.pay_sn}</td>
+                        <td>{$vo.customer_id}</td>
+                        <td>{$vo.goods_name}</td>
+                        <td>{$vo.goods_device}（{$vo.goods_gun}）</td>
+                        <td>{$vo.goods_amount}</td>
+                        <td>{$vo.order_amount}</td>
+                        <td>{$vo.payment_code_str}</td>
+                        <td>{$vo.order_status_str}</td>
+                        <td>{php}echo $vo['evaluation_status']==0 ? '未评论' : '已评论';{/php}</td>
+                        <td>{$vo.payment_time_str}</td>
+                        <td>
+                            <a href="{:url('manage/order/edit',['id'=>$vo['id']])}"
+                               class="layui-btn layui-btn-normal layui-btn-mini">编辑查看</a>
+                            {if condition="$vo['payment_code']!=''"}
+                            {if condition="$vo['is_refund']==0&&$vo['order_status']==50"}
+                            <a href="{:url('manage/order/update_refund',['pay_sn'=>$vo['pay_sn']])}"
+                               class="layui-btn layui-btn-normal layui-btn-mini ajax-refund">申请退款</a>
+                            {/if}
+                            {if condition="$vo['is_refund']==1&&$vo['order_status']==50"}
+                            <a href="{:url('manage/order/refund',['pay_sn'=>$vo['pay_sn']])}"
+                               class="layui-btn layui-btn-danger layui-btn-mini ajax-common">确认退款</a>
+                            {/if}
+                            {/if}
+                        </td>
+                    </tr>
+                    {/foreach}
+                    </tbody>
+                </table>
+                <!--分页-->
+                {$order_list->render()}
+            </div>
+        </div>
+    </div>
+</div>
+{/block}
+{block name="script"}
+<script>
+    /**
+     * 通用备注更改
+     */
+    $('.ajax-refund').on('click', function () {
+        var _href = $(this).attr('href');
+        layer.open({
+            shade: false,
+            content: "<input id='ajax-refund' placeholder='请输入退款金额' class='layui-input'>",
+            btn: ['确定', '取消'],
+            yes: function (index) {
+                var refund_amount = $("#ajax-refund").val();
+                $.ajax({
+                    url: _href,
+                    type: "POST",
+                    data: {
+                        refund_amount: refund_amount
+                    },
+                    dataType: 'json',
+                    success: function (info) {
+                        if (info.code === 1) {
+                            setTimeout(function () {
+                                location.href = info.url;
+                            }, 1000);
+                        }
+                        layer.msg(info.msg);
+                    }
+                });
+                layer.close(index);
+            }
+        });
+
+        return false;
+    });
+    form.on('select(statusselect)', function (data) {
+        $(".layui-form-pane").submit();
+    });
+    /**
+     * 通用日期时间选择
+     */
+    $('.datetime').on('click', function () {
+        laydate({
+            elem: this,
+            istime: true,
+            format: 'YYYY-MM-DD hh:mm:ss'
+        })
+    });
+</script>
+{/block}

@@ -1,0 +1,55 @@
+{extend name="base" /}
+{block name="css"}
+<link rel="stylesheet" href="__STATIC__/mui/css/mui.min.css">
+<link rel="stylesheet" href="__STATIC__/mui/css/mui-icons-extra.css?rand={$css_rand}">
+<link rel="stylesheet" href="__STATIC__/mui/css/app-self.css?rand={$css_rand}">
+<style>
+    .active{
+        color:red;
+    }
+</style>
+{/block}
+{block name="body"}
+<body>
+<header class="mui-bar mui-bar-nav">
+    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+    <h1 class="mui-title">用车里程排名榜</h1>
+</header>
+<div class="mui-content">
+    <div class="mui-card">
+        <ul class="mui-table-view">
+            {foreach name="rank_list_data" item="vo"}
+            <li class="mui-table-view-cell" style="height: 70px;">
+                <div style="height: 100%;width: 8%;line-height: 50px;float: left;">{$vo.rank}</div>
+                <div style="height: 100%;width: 50%;float: left">
+                    <img src="{$vo.wechar_headimgurl}"
+                         style="width: 50px;height: 50px;border-radius: 100%;border: 2px solid #EEE;float: left;">
+                    <div style="float: left;height: 100%;line-height: 50px">{$vo.wechar_nickname}</div>
+                </div>
+                <div style="height: 100%;width: 34%;line-height: 50px;float: left;text-align: right">
+                    <span class="mui-badge mui-badge-warning">{$vo.drive_month_km}</span>
+                </div>
+                <div style="height: 100%;width: 8%;float: left">
+                    <div style="margin-top: 15px;" class="js-mui-heart mui-icon-extra mui-icon-extra-heart mui-pull-right"></div>
+                </div>
+            </li>
+            {/foreach}
+        </ul>
+    </div>
+</div>
+<script src="__STATIC__/mui/js/mui.min.js?rand={$css_rand}"></script>
+<script type="text/javascript" src="__STATIC__/mobile/js/jquery.min.js?rand={$css_rand}"></script>
+<script>
+    var mui_hearts = $(".js-mui-heart ");
+    mui_hearts.on("click",function () {
+        if($(this).hasClass("active")){
+            $(this).removeClass("active");
+            $(this).removeClass("mui-icon-extra-heart-filled");
+        }else {
+            $(this).addClass("active");
+            $(this).addClass("mui-icon-extra-heart-filled");
+        }
+    });
+</script>
+</body>
+{/block}

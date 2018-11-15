@@ -1,0 +1,512 @@
+{extend name="base" /}
+{block name="css"}
+<link rel="stylesheet" type="text/css" href="__STATIC__/mobile/css/order-pay-css1.css?rand={$css_rand}">
+<link rel="stylesheet" type="text/css" href="__STATIC__/mobile/css/order-pay-css2.css?rand={$css_rand}">
+<link rel="stylesheet" href="__STATIC__/mui/css/mui.min.css?rand={$css_rand}">
+<link rel="stylesheet" href="__STATIC__/mui/css/mui-icons-extra.css?rand={$css_rand}">
+{/block}
+{block name="body"}
+<style>
+    .mui-bar {
+        background-color: #f3e856;
+    }
+</style>
+<body class="keyboard-body">
+<header class="mui-bar mui-bar-nav">
+    <span id="goback" class="mui-icon mui-icon-contact mui-icon-left-nav"></span>
+    <h1 class="mui-title">收银台</h1>
+</header>
+<!-- start qn_main -->
+<div class="qn_main">
+    <!-- 告警框 -->
+    <div id="toastdiv"></div>
+    <section class="qmp-pay" style="margin-top: 50px">
+        <!-- header start-->
+        <section class="m_page_wp">
+            <!-- 订单金额 -->
+            <!-- 余额支付-->
+            <section id="balance_body" class="white_bg" {php} echo $customer_data[
+            'customer_balance']>0?"":"style='display: none'";{/php}>
+            <!--<section class="cdshow">-->
+            <!--<div class="cdcontent">是否使用余额支付</div>-->
+            <!--</section>-->
+            <article class="m_pay_weixinJSPay">
+                <hgroup class="p_item">
+                    <h1 class="text commontext " id="js-pay-balance" data-pay="no">
+                        <i class="ico transparent_class weixin_ico hide"></i>
+                        <div class="pay-way-cont">
+                            <div class="title">&nbsp;&nbsp;&nbsp;&nbsp;余额:{$customer_data['customer_balance']}(元)</div>
+                            <div class="pay-way-name" style="color: #666">不使用
+                            </div>
+                        </div>
+                    </h1>
+                    <div class="change-wrapper ">
+                        <h4 class="info">更换</h4>
+                        <i class="icon change-icon sel-icon" normalicontext=""></i>
+                    </div>
+                </hgroup>
+            </article>
+        </section>
+        <!-- 支付平台选择 -->
+        <section id="cashier_body" class="white_bg">
+            <!--<section class="cdshow">-->
+            <!--<div class="cdcontent">请选择支付方式</div>-->
+            <!--</section>-->
+
+            <article class="m_pay_way m_pay_weixinJSPay" paywayname="weixinJSPay">
+                <hgroup class="p_item">
+                    <h1 class="text commontext ">
+                        <i class="ico transparent_class weixin_ico hide"></i>
+                        <div class="pay-way-cont">
+                            <div class="title">支付方式</div>
+                            <div class="pay-way-name" id="finish_pay_way" data-pay="weixin">微信</div>
+                        </div>
+                    </h1>
+                    <div class="change-wrapper ">
+                        <h4 class="info">更换</h4>
+                        <i class="icon change-icon sel-icon" normalicontext=""></i>
+                    </div>
+                    <!-- <span class="radio" ></span> -->
+                </hgroup>
+            </article>
+            <article class="m_pay_way m_pay_bankPay hide" paywayname="bankPay">
+                <hgroup class="p_item">
+                    <h1 class="text commontext ">
+                        <i class="ico transparent_class b_ico hide"></i>
+                        <div class="pay-way-cont">
+                            <div class="title">支付方式</div>
+                            <div class="pay-way-name">银行卡</div>
+                        </div>
+                        <div class="reduce-tips"></div>
+                    </h1>
+                    <div class="change-wrapper ">
+                        <h4 class="info">更换</h4>
+                        <i class="icon change-icon"></i>
+                    </div>
+                </hgroup>
+                <section class="p_item_cont">
+                    <section class="m_input_card">
+                        <article class="item m_article">
+                            <!--<span class="mark">卡&nbsp;&nbsp;号</span>-->
+                            <div class="card-title">卡号</div>
+                            <!--<div class="input-wrapper kb-input kb-cardNumber" id="kb-cardNumber">-->
+                            <!--<span class="input-main cardNumber" splitlen="4" passwordchar="●"-->
+                            <!--inputillegalcheck="before" initvalueillegalcheck="false" setvalillegalcheck="true"-->
+                            <!--value="" placeholder="请输入银行卡卡号" style="line-height: 0px;">-->
+                            <!--<div class="kb-text-wrap">-->
+                            <!--<span class="kb-cursor"></span>-->
+                            <!--</div>-->
+                            <!--<span class="kb-placeholder">请输入银行卡卡号</span>-->
+                            <!--<div class="kb-ctr-wrap">-->
+                            <!--<i class="kb-del kb-icon kb-hide"></i>-->
+                            <!--</div>-->
+                            <!--</span>-->
+                            <!--</div>-->
+                            <input id="cardNumber" name="cardNo" type="tel"
+                                   class="y_input m_input js-input kb-active" value="" maxlength="24"
+                                   pattern="^\\d{11,20}$" style="width: 200px; display: block;"
+                                   placeholder="请输入银行卡卡号"
+                                   data-keyboard="{&quot;splitter&quot;:&quot; &quot;,&quot;splitLen&quot;:&quot;4&quot;,&quot;hasDel&quot;:true}">
+                            <i class="icon close_input close_icon" style="display:none;"></i>
+                        </article>
+                    </section>
+                </section>
+            </article>
+            <article class="m_pay_way m_pay_aliPayPlugin hide" paywayname="aliPayPlugin">
+                <hgroup class="p_item">
+                    <h1 class="text commontext ">
+                        <i class="ico transparent_class out_ico hide"></i>
+                        <div class="pay-way-cont">
+                            <div class="title">支付方式</div>
+                            <div class="pay-way-name">支付宝</div>
+                        </div>
+                        <!-- <div class="pay-tips hide"></div> -->
+                    </h1>
+                    <div class="change-wrapper ">
+                        <h4 class="info">更换</h4>
+                        <i class="icon change-icon"></i>
+                    </div>
+                </hgroup>
+            </article>
+            <!--<div style="width: 100%;height: 50px;line-height: 50px;padding-left: 10px">-->
+            <!--<span style="font-size: 22px">订单详情</span>-->
+            <!--</div>-->
+
+            <div style="width: 100%;height: 40px;border-bottom: rgb(196,195,200) solid 3px">
+                <div style="width: 50%;height: 100%;float: left;line-height: 40px;text-align: center">
+                    <span>时长：</span><span id="js_order_time"></span>
+                </div>
+                <div id="js_order_km_div"
+                     style="width: 40%;height: 100%;float: left;line-height: 40px;text-align: center">
+                    <span>里程：</span><span id="js_order_km"></span>
+                </div>
+            </div>
+
+            <div style="width: 100%;height: auto;padding-top: 10px;padding-left: 10px">
+                <div style="max-height: 60px;width: 100%">
+                    <span>取车点：</span><span id="js_order_take_store"></span><span
+                        style="font-size: 14px;color: rgba(0,0,0,0.5)">&nbsp;&nbsp;(负责人：</span><span
+                        id="js_order_take_store_tel" style="font-size: 14px;color: rgba(0,0,0,0.5)">0000000)</span>
+                </div>
+                <div style="max-height: 60px;width: 100%">
+                    <span>还车点：</span><span id="js_order_return_store"></span><span
+                        style="font-size: 14px;color: rgba(0,0,0,0.5)">&nbsp;&nbsp;(负责人：</span><span
+                        id="js_order_return_store_tel" style="font-size: 14px;color: rgba(0,0,0,0.5)">0000000)</span>
+                </div>
+                <div style="height: 30px;width: 100%">
+                    <span>取车时间：</span><span id="js_order_take_time"></span>
+                </div>
+                <div style="height: 30px;width: 100%">
+                    <span>还车时间：</span><span id="js_order_return_time"></span>
+                </div>
+                <div style="height: 30px;width: 100%">
+                    <span>中途充费：</span><span id="js_order_cost_midway"></span>
+                </div>
+                <div style="height: 30px;width: 100%">
+                    <span>优惠卷：</span><span id="js_order_coupon_type">满减卷</span>
+                </div>
+                <div style="height: 30px;width: 100%">
+                    <span>优惠金额：</span><span id="js_order_coupon_cost" style="color: #f00;"></span>
+                </div>
+                <div style="height: 30px;width: 100%;text-align: right;font-size: 24px;margin-top: 15px;padding-right: 15px">
+                    <span>实际付款：</span><span class="js-order-amount" style="color: #f00;"></span>
+                </div>
+            </div>
+
+            <div style="width: 100%;height: 50px">
+
+            </div>
+        </section>
+        <!-- 支付平台使用余额 -->
+        <div class="m_pay_btn" id="js-pay-btn">
+            <button type="button">立即支付</button>
+        </div>
+    </section>
+
+    <!-- 支付方式选择 -->
+    <div class="select-dialog hide" id="changePayWaySelectList">
+        <div class="sel-title">
+            <i class="icon sel-close-icon"></i>
+            <span class="sel-title-text">选择支付方式</span>
+        </div>
+        <div class="sel-list">
+            <ul>
+                <li class="pay-list-item item-selected dark-gray" name="weixinJSPay" pbankid="" disabledtext="">
+                    <div class="bank-info clearfix">
+                        <div class="bank-logo">
+                            <img src="__STATIC__/mobile/images/ico_wechat_simple@2x.png">
+                        </div>
+                        <div class="bank-name-wrapper">
+                            <div data-type="weixin" class="bank-name">微信</div>
+                            <div class="tips-wrapper"></div>
+                        </div>
+                        <div class="bank-select"><i class="icon sel-icon"></i></div>
+                    </div>
+                </li>
+                <li class="pay-list-item  dark-gray" style="display: none" name="bankPay">
+                    <div class="bank-info clearfix">
+                        <div class="bank-logo"><img src="__STATIC__/mobile/images/ico_bankCard_simple@2x.png">
+                        </div>
+                        <div class="bank-name-wrapper">
+                            <div data-type="bankcard" class="bank-name">使用新银行卡</div>
+                            <div class="tips-wrapper"></div>
+                        </div>
+                        <div class="bank-select"><i class="icon sel-icon" normalicontext=""></i></div>
+                    </div>
+                </li>
+                <li class="pay-list-item  dark-gray" style="display: none" name="aliPayPlugin">
+                    <div class="bank-info clearfix">
+                        <div class="bank-logo"><img src="__STATIC__/mobile/images/ico_alipay@2x.png"></div>
+                        <div class="bank-name-wrapper">
+                            <div data-type="alipay" class="bank-name">支付宝</div>
+                            <div class="tips-wrapper"></div>
+                        </div>
+                        <div class="bank-select"><i class="icon sel-icon" normalicontext=""></i></div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- end qn_main -->
+<div class="countdown-con"></div>
+<section class="keyboard-main" style="height: 233.43px; bottom: -233.43px;">
+    <div class="kb-virtual-input input-main kb-hide"></div>
+    <div class="kb-content">
+        <table class="kb-table">
+            <tbody>
+            <tr class="kb-row">
+                <td class="kb-item  " data-val="1">1</td>
+                <td class="kb-item  " data-val="2">2</td>
+                <td class="kb-item  " data-val="3">3</td>
+                <td class="kb-item kb-backspace" data-val="del" rowspan="2"></td>
+            </tr>
+            <tr class="kb-row">
+                <td class="kb-item  " data-val="4">4</td>
+                <td class="kb-item  " data-val="5">5</td>
+                <td class="kb-item  " data-val="6">6</td>
+            </tr>
+            <tr class="kb-row">
+                <td class="kb-item  " data-val="7">7</td>
+                <td class="kb-item  " data-val="8">8</td>
+                <td class="kb-item  " data-val="9">9</td>
+                <td class="kb-item kb-enter" data-val="enter" rowspan="2"><span class="">确定</span></td>
+            </tr>
+            <tr class="kb-row">
+                <td class="kb-item none " data-val=""></td>
+                <td class="kb-item  " data-val="0">0</td>
+                <td class="kb-item  kb-icon" data-val="kbDown"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</section>
+{include file="login" /}
+{include file="loading" /}
+<script type="text/javascript" src="__STATIC__/mobile/js/jquery.min.js"></script>
+<script type="text/javascript" src="__STATIC__/mobile/js/public-js.js?rand={$js_rand}"></script>
+<script type="text/javascript" src="__STATIC__/mui/js/mui.min.js?rand={$js_rand}"></script>
+<script type="text/javascript" src="__STATIC__/mobile/js/order-pay-js.js?rand={$js_rand}"></script>
+<script>
+    var is_data = false;
+    var is_wx = "{$is_wxBrowser}";
+    var pay_sn = '';
+    var order_id = '';
+    var sn = '';
+    var goods_type = '';
+    var balance = 0;
+    var pay_is = true;
+    var orders_data = null;
+    $(function () {
+        $("#js-pay-balance").on('click', function () {
+            var node = $(this).find('.pay-way-name');
+            var data_pay = $(this).attr('data-pay');
+            if (data_pay == 'yes') {
+                node.text("不使用");
+                node.css('color', '#666');
+                $(this).attr('data-pay', 'no');
+                balance = 0;
+            } else {
+                node.text("使用");
+                node.css('color', 'rgb(255,31,51)');
+                $(this).attr('data-pay', 'yes');
+                balance = 1;
+            }
+        });
+        if ($("#balance_body").css('display') != 'none') {
+            $("#js-pay-balance").click();
+        }
+        sn = getValueByParameter(location.href, 'sn');
+        goods_type = getValueByParameter(location.href, 'goods_type');
+        $.ajax({
+            url: (goods_type == "2") ? website + '/api/Order/get_ele_pay_info.html' : website + '/api/Order/get_pay_info.html',
+            type: "post",
+            data: {
+                orders: sn + ",",
+                myrand: new Date().getTime()
+            },
+            dataType: "json",
+            success: function (data) {
+                if (parseInt(data.code) == 0) {
+                    var order = data.order;
+                    order_id = order.id;
+                    $(".js-order-amount").text('¥' + (data.total_price).toFixed(2));
+                    if (goods_type == "1") {
+                        $("#js_order_time").text(order.interval_time_str.day + "天");
+                        $("#js_order_km_div").hide();
+                    } else {
+                        $("#js_order_km").text(order.all_mileage + "公里");
+                        $("#js_order_time").text(order.interval_time_str.hour + "时" + order.interval_time_str.minute + "分");
+                    }
+
+                    $("#js_order_take_store").text(order.acquire_store_name);
+                    $("#js_order_return_store").text(order.return_store_name);
+                    $("#js_order_take_store_tel").text(order.acquire_store_tel + ")");
+                    $("#js_order_return_store_tel").text(order.return_store_tel + ")");
+                    $("#js_order_take_time").text(order.acquire_time_str);
+                    $("#js_order_return_time").text(order.return_time_str);
+                    $("#js_order_cost_midway").text(order.pd_amount + "元");
+                    $("#js_order_coupon_type").text(order.coupon_class);
+                    $("#js_order_coupon_cost").text(parseFloat(order.coupon_type).toFixed(2) + "元");
+                    pay_sn = data.out_trade_no;
+                } else if (parseInt(data.code) == 1131) {
+                    mui.alert(data.info, "温馨提示", "确认", function () {
+                        if (goods_type === 2) {
+                            window.location.href = "order_comment.html?order_id=" + order_id;
+                        } else if (goods_type === 1) {
+                            window.location.href = "order_details_tradition.html?order_sn=" + sn;
+                        }
+                    });
+                    $("#js-pay-btn").hide();
+                } else {
+                    mui.alert(data.info + data.code, "温馨提示", "确认", function () {
+                        window.location.href = "order_mine.html";
+                    });
+                    $("#js-pay-btn").hide();
+                }
+                loadend = true;
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                Toast(textStatus, 2000);
+            }
+        });
+        $("#js-pay-btn").on('click', function () {
+            if (pay_is) {
+                pay_is = false;
+                var pay_type = $("#finish_pay_way").attr('data-pay');
+                if (pay_type == 'weixin') {
+                    $.ajax({
+                        url: (goods_type == "2") ? website + '/api/Order/get_ele_pay_info.html' : website + '/api/Order/get_pay_info.html',
+                        type: "post",
+                        data: {
+                            orders: sn + ",",
+                            balance: balance,
+                            myrand: new Date().getTime()
+                        },
+                        dataType: "json",
+                        success: function (data) {
+                            if (parseInt(data.code) == 0) {
+                                pay_sn = data.out_trade_no;
+                                weixinpay(sn + ",");
+                            } else if (parseInt(data.code) == 1131) {
+                                mui.alert(data.info, "温馨提示", "确认", function () {
+                                    if (parseInt(goods_type) === 2) {
+                                        window.location.href = "order_comment.html?order_id=" + order_id;
+                                    } else if (parseInt(goods_type) === 1) {
+                                        window.location.href = "order_details_tradition.html?order_sn=" + sn;
+                                    }
+                                });
+                                $("#js-pay-btn").hide();
+                            } else {
+                                mui.alert(data.info, "温馨提示", "确认", function () {
+                                    window.location.href = "order_mine.html";
+                                });
+                                $("#js-pay-btn").hide();
+                            }
+                            loadend = true;
+                        },
+                        error: function (XMLHttpRequest, textStatus, errorThrown) {
+                            Toast(textStatus, 2000);
+                        }
+                    });
+                }
+                setTimeout(function () {
+                    pay_is = true;
+                }, 5000);
+            }
+            return false;
+        });
+
+        //微信支付订单
+        function weixinpay(orders) {
+            //H5浏览器
+            if (is_wx != "yes") {
+                $.ajax({
+                    url: "{:url('/api/Pay/wxpayMWEB')}",
+                    type: "post",
+                    data: {
+                        orders: orders,
+                        goods_type: goods_type,
+                        myrand: new Date().getTime()
+                    },
+                    dataType: "json",
+                    success: function (data) {
+                        if (data.code == 0) {
+                            window.location.href = data.url;
+                        } else {
+                            Toast(data.info, 2000);
+                        }
+                        loadend = true;
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        Toast(textStatus, 2000);
+                    }
+                });
+                return;
+            }
+            $.ajax({
+                url: "{:url('/api/Pay/wxpayJSAPI')}",
+                type: "post",
+                data: {
+                    orders: orders,
+                    goods_type: goods_type,
+                    myrand: new Date().getTime()
+                },
+                dataType: "json",
+                success: function (data) {
+                    if (data.code == 0) {
+                        is_data = true;
+                        pay_sn = data.pay_sn;
+                        orders_data = data.data;
+                        callpay(data.data);
+                    } else {
+                        Toast(data.info, 2000);
+                    }
+                    loadend = true;
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    Toast(textStatus, 2000);
+                }
+            });
+        }
+
+        //调用微信JS api 支付
+        function jsApiCall(strjs) {
+            WeixinJSBridge.invoke(
+                'getBrandWCPayRequest',
+                {
+                    "appId": strjs.appId,     //公众号名称，由商户传入
+                    "timeStamp": strjs.timeStamp,         //时间戳，自1970年以来的秒数
+                    "nonceStr": strjs.nonceStr, //随机串
+                    "package": strjs.package,
+                    "signType": strjs.signType,         //微信签名方式：
+                    "paySign": strjs.paySign //微信签名
+                },
+                function (res) {
+                    if (res.err_msg == "get_brand_wcpay_request:ok") {
+                        callbackvarpay();
+                        mui.alert("支付成功", "温馨提示", "确认");
+                        if (parseInt(goods_type) === 2) {
+                            window.location.href = "order_comment.html?order_id=" + order_id;
+                        } else if (parseInt(goods_type) === 1) {
+                            window.location.href = "order_details_tradition.html?order_sn=" + sn;
+                        }
+                    } else if (res.err_msg == 'get_brand_wcpay_request:cancel') {
+                        mui.alert("取消支付", "温馨提示");
+                    } else if (res.err_msg == 'get_brand_wcpay_request:fail') {
+                        mui.alert("支付失败", "温馨提示");
+                    }
+                }
+            );
+        }
+
+        //回调查询验证订单
+        function callbackvarpay() {
+            $.ajax({
+                url: "{:url('index/Notify/queryweixin')}",
+                type: "post",
+                data: {
+                    pay_sn: pay_sn
+                },
+                dataType: "json",
+                success: function (data) {
+                }
+            });
+        }
+
+        function callpay(strjs) {
+            if (typeof WeixinJSBridge == "undefined") {
+                if (document.addEventListener) {
+                    document.addEventListener('WeixinJSBridgeReady', jsApiCall(strjs), false);
+                } else if (document.attachEvent) {
+                    document.attachEvent('WeixinJSBridgeReady', jsApiCall(strjs));
+                    document.attachEvent('onWeixinJSBridgeReady', jsApiCall(strjs));
+                }
+            } else {
+                jsApiCall(strjs);
+            }
+        }
+    });
+</script>
+</body>
+{/block}

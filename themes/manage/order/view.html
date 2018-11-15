@@ -1,0 +1,165 @@
+{extend name="base" /}
+{block name="body"}
+<style>
+    .layui-form-item {
+        margin-bottom: 5px;
+    }
+
+    .layui-form-label {
+        padding: 0 15px;
+    }
+
+    .layui-inline {
+        margin: 0;
+    }
+
+    .layui-form-mid {
+        padding: 0;
+    }
+
+    .img_tip span {
+        margin-right: 17px;
+    }
+</style>
+<div class="layui-body">
+    <!--tab标签-->
+    <div class="layui-tab layui-tab-brief">
+        <ul class="layui-tab-title">
+            <li class=""><a href="{:url('manage/order/index')}">订单管理</a></li>
+            <li class="layui-this">运营情况</li>
+        </ul>
+        <div class="layui-form">
+            <label style="color: red">*月份优先，如果需要查看单天情况，将月份选择框内的数据清空</label>
+            <fieldset class="layui-elem-field layui-field-title">
+                <legend>订单统计信息</legend>
+            </fieldset>
+            <form id="form_order" class="layui-form layui-form-pane" action="{:url('manage/order/view')}"
+                  method="get">
+                <div class="layui-inline">
+                    <label class="layui-form-label">月份</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="ym" value="{$ym}"
+                               placeholder="月份"
+                               class="layui-input datetime-ym">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">具体天</label>
+                    <div class="layui-inline">
+                        <input type="text" name="ymd" value="{$ymd}"
+                               placeholder="天"
+                               class="layui-input datetime-ymd">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <button class="layui-btn">刷新</button>
+                </div>
+            </form>
+            <div class="layui-form-item" style="margin: 15px 0;width: 45%;display: inline-block">
+                <fieldset class="layui-elem-field layui-field-title">
+                    <legend>订单金额统计</legend>
+                </fieldset>
+                <table class="layui-table" lay-skin="line">
+                    <colgroup>
+                        <col width="250">
+                        <col width="250">
+                    </colgroup>
+                    <thead>
+                    <tr>
+                        <th>类型</th>
+                        <th>金额(元)</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>订单总金额</td>
+                        <td>{$order_data['order_amount']}</td>
+                    </tr>
+                    <tr>
+                        <td>订单总量</td>
+                        <td>{$order_data['sum_order']}</td>
+                    </tr>
+                    <tr>
+                        <td>每单平均收益</td>
+                        <td>{$order_data['sum_order_average']}</td>
+                    </tr>
+                    <tr>
+                        <td>优惠券抵扣</td>
+                        <td>{$order_data['coupon_amount']}</td>
+                    </tr>
+                    <tr>
+                        <td>首次租车抵扣</td>
+                        <td>{$order_data['first_sub_money']}</td>
+                    </tr>
+                    <tr>
+                        <td>支付净收入</td>
+                        <td>{$order_data['income']}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="layui-form-item" style="margin: 15px 0;width: 45%;display: inline-block">
+                <fieldset class="layui-elem-field layui-field-title">
+                    <legend>车辆运营情况</legend>
+                </fieldset>
+                <table class="layui-table" lay-skin="line">
+                    <colgroup>
+                        <col width="250">
+                        <col width="250">
+                    </colgroup>
+                    <thead>
+                    <tr>
+                        <th>类型</th>
+                        <th>数量</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>总投放车辆</td>
+                        <td>{$car_data['day_all']}</td>
+                    </tr>
+                    <tr>
+                        <td>实际上线车辆</td>
+                        <td>{$car_data['day_sum']}</td>
+                    </tr>
+                    <tr>
+                        <td>平均每辆车的订单量</td>
+                        <td>{$car_data['order_car']}</td>
+                    </tr>
+                    <tr>
+                        <td>每台车平均总效益</td>
+                        <td>{$car_data['money']}(元)</td>
+                    </tr>
+                    <tr>
+                        <td>每台车平均日效益</td>
+                        <td>{$car_data['day_money']}(元)</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}
+{block name="script"}
+<script>
+    /**
+     * 通用日期时间选择
+     */
+    $('.datetime-ym').on('click', function () {
+        laydate({
+            elem: this,
+            istime: true,
+            format: 'YYYY-MM'
+        })
+    });
+
+    $('.datetime-ymd').on('click', function () {
+        laydate({
+            elem: this,
+            istime: true,
+            format: 'YYYY-MM-DD'
+        })
+    });
+</script>
+{/block}

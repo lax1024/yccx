@@ -1,0 +1,105 @@
+{extend name="base" /}
+{block name="body"}
+<div class="layui-body">
+    <!--tab标签-->
+    <div class="layui-tab layui-tab-brief">
+        <ul class="layui-tab-title">
+            <li class=""><a href="{:url('manage/ApiList/index')}">接口管理</a></li>
+            <li class=""><a href="{:url('manage/ApiList/add')}">添加接口</a></li>
+            <li class="layui-this">编辑接口</li>
+        </ul>
+        <div class="layui-tab-content">
+            <div class="layui-tab-item layui-show">
+                <form class="layui-form form-container" action="{:url('manage/ApiList/update')}" method="post">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">接口名称</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="api_name" value="{$apilist.api_name}" required lay-verify="required"
+                                   placeholder="请输入接口名称" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">接口地址</label>
+                        <div class="layui-input-inline" style="width: 30px">
+                            <div class="layui-form-mid ">/api/</div>
+                        </div>
+                        <div class="layui-input-inline">
+                            <input type="text" name="api_control" value="{$apilist.api_control}" required lay-verify="required"
+                                   placeholder="控制器名称" class="layui-input">
+                        </div>
+                        <div class="layui-input-inline">
+                            <input type="text" name="api_function" id="api_function" value="{$apilist.api_function}" required
+                                   lay-verify="required" placeholder="方法名称" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">接口简介</label>
+                        <div class="layui-input-block">
+                            <textarea type="text" name="api_intro" placeholder="（选填）请输入接口简介"
+                                      class="layui-textarea">{$apilist.api_intro}</textarea>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">接口参数</label>
+                        <div class="layui-input-block">
+                            <textarea type="text" name="api_parameter" required lay-verify="required"
+                                      placeholder="请输入接口参数" class="layui-textarea">{$apilist.api_parameter}</textarea>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">返回数据</label>
+                        <div class="layui-input-block">
+                            <textarea type="text" name="api_returndata" required lay-verify="required"
+                                      placeholder="请输入返回数据" class="layui-textarea">{$apilist.api_returndata}</textarea>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">错误码说明</label>
+                        <div class="layui-input-block">
+                            <textarea type="text" name="api_codelist" required lay-verify="required"
+                                      placeholder="请输入错误码说明" class="layui-textarea">{$apilist.api_codelist}</textarea>
+                        </div>
+                    </div>
+                    <div class="layui-form-item" >
+                        <label class="layui-form-label">数据地址</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="api_test_url" id="api_update_txt" value="{$apilist.api_test_url}" required
+                                   lay-verify="required" placeholder="请输入数据地址" class="layui-input">
+                        </div>
+                        <input type="file" name="file" accept="text/plain" class="layui-upload-file">
+                    </div>
+                    <div class="layui-form-item">
+                        <div class="layui-input-block">
+                            <input name="id" value="{$apilist.id}" hidden>
+                            <input name="class_id" value="{$apilist.class_id}" hidden>
+                            <button class="layui-btn" lay-submit lay-filter="*">保存</button>
+                            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}
+{block name="js"}
+<script src="__JS__/ueditor/ueditor.config.js"></script>
+<script src="__JS__/ueditor/ueditor.all.min.js"></script>
+{/block}
+{block name="script"}
+<script>
+    layui.upload({
+        url: "/index.php/api/upload/uploadfile.html?type=api_{$appclass.app_short}",
+        type: 'file',
+        ext: 'txt',
+        success: function (data) {
+            if (data.error === 0) {
+                document.getElementById("api_update_txt").value = data.url;
+            } else {
+                layer.msg(data.message);
+            }
+        }
+    });
+    var ue = UE.getEditor('content');
+</script>
+{/block}

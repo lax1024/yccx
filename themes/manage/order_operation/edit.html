@@ -1,0 +1,254 @@
+{extend name="base" /}
+{block name="body"}
+<style>
+    .layui-form-item {
+        margin-bottom: 5px;
+    }
+
+    .layui-form-label {
+        padding: 0 15px;
+    }
+
+    .layui-inline {
+        margin: 0;
+    }
+
+    .layui-form-mid {
+        padding: 0;
+    }
+
+    .img_tip span {
+        margin-right: 17px;
+    }
+</style>
+<div class="layui-body">
+    <!--tab标签-->
+    <div class="layui-tab layui-tab-brief">
+        <ul class="layui-tab-title">
+            <li class=""><a href="{:url('manage/OrderOperation/index')}">任务订单管理</a></li>
+            <li class="layui-this">查看任务订单</li>
+        </ul>
+        <div class="layui-form">
+            <fieldset class="layui-elem-field layui-field-title">
+                <legend>订单信息</legend>
+            </fieldset>
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">任务单号:</label>
+                    <div class="layui-input-inline">
+                        <div class="layui-form-mid ">{$order['order_sn']}</div>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">电话号码:</label>
+                    <div class="layui-input-inline" style="width: 230px">
+                        <div class="layui-form-mid ">{$order['operation_phone']}</div>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">运营人员:</label>
+                    <div class="layui-input-inline">
+                        <div class="layui-form-mid ">{$order['operation_name']}({$order['operation_id']})</div>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">接单时间:</label>
+                    <div class="layui-input-inline">
+                        <div class="layui-form-mid ">{$order['create_time']}</div>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">取车时间:</label>
+                    <div class="layui-input-inline" style="width: 230px">
+                        <div class="layui-form-mid ">{$order['acquire_time_str']}</div>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">还车时间:</label>
+                    <div class="layui-input-inline">
+                        <div class="layui-form-mid">{$order['return_time_str']}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">取车门店:</label>
+                    <div class="layui-input-inline">
+                        <div class="layui-form-mid">{$order['acquire_store_name']}({$order['acquire_store_id']})</div>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">取车门店:</label>
+                    <div class="layui-input-inline">
+                        <div class="layui-form-mid">{$order['acquire_store_name']}({$order['acquire_store_id']})</div>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">还车门店:</label>
+                    <div class="layui-input-inline">
+                        <div class="layui-form-mid">{$order['return_store_name']-$order['return_store_id']}(Km)</div>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">任务类型:</label>
+                    <div class="layui-input-inline">
+                        <div class="layui-form-mid">{$order['order_type_str']}</div>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">是否异常报备:</label>
+                    <div class="layui-input-inline">
+                        <div class="layui-form-mid">{$order['is_unusual_str']}</div>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">异常说明:</label>
+                    <div class="layui-input-inline">
+                        <div class="layui-form-mid">{$order['notes']}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">是否合格:</label>
+                    <div class="layui-input-inline">
+                        <div class="layui-form-mid">{$order['is_fail_str']}</div>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">任务状态:</label>
+                    <div class="layui-input-inline">
+                        <div class="layui-form-mid">{$order['order_status_str']}</div>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label"></label>
+                    <div class="layui-input-inline">
+                        <div class="layui-form-mid"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">照片说明:</label>
+                <p class="img_tip"><span>左前图片</span><span>右前图片</span><span>车后图片</span>
+                </p>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">取车照片:</label>
+                {foreach name="$order['acquire_img']" item="vo" key="kv"}
+                <img src="{$vo}" onclick="show_img($(this))" data-title="预览照片" width="70px"
+                     onerror="javascript:this.src='http://img.youchedongli.cn/public/static/images/error_img.png'">
+                {/foreach}
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">照片说明:</label>
+                <p class="img_tip"><span>左前图片</span><span>右前图片</span><span>车后图片</span><span>内部照片</span>
+                </p>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">还车照片:</label>
+                {foreach name="$order['return_img']" item="vo" key="kv"}
+                <img src="{$vo}" onclick="show_img($(this))" data-title="预览照片" width="70px"
+                     onerror="javascript:this.src='http://img.youchedongli.cn/public/static/images/error_img.png'">
+                {/foreach}
+            </div>
+            <hr/>
+            <fieldset class="layui-elem-field layui-field-title">
+                <legend>车辆信息</legend>
+            </fieldset>
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">车型:</label>
+                    <div class="layui-input-inline">
+                        <div class="layui-form-mid">{$order['goods_name']}</div>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">车牌号:</label>
+                    <div class="layui-input-inline" style="width: 230px">
+                        <div class="layui-form-mid">{$order['licence_plate']}</div>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">提交状态:</label>
+                    <div class="layui-input-inline" style="width: 230px">
+                        <div class="layui-form-mid">{$order['car_status_str']}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}
+{block name="script"}
+<script>
+    function show_img(node) {
+        var imgurl = node.attr('src');
+        var title = node.attr('data-title');
+        var texts = "<img src='" + imgurl + "' width='100%'/>";
+        layer.open({
+            title: title,
+            area: 'auto',
+            content: texts
+        });
+    }
+
+    $(".ajax-common-ok").on('click', function () {
+        var store_site_id = $("#store_id").val();
+        var _href = $(this).attr('href');
+
+        layer.open({
+            shade: false,
+            content: '确定车辆位置与还车站点一致吗？如果不一致请选择对应站点还车',
+            btn: ['确定', '取消'],
+            yes: function (index1) {
+                layer.close(index1);
+                $.ajax({
+                    url: "{:url('manage/order/return_site')}",
+                    type: "POST",
+                    data: {
+                        id: "{$order.id}",
+                        site_id: store_site_id
+                    },
+                    dataType: 'json',
+                    success: function (info) {
+                        if (info.code === 1) {
+                            layer.open({
+                                shade: false,
+                                content: '确定立即还车吗？',
+                                btn: ['确定', '取消'],
+                                yes: function (index) {
+                                    $.ajax({
+                                        url: _href,
+                                        type: "get",
+                                        success: function (info) {
+                                            if (info.code === 1) {
+                                                setTimeout(function () {
+                                                    location.reload();
+                                                }, 1000);
+                                            }
+                                            if (info.msg === undefined || info.msg === '') {
+                                                layer.msg(info.info);
+                                            } else {
+                                                layer.msg(info.msg);
+                                            }
+                                        }
+                                    });
+                                    layer.close(index);
+                                }
+                            });
+                        } else {
+                            layer.msg(info.msg);
+                        }
+                    }
+                });
+            }
+        });
+        return false;
+    });
+</script>
+{/block}

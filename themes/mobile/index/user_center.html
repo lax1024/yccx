@@ -1,0 +1,284 @@
+{extend name="base" /}
+{block name="css"}
+<link rel="stylesheet" href="__STATIC__/mui/css/mui.min.css?rand={$css_rand}">
+<link rel="stylesheet" href="__STATIC__/mui/css/mui-icons-extra.css?rand={$css_rand}">
+<link rel="stylesheet" href="__STATIC__/mobile/css/user-center-css.css?rand={$css_rand}">
+{/block}
+{block name="body"}
+<style>
+    ul {
+        font-size: 14px;
+        color: #8f8f94;
+    }
+
+    .mui-bar {
+        background-color: #ffdb30;
+        border: none;
+        box-shadow: none;
+    }
+
+    .mui-icon-right-nav {
+        float: right;
+    }
+
+    .mui-icon-contact:before {
+        content: '';
+    }
+
+    .mui-table-view-cell:after {
+        background: none;
+    }
+</style>
+<body style="background-color: rgb(236, 236, 236); display: block;">
+<header class="mui-bar mui-bar-nav">
+    <span id="goto_back" style="margin-left: 5px" class="mui-icon mui-icon-back mui-icon-left-nav"></span>
+    <h1 class="mui-title" style="font-size: 1.25rem">个人中心</h1>
+    <span style="padding-right: 32px;background: url('http://img.youchedongli.cn/public/static/mobile/images/center_set.png?rand={$css_rand}') no-repeat;margin-top: 11px;background-size: 50%;"
+          class="mui-icon mui-icon-contact mui-icon-right-nav"></span>
+</header>
+
+<div class="mui-content">
+    <div style="width: 98%;margin: 2px 1%;position: absolute;top: 40px;z-index: 10000">
+        <span class="mui-badge mui-badge-success" style="border-radius:30px">点击右上角分享给好友或朋友圈，如有一位朋友完成实名制注册，您将立刻获得15元代金券一张，不限次数，快快转发哦。</span>
+    </div>
+    <div style="background-color: #ffdb30">
+        <div class="mui-row" style="padding-top: 30px;background-color: #ffdb30">
+            <div class="mui-col-sm-4 mui-col-xs-4" style="text-align: center">
+                <img id="js_user_wechar_headimgurl" src="{$customer_data['wechar_headimgurl']}"
+                     onerror="javascript:this.src='http://img.youchedongli.cn/public/static/mobile/images/seller_logo.png?rand={$css_rand}';"
+                     style="width: 4rem;height: 4rem;border-radius: 100%;border: 2px solid #EEE">
+            </div>
+            <div class="mui-col-sm-8 mui-col-xs-8">
+                <div style="width: 100%;text-align: left;margin-top: 1.5rem">
+                    <div class="mui-row">
+                        <div class="mui-col-sm-6 mui-col-xs-6">
+                            <div id="js_user_wechar_nickname"
+                                 style="width: 100%;overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">
+                                {$customer_data['wechar_nickname']}
+                            </div>
+                        </div>
+                        <div class="mui-col-sm-6 mui-col-xs-6">
+                            {if condition="$customer_data['customer_status']==0||$customer_data['customer_status']==3"}
+                            <a href="add_user_info.html" target="_blank">
+                                实名制<span
+                                    style="margin-left: 0.5rem;height: 1.45rem;width: 1.4rem;margin-bottom: -0.4rem;background: url('http://img.youchedongli.cn/public/static/mobile/images/center_cash_no.png') no-repeat;background-size: 100%;"
+                                    class="mui-icon mui-icon-contact"></span>
+                            </a>
+                            {else/}
+                            <a href="add_user_info.html" target="_blank">
+                                实名制<span
+                                    style="margin-left: 0.5rem;height: 1.45rem;width: 1.4rem;margin-bottom: -0.4rem;background: url('http://img.youchedongli.cn/public/static/mobile/images/center_cash_is.png') no-repeat;background-size: 100%;"
+                                    class="mui-icon mui-icon-contact"></span>
+                            </a>
+                            {/if}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="mui-row" style="text-align: left;color: #333;margin-top: 10px;height: 2rem">
+            <div class="mui-col-sm-6 mui-col-xs-6" style="padding-left: 2.5rem">
+                <span>余额：</span>
+                <span id="js_user_balance">{$customer_data['customer_balance']}</span><span> 元</span>
+            </div>
+            <div class="mui-col-sm-6 mui-col-xs-6" style="padding-left: 2.5rem">
+                <a href="user_cash.html" style="color: #333;">
+                    <span>押金：</span>
+                    <span>{$customer_data['cash']}</span><span> (元)</span>
+                </a>
+            </div>
+        </div>
+    </div>
+    {if condition="$subscribe eq 0"}
+    <div style="width: 98%;margin: 2px 1%;text-align: center">
+        <div class="mui-active" style="padding: 0">
+            <a style="color: white;background: #4cd964;font-size: 16px;border-radius:30px;margin:0 18%;right: 0"
+               href="#">立即关注公众号</a>
+            <div class="mui-collapse-content" style="padding-top: 0;margin-top:4px">
+                <p>长按二维码关注公众号</p>
+                <img style="width: 70%;margin: 0 15%"
+                     src="http://img.youchedongli.cn/public/static/mobile/images/user_ewm.jpg?x-oss-process=image/resize,h_500">
+            </div>
+        </div>
+    </div>
+    {/if}
+    <ul class="mui-table-view">
+        <li class="mui-table-view-cell">
+            <a href="order_mine.html">
+                <span style="margin-left: 1.8rem;height: 1.8rem;width: 1.8rem;margin-right: 0.3rem;margin-bottom: -0.4rem;background-size:100%;background-image: url('http://img.youchedongli.cn/public/static/mobile/images/center_order.png?rand={$css_rand}');"
+                      class="mui-icon mui-icon-contact"></span>
+                <span style="font-size: 1.1rem">我的订单</span>
+                <span style="display:none;" class="mui-icon mui-icon-forward mui-icon-right-nav"></span>
+            </a>
+        </li>
+        <li class="mui-table-view-cell">
+            <a href="map_choose_car.html">
+                <span style="margin-left: 1.8rem;height: 1.8rem;width: 1.8rem;margin-right: 0.3rem;margin-bottom: -0.4rem;background: url('http://img.youchedongli.cn/public/static/mobile/images/center_car.png?rand={$css_rand}') no-repeat;background-size: 100%;"
+                      class="mui-icon mui-icon-contact"></span>
+                <span style="font-size: 1.1rem">立即用车</span>
+                <span style="display:none;" class="mui-icon mui-icon-forward mui-icon-right-nav"></span>
+            </a>
+        </li>
+        <li class="mui-table-view-cell">
+            <a href="user_balance.html">
+                <span style="margin-left: 1.8rem;height: 1.8rem;width: 1.8rem;margin-right: 0.3rem;margin-bottom: -0.4rem;background: url('http://img.youchedongli.cn/public/static/mobile/images/center_gold.png?rand={$css_rand}') no-repeat;background-size: 100%;"
+                      class="mui-icon mui-icon-contact"></span>
+                <span style="font-size: 1.1rem">充值中心</span>
+                <span style="display:none;" class="mui-icon mui-icon-forward mui-icon-right-nav"></span>
+            </a>
+        </li>
+        <!--<li class="mui-table-view-cell" style="display: none">-->
+        <!--<a href="contactlist.html" onclick="localStorage.setItem('contactlist_parent','contactlist.html');">-->
+        <!--<span style="margin-left: 1.8rem;height: 1.8rem;width: 1.8rem;margin-right: 0.3rem;margin-bottom: -0.4rem;background: url('http://img.youchedongli.cn/public/static/mobile/images/center_driving.png?rand={$css_rand}') no-repeat;background-size: 100%;"-->
+        <!--class="mui-icon mui-icon-contact"></span>-->
+        <!--<span style="font-size: 1.1rem">驾驶员管理</span>-->
+        <!--<span style="display:none;" class="mui-icon mui-icon-forward mui-icon-right-nav"></span>-->
+        <!--</a>-->
+        <!--</li>-->
+        <li class="mui-table-view-cell">
+            <a href="user_coupon_newhand.html"
+               onclick="localStorage.setItem('contactlist_parent','user_coupon_newhand.html');">
+                <span style="margin-left: 1.8rem;height: 1.8rem;width: 1.8rem;margin-right: 0.3rem;margin-bottom: -0.4rem;background: url('http://img.youchedongli.cn/public/static/mobile/images/center_conpon.png?rand={$css_rand}') no-repeat;background-size: 100%;"
+                      class="mui-icon mui-icon-contact"></span>
+                <span style="font-size: 1.1rem">优惠劵</span>
+                <span style="display:none;" class="mui-icon mui-icon-forward mui-icon-right-nav"></span>
+            </a>
+        </li>
+        <li class="mui-table-view-cell">
+            <a href="user_spread.html" onclick="localStorage.setItem('contactlist_parent','user_spread.html');">
+                <span style="margin-left: 1.8rem;height: 1.8rem;width: 1.8rem;margin-right: 0.3rem;margin-bottom: -0.4rem;background: url('http://img.youchedongli.cn/public/static/mobile/images/center_spread.png?rand={$css_rand}') no-repeat;background-size: 100%;"
+                      class="mui-icon mui-icon-contact"></span>
+                <span style="font-size: 1.1rem">推广列表</span>
+                <span style="display:none;" class="mui-icon mui-icon-forward mui-icon-right-nav"></span>
+            </a>
+        </li>
+        <li class="mui-table-view-cell">
+            <a href="build_point.html">
+                <span style="margin-left: 1.8rem;height: 1.8rem;width: 1.8rem;margin-right: 0.3rem;margin-bottom: -0.4rem;background: url('http://img.youchedongli.cn/public/static/mobile/images/center_build.png?rand={$css_rand}') no-repeat;background-size: 100%;"
+                      class="mui-icon mui-icon-contact"></span>
+                <span style="font-size: 1.1rem">建站点我</span>
+                <span style="display:none;" class="mui-icon mui-icon-forward mui-icon-right-nav"></span>
+            </a>
+        </li>
+    </ul>
+</div>
+<!--用户信息-->
+<div id="js_user_info" style="display: none">
+    <div class="mui-backdrop ">
+        <header class="mui-bar mui-bar-nav">
+            <span class="mui-icon mui-icon-contact mui-icon-left-nav"></span>
+            <h1 class="mui-title">个人信息</h1>
+        </header>
+        <div class="mui-content" style="height: 100%;margin-top: 20px">
+            <ul class="mui-table-view">
+                <li class="mui-table-view-cell">
+                    <span style="font-size: 1.1rem">姓名：</span>
+                    <span style="font-size: 1.1rem">{$customer_data.customer_name}</span>
+                </li>
+                <li class="mui-table-view-cell">
+                    <span style="font-size: 1.1rem">电话号码：</span>
+                    <span style="font-size: 1.1rem">{$customer_data.mobile_phone}</span>
+                </li>
+                <li class="mui-table-view-cell">
+                    <span style="font-size: 1.1rem">身份证号码：</span>
+                    <span style="font-size: 1.1rem">{$customer_data.id_number}</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+{include file="user_message" /}
+{include file="login" /}
+<script type="text/javascript" src="__STATIC__/mui/js/mui.min.js"></script>
+<script type="text/javascript" src="__STATIC__/mobile/js/user-center-js.js?rand={$js_rand}"></script>
+{if condition="$is_wxBrowser eq 'yes'"}
+<script src="http://res.wx.qq.com/open/js/jweixin-1.4.0.js?rand={$js_rand}"></script>
+<script>
+    var wechar_location_lat = "{$customer_data['wechar_location_lat']}";
+    var wechar_location_lng = "{$customer_data['wechar_location_lng']}";
+    /*
+     * 注意：
+     * 1. 所有的JS接口只能在公众号绑定的域名下调用，公众号开发者需要先登录微信公众平台进入“公众号设置”的“功能设置”里填写“JS接口安全域名”。
+     * 2. 如果发现在 Android 不能分享自定义内容，请到官网下载最新的包覆盖安装，Android 自定义分享接口需升级至 6.0.2.58 版本及以上。
+     * 3. 常见问题及完整 JS-SDK 文档地址：http://mp.weixin.qq.com/wiki/7/aaa137b55fb2e0456bf8dd9148dd613f.html
+     *
+     * 开发中遇到问题详见文档“附录5-常见错误及解决办法”解决，如仍未能解决可通过以下渠道反馈：
+     * 邮箱地址：weixin-open@qq.com
+     * 邮件主题：【微信JS-SDK反馈】具体问题
+     * 邮件内容说明：用简明的语言描述问题所在，并交代清楚遇到该问题的场景，可附上截屏图片，微信团队会尽快处理你的反馈。
+     */
+    wx.config({
+        debug: false,
+        appId: "{$jssdk['appid']}",
+        timestamp: "{$jssdk['timestamp']}",
+        nonceStr: "{$jssdk['nonceStr']}",
+        signature: "{$jssdk['signature']}",
+        jsApiList: [
+            'checkJsApi',
+            'getLocation',
+            'onMenuShareTimeline',
+            'onMenuShareAppMessage'
+        ]
+    });
+
+    //自定义内容
+    wx.ready(function () {
+        wx.onMenuShareTimeline({
+            title: '共享汽车——优车出行，注册即用，全市上百个取还点，10天自动退押金', // 分享标题
+            link: '{$fxurl}', // 分享链接
+            imgUrl: 'http://img.youchedongli.cn/public/static/mobile/images/seller_logo.png?x-oss-process=image/resize,h_100',
+            success: function () {
+                // 用户确认分享后执行的回调函数
+            },
+            cancel: function () {
+                // 用户取消分享后执行的回调函数
+            }
+        });
+
+        wx.onMenuShareAppMessage({
+            title: '共享汽车——优车出行',
+            desc: '注册即用，全市上百个取还点，10天自动退押金',
+            link: '{$fxurl}',
+            imgUrl: 'http://img.youchedongli.cn/public/static/mobile/images/seller_logo.png?x-oss-process=image/resize,h_100',
+            success: function () {
+                // 用户确认分享后执行的回调函数
+            },
+            cancel: function () {
+                // 用户取消分享后执行的回调函数
+            }
+        });
+        if (parseFloat(wechar_location_lat) === 0 || parseFloat(wechar_location_lng) === 0) {
+            wx.getLocation({
+                success: function (res) {
+                    var latitude = res.latitude; //纬度
+                    var longitude = res.longitude; //经度
+                    $.ajax({
+                        url: website + "/api/Customer/update_customer_wechar.html",
+                        type: "POST",
+                        async: true,
+                        data: {
+                            lng: longitude,
+                            lat: latitude
+                        },
+                        timeout: 5000,
+                        dataType: "json",
+                        success: function (data) {
+                        }
+                    });
+                },
+                cancel: function (res) {
+                    mui.alert('用户拒绝授权获取地理位置', '提示');
+                },
+                fail: function (res) {
+                    mui.alert('定位失败', '提示');
+                }
+            });
+        }
+    });
+    wx.error(function (res) {
+        // alert(res.errMsg);
+    });
+</script>
+{/if}
+</body>
+{/block}

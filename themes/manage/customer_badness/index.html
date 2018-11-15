@@ -1,0 +1,72 @@
+{extend name="base" /}
+{block name="body"}
+<div class="layui-body">
+    <!--tab标签-->
+    <div class="layui-tab layui-tab-brief">
+        <ul class="layui-tab-title">
+            <li class="layui-this">不良记录管理</li>
+            <li class=""><a href="{:url('manage/customer_badness/add')}">添加不良记录</a></li>
+        </ul>
+        <div class="layui-tab-content">
+            <div class="layui-tab-item layui-show">
+
+                <form class="layui-form layui-form-pane" action="{:url('manage/customer_badness/index')}" method="get">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">关键词</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="keyword" value="{$keyword}" placeholder="请输入关键词"
+                                   class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <button class="layui-btn">搜索</button>
+                    </div>
+                </form>
+                <hr>
+                <table class="layui-table">
+                    <thead>
+                    <tr>
+                        <th>用户名id</th>
+                        <th>用户名</th>
+                        <th>手机号码</th>
+                        <th>类型</th>
+                        <th>不良记录描述</th>
+                        <th>添加时间</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {foreach name="customer_badness_list" item="vo"}
+                    <tr>
+                        <td>{$vo.customer_id}</td>
+                        <td>{$vo.customer_name}</td>
+                        <td>{$vo.customer_phone}</td>
+                        <td>{$vo.type_str}</td>
+                        <td>{$vo.badness_notes}</td>
+                        <td>{$vo.add_time}</td>
+                        <td>
+                            <a href="{:url('manage/customer_badness/edit',['id'=>$vo['id']])}"
+                               class="layui-btn layui-btn-normal layui-btn-mini">编辑查看</a>
+                            <a href="{:url('manage/customer/lock',['id'=>$vo['customer_id']])}"
+                               class="layui-btn layui-btn-danger layui-btn-mini ajax-common">添加黑名单</a>
+                            <a href="{:url('manage/customer_badness/delete',['id'=>$vo['id']])}"
+                               class="layui-btn layui-btn-danger layui-btn-mini ajax-delete">删除</a>
+                        </td>
+                    </tr>
+                    {/foreach}
+                    </tbody>
+                </table>
+                <!--分页-->
+                {$customer_badness_list->render()}
+            </div>
+        </div>
+    </div>
+</div>
+{/block}
+{block name="script"}
+<script>
+    form.on('select(statusselect)', function (data) {
+        $(".layui-form-pane").submit();
+    });
+</script>
+{/block}

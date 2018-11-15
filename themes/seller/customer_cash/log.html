@@ -1,0 +1,69 @@
+{extend name="base" /}
+{block name="body"}
+<div class="layui-body">
+    <!--tab标签-->
+    <div class="layui-tab layui-tab-brief">
+        <ul class="layui-tab-title">
+            <li class=""><a href="{:url('seller/customerCash/index')}">押金管理</a></li>
+            <li class="layui-this">押金日志</li>
+        </ul>
+        <div class="layui-tab-content">
+            <div class="layui-tab-item layui-show">
+
+                <form class="layui-form layui-form-pane" action="{:url('seller/customer/index')}" method="get">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">关键词</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="keyword" value="{$keyword}" placeholder="请输入关键词"
+                                   class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <button class="layui-btn">搜索</button>
+                    </div>
+                </form>
+                <hr>
+                <table class="layui-table">
+                    <thead>
+                    <tr>
+                        <th style="width: 30px;">ID</th>
+                        <th>用户id</th>
+                        <th>支付单号</th>
+                        <th>退还单号</th>
+                        <th>金额</th>
+                        <th>类型</th>
+                        <th>支付方式</th>
+                        <th>备注信息</th>
+                        <th>记录时间</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {foreach name="customer_cash_log_list" item="vo"}
+                    <tr>
+                        <td>{$vo.id}</td>
+                        <td>{$vo.customer_id}</td>
+                        <td>{$vo.pay_sn}</td>
+                        <td>{$vo.refund_sn}</td>
+                        <td>{$vo.cash}</td>
+                        <td>{php}echo $vo['type']=='add' ? '缴纳' : '退还';{/php}</td>
+                        <td>{$vo.channel_str}</td>
+                        <td>{$vo.remark}</td>
+                        <td>{$vo.add_time_str}</td>
+                    </tr>
+                    {/foreach}
+                    </tbody>
+                </table>
+                <!--分页-->
+                {$customer_cash_log_list->render()}
+            </div>
+        </div>
+    </div>
+</div>
+{/block}
+{block name="script"}
+<script>
+    form.on('select(statusselect)', function (data) {
+        $(".layui-form-pane").submit();
+    });
+</script>
+{/block}

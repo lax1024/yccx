@@ -1,0 +1,77 @@
+{extend name="base" /}
+{block name="body"}
+<div class="layui-body">
+    <!--tab标签-->
+    <div class="layui-tab layui-tab-brief">
+        <ul class="layui-tab-title">
+            <li class="layui-this">商户管理员管理</li>
+            <li class=""><a href="{:url('seller/seller/add')}">添加商户管理员</a></li>
+        </ul>
+        <div class="layui-tab-content">
+            <div class="layui-tab-item layui-show">
+
+                <form class="layui-form layui-form-pane" action="{:url('seller/seller/index')}" method="get">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">关键词</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="keyword" value="{$keyword}" placeholder="请输入关键词"
+                                   class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <button class="layui-btn">搜索</button>
+                    </div>
+                </form>
+                <hr>
+                <table class="layui-table">
+                    <thead>
+                    <tr>
+                        <th style="width: 30px;">ID</th>
+                        <th>管理者名称</th>
+                        <th>手机号码</th>
+                        <th>商家权限组编号</th>
+                        <th>商家权限组</th>
+                        <th>总店id</th>
+                        <th>店铺编号</th>
+                        <th>是否管理员</th>
+                        <th>状态</th>
+                        <th>创建时间</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {foreach name="seller_list" item="vo"}
+                    <tr>
+                        <td>{$vo.id}</td>
+                        <td>{$vo.seller_name}</td>
+                        <td>{$vo.seller_mobile}</td>
+                        <td>{$vo.seller_group_id}</td>
+                        <td>{$vo.seller_group_str}</td>
+                        <td>{$vo.store_key_id}</td>
+                        <td>{$vo.store_id}</td>
+                        <td>{php}echo $vo['is_admin']==1 ? '是管理员' : '不是管理员';{/php}</td>
+                        <td>{php}echo $vo['seller_status']==1 ? '正常' : '锁定';{/php}</td>
+                        <td>{$vo.create_time}</td>
+                        <td>
+                            <a href="{:url('seller/seller/edit',['id'=>$vo['id']])}"
+                               class="layui-btn layui-btn-normal layui-btn-mini">编辑</a>
+                            {if condition="$vo['seller_status']==1"}
+                            <a href="{:url('seller/seller/lock',['id'=>$vo['id']])}"
+                               class="layui-btn layui-btn-danger layui-btn-mini ajax-common">锁定</a>
+                            {/if}
+                            {if condition="$vo['seller_status']==2"}
+                            <a href="{:url('seller/seller/del_lock',['id'=>$vo['id']])}"
+                               class="layui-btn layui-btn-danger layui-btn-mini ajax-common">恢复</a>
+                            {/if}
+                        </td>
+                    </tr>
+                    {/foreach}
+                    </tbody>
+                </table>
+                <!--分页-->
+                {$seller_list->render()}
+            </div>
+        </div>
+    </div>
+</div>
+{/block}

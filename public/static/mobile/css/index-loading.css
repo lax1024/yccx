@@ -1,0 +1,140 @@
+@keyframes loading-animation-icon {
+    0% {
+        background-image: url(../images/car-bg-01.png)
+    }
+    20% {
+        background-image: url(../images/car-bg-02.png)
+    }
+    40% {
+        background-image: url(../images/car-bg-03.png)
+    }
+    65% {
+        background-image: url(../images/car-bg-05.png)
+    }
+    80% {
+        background-image: url(../images/car-bg-04.png)
+    }
+}
+
+@-webkit-keyframes loading-animation-icon {
+    20% {
+        background-image: url(../images/car-bg-01.png)
+    }
+    40% {
+        background-image: url(../images/car-bg-02.png)
+    }
+    60% {
+        background-image: url(../images/car-bg-03.png)
+    }
+    80% {
+        background-image: url(../images/car-bg-04.png)
+    }
+    to {
+        background-image: url(../images/car-bg-05.png)
+    }
+}
+
+@keyframes loading-animation-bg {
+    0% {
+        transform: rotate(0deg);
+        -webkit-transform: rotate(0deg)
+    }
+    to {
+        transform: rotate(2turn);
+        -webkit-transform: rotate(2turn)
+    }
+}
+
+@-webkit-keyframes loading-animation-bg {
+    0% {
+        transform: rotate(0deg);
+        -webkit-transform: rotate(0deg)
+    }
+    to {
+        transform: rotate(2turn);
+        -webkit-transform: rotate(2turn)
+    }
+}
+
+.page-loading {
+    position: fixed;
+    margin: auto;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    width: 100%;
+    z-index: 1000;
+    font-size: 16px
+}
+
+.page-loading .page-loading-mask {
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, .5)
+}
+
+.page-loading .page-loading-bg {
+    width: 180px;
+    position: absolute;
+    top: 50%;
+    left: 26%;
+    text-align: center;
+    z-index: 1001;
+    color: #1ba8ba;
+    transform: translateY(-50%);
+    -webkit-transform: translateY(-50%);
+    background: #fff;
+    padding: 10px;
+    border-radius: 5px
+}
+
+.page-loading .bg-container {
+    position: relative;
+    height: 50px;
+    overflow: hidden;
+    margin-bottom: 10px;
+    margin-top: 10px
+}
+
+.page-loading .icon-loading {
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    transform: translate(-50%);
+    -webkit-transform: translate(-50%);
+    width: 71px;
+    height: 43px;
+    background-size: 100%;
+    display: none
+}
+
+.page-loading .icon-loading-01 {
+    background-image: url(../images/car-bg-01.png)
+}
+
+.page-loading .icon-loading-02 {
+    background-image: url(../images/car-bg-02.png)
+}
+
+.page-loading .icon-loading-03 {
+    background-image: url(../images/car-bg-03.png)
+}
+
+.page-loading .icon-loading-04 {
+    background-image: url(../images/car-bg-04.png)
+}
+
+.page-loading .icon-loading-05 {
+    background-image: url(../images/car-bg-05.png)
+}
+
+.page-loading .bg-luotuo {
+    margin-left: -25px;
+    width: 210px;
+    height: 210px;
+    background: url(../images/luotuo-bg.png) no-repeat center 0 transparent;
+    background-size: 100%;
+    animation: loading-animation-bg 40s infinite linear;
+    -webkit-animation: loading-animation-bg 40s infinite linear
+}

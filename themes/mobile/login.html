@@ -1,0 +1,152 @@
+{if condition="$mobile_phone eq ''"}
+<link rel="stylesheet" href="__STATIC__/mobile/css/index-login.css?rand={$css_rand}" type="text/css">
+<!--登录窗口-->
+<div class="hysdk-ucapi-dialog" style="display: block">
+    <div class="container" style="background:transparent">
+        <div class="ucapi-content">
+            <div class="item login-hd" style="background: #0aad6f">手机动态码登录</div>
+            <div class="item login-bd">
+                <div class="login-tel">
+                    <input class="hysdk-mobile" type="text" id="js-code-mobile" placeholder="请输入您的手机号">
+                </div>
+                <div class="login-code">
+                    <input class="hysdk-code" type="text" id="js-code-value" placeholder="请输入动态码">
+                    <button class="hysdk-code-btn get-code" id="js-code-btn">获取动态码</button>
+                </div>
+                <div class="hysdk-captcha-area login-captcha" style="display: none;">
+                    <input class="hysdk-captcha" type="text" placeholder="请输入验证码">
+                </div>
+                <div class="hysdk-err-area err-tip" style="display: none;"></div>
+                <div class="login-op">
+                    <button class="hysdk-cancel-btn cancel-btn" style="margin: 0px;margin-right: 8%"
+                            id="js-code-cancel-btn">取消
+                    </button>
+                    <button class="hysdk-login-btn login-btn" style="margin: 0px;margin-left: 8%"
+                            id="js-code-login-btn">登录
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    var is_get_code = false;
+    var is_login = false;
+    $(function () {
+        $("js-btnLogin").on('click', function () {
+            $(".hysdk-ucapi-dialog").fadeIn(150);
+        });
+        //取消登录
+        $("#js-code-cancel-btn").on('click', function () {
+            $(".hysdk-ucapi-dialog").fadeOut(150);
+        });
+
+        //登录
+        $("#js-code-login-btn").on('click', function () {
+            var mobile = $("#js-code-mobile").val();
+            var code = $("#js-code-value").val();
+            var myreg = /^[1][0,1,2,3,4,5,7,8,9][0-9]{9}$/;
+            if (!myreg.test(mobile)) {
+                Toast("请填写正确的手机号码", 2000);
+                return;
+            }
+            myreg = /^[0-9]{4}$/;
+            if (!myreg.test(code)) {
+                Toast("验证码格式不正确", 2000);
+                return;
+            }
+            if (!is_login) {
+                is_login = true;
+                $.ajax({
+                    url: website + "/api/Login/mobile_login",
+                    type: "post",
+                    data: {
+                        mobile: mobile,
+                        code: code
+                    },
+                    dataType: "json",
+                    success: function (info) {
+                        is_login = false;
+                        if (parseInt(info.code) == 0) {
+                            window.location.reload();
+                        } else {
+                            Toast(info.info, 2000);
+                        }
+                    },
+                    error: function () {
+                        is_login = false;
+                    }
+                });
+            } else {
+                Toast("正在登录中，请稍后", 2000);
+            }
+        });
+
+        //获取验证码
+        $("#js-code-btn").on('click', function () {
+            var mobile = $("#js-code-mobile").val();
+            if (!is_get_code) {
+                get_code(mobile, "js-code-btn");
+            } else {
+                Toast("正在获取验证码，请稍后", 2000);
+            }
+        });
+
+
+        $("#modal_cancel").on("click", function () {
+            $("#user_message_modal").hide();
+        });
+    });
+
+    /**
+     * 获取验证码
+     * @param mobile 手机号码
+     */
+    function get_code(mobile, ids) {
+        var myreg = /^[1][0,1,2,3,4,5,7,8,9][0-9]{9}$/;
+        if (!myreg.test(mobile)) {
+            Toast("请填写正确的手机号码", 2000);
+            return;
+        }
+        $.ajax({
+            url: website + "/api/Login/get_verify_code",
+            type: "post",
+            data: {
+                mobile: mobile,
+                condition: 'no_ver'//不验证账号是否存在
+            },
+            dataType: "json",
+            success: function (info) {
+                if (parseInt(info.code) == 0) {
+                    is_get_code = true;
+                    checkPhoneTime(ids);
+                } else {
+                    Toast(info.info, 2000);
+                }
+            }
+        });
+    }
+
+    var tiems = 59;
+    var timeint = null;
+
+    /**
+     * 验证码获取成功 倒计时
+     */
+    function checkPhoneTime(ids) {
+        $("#" + ids).addClass('disabled');
+        timeint = setInterval(function () {
+            if (tiems <= 0) {
+                window.clearInterval(timeint);
+                $("#" + ids).removeClass('disabled');
+                $("#" + ids).text('验证手机');
+                tiems = 59;
+                is_get_code = false;
+            } else {
+                $("#" + ids).text("时间(" + tiems + ")");
+                tiems--;
+            }
+        }, 1000);
+    }
+</script>
+{/if}

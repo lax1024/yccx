@@ -1,0 +1,173 @@
+{extend name="base" /}
+{block name="css"}
+<link type="text/css" rel="stylesheet" href="__STATIC__/mobile/css/index-css5.css?rand={$css_rand}">
+<link rel="stylesheet" href="__STATIC__/mui/css/mui.min.css?rand={$css_rand}">
+<link rel="stylesheet" href="__STATIC__/mui/css/mui-icons-extra.css?rand={$css_rand}">
+{/block}
+{block name="body"}
+<style>
+    body,html {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        font-family: "微软雅黑";
+    }
+
+
+    .mui-content {
+        height: 100%;
+        background-image: url("http://img.youchedongli.cn/public/static/mobile/images/ele_key_background.png");
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
+    }
+
+    .ele_key_flag{
+        background-image: url('http://img.youchedongli.cn/public/static/mobile/images/ele_key_flag.png');
+        background-size: 100% 100%;
+        background-repeat: no-repeat;
+    }
+
+    .mui-table-view-cell{
+        padding: 0 15px;
+    }
+
+    .mui-table-view-cell span{
+        background: #f3e856;
+        border-radius:3px;
+        padding: 1px 3px;
+    }
+    .mui-table-view-cell::after{
+        background:none;
+    }
+</style>
+<body style="background: #f3e856;">
+
+<header id="header" class="mui-bar mui-bar-nav" style="background: #ffdb30;color: #ffffff;">
+    <span id="goback" class="mui-icon mui-icon-back mui-pull-left"></span>
+    <h1 class="mui-title" style="color: #ffffff">车辆遥控</h1>
+    <span style="display: none" class="mui-icon mui-icon-list mui-pull-right"></span>
+</header>
+<div class="mui-content" style="height: 100%">
+    <div class="mui-row" style="height: 10%">
+        <div class="mui-col-sm-12 mui-col-xs-12" style="height: 100%">
+            <!-- 占位 -->
+        </div>
+    </div>
+    <div class="mui-row" style="height: 80%">
+        <div class="mui-col-sm-4 mui-col-xs-4" style="height: 100%">
+            <div style="margin-right: -50px;margin-top: -30px">
+                <div class="mui-table-view-cell" style="color: #000;font-size: 12px;display: flex;vertical-align: center;align-content: center;">
+                    <img src="http://img.youchedongli.cn/public/static/mobile/images/ele_key_time_take_car.png" style="width: 40px;height: 25px">
+                    <span id="js_take_car_time" style="margin-left: 5px;background: none;color: #ffffff;font-size: 14px"></span>
+                </div>
+                <div class="mui-table-view-cell" style="color: #000;font-size: 12px;">
+                    <span>车牌号</span><span style="margin-left: 2px" id="js_licence_plate"></span>
+                </div>
+                <div class="mui-table-view-cell" style="color: #000;font-size: 12px;">
+                    <span>行程时间</span><span style="margin-left: 2px" id="js_timer"></span>
+                </div>
+                <div class="mui-table-view-cell" style="color: #000;font-size: 12px">
+                    <span>行程历程</span><span id="js_all_mileage" style="margin-left: 2px"></span>
+                </div>
+                <div class="mui-table-view-cell" style="color: #000;font-size: 12px">
+                    <span>总&nbsp;&nbsp;费&nbsp;&nbsp;用</span><span id="is_taximeter" style="margin-left: 2px"></span>
+                </div>
+            </div>
+
+            <div id="js_info_handle_car" style="height: auto;width: 100%;color: #FFFFFF;margin-top: 10px;margin-left: 10px;padding: 5px;font-size: 14px">
+
+            </div>
+
+            <a id="js_video_handle_car" href="">
+                <span style="color: #fff;background: green;font-size: 12px;margin-left: 10px;padding: 2px 5px;border: #FFFFFF solid 1px;border-radius: 2px">操作视频
+                </span>
+            </a>
+        </div>
+        <div class="mui-col-sm-7 mui-col-xs-7 ele_key_flag" style="height: 100%">
+            <div style="height: 23%;margin-left: 25%;margin-right: 25%">
+                <!-- log -->
+            </div>
+            <div id="js_ele_lock_open" style="height: 13%;margin-left: 25%;margin-right: 25%">
+                <!-- 开门 -->
+            </div>
+            <div id="js_ele_lock_close" style="height: 13%;margin-left: 25%;margin-right: 25%">
+                <!-- 关门 -->
+            </div>
+            <div style="height: 15%;margin-left: 15%;margin-right: 15%">
+                <div id="js_order_menu_fast" style="height: 100%;width: 50%;float: left">
+                    <!-- 还车 -->
+                </div>
+                <div id="js_goto_map_choose_store" style="height: 100%;width: 50%;float: left">
+                    <!-- 还车地图 -->
+                </div>
+            </div>
+            <div style="height: 15%;margin-left: 15%;margin-right: 15%">
+                <div id="js_ele_lock_find" style="height: 100%;width: 50%;float: left">
+                    <!-- 鸣笛(寻车) -->
+                </div>
+                <div style="height: 100%;width: 50%;float: left">
+                    <!-- 找车 -->
+                </div>
+            </div>
+            <div style="height: 8%;margin-left: 29%;margin-right: 28%;color: #fff;font-size: 12px;padding-top: 15px;text-align: center">
+                <div><span>电量：</span><span id="js_energy"></span></div>
+            </div>
+        </div>
+        <div class="mui-col-sm-1 mui-col-xs-1" style="height: 100%;">
+            <!-- 占位 -->
+        </div>
+    </div>
+    <div class="mui-row" style="height: 10%;">
+        <div class="mui-col-sm-8 mui-col-xs-8" style="height: 100%;padding-left: 10px;padding-top: 20px">
+            <div style="color: #ffffff;font-size: 12px">
+                温馨提示：没有信号怎么办，请联系客服！
+            </div>
+        </div>
+        <div class="mui-col-sm-4 mui-col-xs-4">
+            <img style="width:40px; height:40px;position: relative;float: left;margin-right: 10px"
+                 src="http://img.youchedongli.cn/public/static/mobile/images/ele_key_report.png?rand=20180622"/>
+            <a id="js_call_service_tel" href="">
+                <div style="height: 40px;width: 40px;border-radius: 20px;background-color: #ffdb30;float: left;text-align: center;line-height: 40px;color: #fff">
+                    <span class="mui-icon mui-icon-phone"></span>
+                </div>
+            </a>
+        </div>
+    </div>
+</div>
+<!-- 审核框 -->
+<div class="hysdk-ucapi-dialog">
+    <div class="container" style="background:transparent">
+        <div class="ucapi-content">
+            <div class="item login-hd" style="background: #0aad6f">还车审核</div>
+            <div class="item login-bd">
+                <div class="login-tel">
+                    <span id="js_examine_timer_wait">正在审核中...</span>
+                    <span id="js_examine_timer" style="color: #ff0000"></span>
+                </div>
+                <div class="login-tel">
+                    <span>预计用时：20秒</span>
+                </div>
+                <div class="login-op">
+                    <button class="hysdk-cancel-btn cancel-btn" id="js-cancel-btn">取消</button>
+                    <button class="hysdk-login-btn login-btn" id="js-sure-btn">确认还车</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{include file="login" /}
+{include file="loading" /}
+
+<script type="text/javascript" src="__STATIC__/mobile/js/jquery.min.js"></script>
+<script type="text/javascript" src="__STATIC__/mobile/js/public-js.js?rand={$js_rand}"></script>
+<script type="text/javascript" src="__STATIC__/mobile/js/order-ele-key-js.js?rand={$js_rand}"></script>
+<script>
+    function phone(tel){
+        window.location.href = 'tel:' + tel;
+    }
+</script>
+</body>
+
+</html>
+{/block}

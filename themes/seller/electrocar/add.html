@@ -1,0 +1,235 @@
+{extend name="base" /}
+{block name="body"}
+<div class="layui-body">
+    <!--tab标签-->
+    <div class="layui-tab layui-tab-brief">
+        <ul class="layui-tab-title">
+            <li class=""><a href="{:url('seller/electrocar/index')}">新能源车辆管理</a></li>
+            <li class="layui-this">添加新能源车辆</li>
+        </ul>
+        <div class="layui-tab-content">
+            <div class="layui-tab-item layui-show">
+                <form class="layui-form form-container" action="{:url('seller/electrocar/save')}" method="post">
+                    <div id="p2"></div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">发动机编号</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="engine_vin" value="" placeholder="请输入发动机编号" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">车牌号</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="licence_plate" value="" required
+                                   lay-verify="required" placeholder="请输入车牌号" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">车机编号</label>
+                        <div class="layui-input-inline">
+                            <select name="device_number" id="device_number_list" lay-verify="required" lay-search>
+                                <option value="0" selected>请选择车机</option>
+                            </select>
+                        </div>
+                        <div class="layui-input-inline">
+                            <input type="text" id="device_number"
+                                   value="" placeholder="查找的车机编号" class="layui-input">
+                        </div>
+                        <div class="layui-input-inline">
+                            <a href="#" id="relieve_bind" class="layui-btn layui-btn-small layui-btn-danger">解除绑定</a>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">每小时租金</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="day_price" value="5.4" required
+                                   lay-verify="price" placeholder="请输每天租金" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">每公里价格</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="km_price" value="1" required
+                                   lay-verify="price" placeholder="请输每公里价格" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">基本服务费</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="day_basic" value="" required
+                                   lay-verify="price" placeholder="请输每天基本服务费" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">所在门店</label>
+                        <div class="layui-input-inline">
+                            <select name="store_site_id" lay-verify="required" lay-search>
+                                {foreach name="store_site_list" item="vo"}
+                                <option value="{$vo.id}">{neq name="vo.level"
+                                    value="1"}|{php}for($i=1;$i<$vo['level'];$i++){echo
+                                    '----';}{/php}{/neq}{$vo.store_name}
+                                </option>
+                                {/foreach}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">新能源车辆等级类型</label>
+                        <div class="layui-input-inline">
+                            <select name="car_grade" lay-verify="required">
+                                {foreach name="car_grade" item="vo" key="ke"}
+                                <option value="{$ke}">{$vo}</option>
+                                {/foreach}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">车辆颜色</label>
+                        <div class="layui-input-inline">
+                            <select name="car_color" lay-verify="required">
+                                {foreach name="car_color" item="vo" key="ke"}
+                                <option value="{$ke}">{$vo}</option>
+                                {/foreach}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">新能源车辆年限</label>
+                        <div class="layui-input-inline">
+                            <select name="age_year" lay-verify="required">
+                                {foreach name="year_list" item="vo"}
+                                <option value="{$vo.id}">{$vo.name}</option>
+                                {/foreach}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">新能源车辆排量</label>
+                        <div class="layui-input-inline">
+                            <select name="car_cc" lay-verify="required" lay-search>
+                                {foreach name="car_cc" item="vo"}
+                                <option value="{$vo.id}">{$vo.name}</option>
+                                {/foreach}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">新能源车辆状态</label>
+                        <div class="layui-input-inline">
+                            <select name="car_status" lay-verify="required">
+                                {foreach name="car_status" item="vo" key="ke"}
+                                <option value="{$ke}">{$vo}</option>
+                                {/foreach}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">新能源车辆图集</label>
+                        <div class="layui-input-block">
+                            <button type="button" id="upload-photo-btn" class="layui-btn">上传图集</button>
+                            <div id="photo-container"></div>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <div class="layui-input-block">
+                            <button class="layui-btn" lay-submit lay-filter="*">保存</button>
+                            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}
+{block name="js"}
+<script type="text/javascript" src="__JS__/pickercar.js"></script>
+<script type="text/javascript" src="__JS__/ueditor/ueditor.config.js"></script>
+<script type="text/javascript" src="__JS__/ueditor/ueditor.all.min.js"></script>
+{/block}
+{block name="script"}
+<script>
+    $(function () {
+        var picker = layui.picker;
+        var p2 = new picker();
+        p2.set({
+            elem: '#p2',
+            url: "{:url('api/Car/get_brand_list')}",
+            canSearch: true,
+            codeConfig: {
+                "default": false
+            }
+        }).render();
+
+        $("#device_number").on('input', function () {
+            get_device_number_list();
+        });
+        $("#relieve_bind").on('click', function () {
+            var se_div = $("#device_number_list");
+            se_div.html("");
+            var node = $("<option value='0' selected>请选择车机</option>");
+            node.appendTo(se_div);
+            form.render('select');
+        });
+    });
+
+    function get_device_number_list() {
+        var device_number = $("#device_number").val();
+        if (device_number == "") {
+            return;
+        }
+        $.ajax({
+            type: "GET",
+            url: "{:url('api/CarDevice/get_device_list')}",
+            data: {
+                'device_number': device_number,
+                'device_type': 2
+            },
+            dataType: "json",
+            async: false,
+            success: function (result) {
+                data = result.data;
+                if (result.code == 0) {
+                    var se_div = $("#device_number_list");
+                    se_div.html("");
+                    var node = $("<option value='0' selected>请选择车机</option>");
+                    node.appendTo(se_div);
+                    $.each(result.data, function (index, item) {
+                        var nodes = $("<option value='" + item.deviceId + "' selected>" + item.deviceId + "</option>");
+                        nodes.appendTo(se_div);
+                    });
+                    form.render('select');
+                }
+            }
+        });
+    }
+</script>
+<script>
+    $(function () {
+        var ue = UE.getEditor('content'),
+            uploadEditor = UE.getEditor('upload-photo-btn'),
+            photoListItem,
+            uploadImage;
+
+        uploadEditor.ready(function () {
+            uploadEditor.setDisabled();
+            uploadEditor.hide();
+            uploadEditor.addListener('beforeInsertImage', function (t, arg) {
+                $.each(arg, function (index, item) {
+                    photoListItem = '<div class="photo-list"><input type="text" name="car_photos[]" value="' + item.src + '" class="layui-input layui-input-inline">';
+                    photoListItem += '<button type="button" class="layui-btn layui-btn-danger remove-photo-btn">移除</button></div>';
+                });
+            });
+        });
+
+        $('#upload-photo-btn').on('click', function () {
+            uploadImage = uploadEditor.getDialog("insertimage");
+            uploadImage.open();
+        });
+
+        $(".remove-photo-btn").on('click', function () {
+            $(this).parent('.photo-list').remove();
+        });
+    });
+</script>
+{/block}

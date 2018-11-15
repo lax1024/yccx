@@ -1,0 +1,107 @@
+{extend name="base" /}
+{block name="body"}
+<div class="layui-body">
+    <!--tab标签-->
+    <div class="layui-tab layui-tab-brief">
+        <ul class="layui-tab-title">
+            <li class="layui-this">订单管理</li>
+            <!--<li class=""><a href="{:url('manage/order/add')}">添加订单</a></li>-->
+        </ul>
+        <div class="layui-tab-content">
+            <div class="layui-tab-item layui-show">
+                <form class="layui-form layui-form-pane" action="{:url('manage/order_service/index')}" method="get">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">关键词</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="keyword" value="{$keyword}" placeholder="请输入关键词"
+                                   class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <button class="layui-btn">搜索</button>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">订单状态</label>
+                        <div class="layui-inline">
+                            <select name="order_status" lay-filter="statusselect">
+                                <option value="-1">未选择</option>
+                                {if condition="$order_status==80"}
+                                <option value="80" selected>提前还车申请</option>
+                                {else/}
+                                <option value="80" >提前还车申请</option>
+                                {/if}
+                                {foreach name="order_status_list" item="vo" key="kv"}
+                                <option value="{$kv}" {php} echo $kv==$order_status?"selected":"";{/php}>{$vo}</option>
+                                {/foreach}
+                            </select>
+                        </div>
+                    </div>
+                </form>
+                <hr>
+                <table class="layui-table">
+                    <thead>
+                    <tr>
+                        <th>客户id</th>
+                        <th>客户姓名</th>
+                        <th>客户电话</th>
+                        <th>车牌号</th>
+                        <th>订单总费用</th>
+                        <th>付款方式</th>
+                        <th>订单状态</th>
+                        <th>还车时间</th>
+                        <th>评论评分</th>
+                        <th>评论内容</th>
+                        <th>付款时间</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {foreach name="order_list" item="vo"}
+                    <tr>
+                        <td>{$vo.customer_id}</td>
+                        <td>{$vo.customer_name}</td>
+                        <td>{$vo.customer_phone}</td>
+                        <td>{$vo.goods_licence_plate}</td>
+                        <td>{$vo.order_amount}</td>
+                        <td>{$vo.payment_code_str}</td>
+                        <td>{$vo.order_status_str}</td>
+                        {if condition="$vo.return_expect==1"}
+                            <td>{$vo.return_expect_time}</td>
+                        {else/}
+                            <td>{$vo.return_time_str}</td>
+                        {/if}
+                        <td>{$vo['star_level']}</td>
+                        <td>{$vo['content']}</td>
+                        <td>{$vo.payment_time_str}</td>
+                        <td>
+                            <a href="{:url('manage/order_service/edit',['id'=>$vo['id']])}"
+                               class="layui-btn layui-btn-normal layui-btn-mini">编辑查看</a>
+                            {if condition="$vo['payment_code']!=''"}
+                                {if condition="$vo['is_refund']==0&&$vo['order_status']==50"}
+                                <a href="{:url('manage/order_service/update_refund',['pay_sn'=>$vo['pay_sn']])}"
+                                   class="layui-btn layui-btn-normal layui-btn-mini ajax-refund">申请退款</a>
+                                {/if}
+                            {/if}
+                            {if condition="$vo['order_status'] egt 30"}
+                            <a href="{:url('manage/car_regulations/add',['order_id'=>$vo['id']])}"
+                               class="layui-btn layui-btn-danger layui-btn-mini">添加违章信息</a>
+                            {/if}
+                        </td>
+                    </tr>
+                    {/foreach}
+                    </tbody>
+                </table>
+                <!--分页-->
+                {$order_list->render()}
+            </div>
+        </div>
+    </div>
+</div>
+{/block}
+{block name="script"}
+<script>
+    form.on('select(statusselect)', function (data) {
+        $(".layui-form-pane").submit();
+    });
+</script>
+{/block}

@@ -1,0 +1,95 @@
+{extend name="base" /}
+{block name="css"}
+<link rel="stylesheet" href="__STATIC__/mui/css/mui.min.css?rand={$css_rand}">
+<link rel="stylesheet" href="__STATIC__/mui/css/mui-icons-extra.css?rand={$css_rand}">
+<link rel="stylesheet" href="__STATIC__/mui/css/app-self.css?rand={$css_rand}">
+{/block}
+{block name="body"}
+<style>
+
+    .title {
+        margin: 20px 15px 10px;
+        color: #6d6d72;
+        font-size: 15px;
+    }
+
+    .oa-contact-cell.mui-table .mui-table-cell {
+        padding: 11px 0;
+        vertical-align: middle;
+    }
+
+    .oa-contact-cell {
+        position: relative;
+        margin: -11px 0;
+    }
+
+    .oa-contact-avatar {
+        width: 75px;
+    }
+
+    .oa-contact-avatar img {
+        border-radius: 50%;
+    }
+
+    .oa-contact-content {
+        width: 100%;
+    }
+
+    .oa-contact-name {
+        margin-right: 20px;
+    }
+
+    .oa-contact-name, oa-contact-position {
+        float: left;
+    }
+
+    .mui-control-content {
+        background-color: white;
+        height: 100%;
+    }
+
+    .mui-control-content .mui-loading {
+        margin-top: 50px;
+    }
+
+    html {
+        height: 100%;
+    }
+</style>
+<body style="height: 100%">
+<div class="mui-navbar">
+    <div class="mui-navbar-inner mui-bar mui-bar-nav mui-navbar-center">
+        <button type="button" class="mui-left mui-action-back mui-btn  mui-btn-link mui-btn-nav mui-pull-left">
+            <span class="mui-icon mui-icon-left-nav"></span>
+        </button>
+        <h1 class="mui-center mui-title">已完成任务列表</h1>
+    </div>
+</div>
+<div class="mui-pages">
+    <div class="mui-slider" style="height: 100%">
+        <div class="mui-slider-group" style="height: 100%">
+            <div class="mui-slider-item mui-control-content" style="overflow: scroll">
+                <ul class="mui-table-view">
+                    <li class="mui-table-view-cell mui-media">
+                        <div class="mui-media-object mui-pull-right" style="margin-top: 5%">
+                            <button type="button" class="mui-btn mui-btn-success">维护</button>
+                        </div>
+                        <div class="mui-media-body">
+                            <span style="font-size: 14px">优车酷中曹司店</span>
+                            <p class='mui-ellipsis'>2018/08/03 08:03</p>
+                            <p class='mui-ellipsis'>2018/08/03 08:03</p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="__STATIC__/mui/js/mui.min.js"></script>
+<script>
+    mui.init({
+        swipeBack: true //启用右滑关闭功能
+    });
+</script>
+</body>
+{/block}

@@ -1,0 +1,247 @@
+{extend name="base" /}
+{block name="css"}
+<link type="text/css" rel="stylesheet" href="__STATIC__/mobile/css/index-css5.css?rand={$css_rand}">
+<link rel="stylesheet" type="text/css" href="__STATIC__/mui/css/mui.min.css?rand={$css_rand}">
+<link rel="stylesheet" type="text/css" href="__STATIC__/mui/css/mui-icons-extra.css?rand={$css_rand}">
+<link rel="stylesheet" type="text/css" href="__STATIC__/mui/css/app-self.css?rand={$css_rand}">
+
+<script>
+    var marker_self;
+    var is_up_location = false;
+</script>
+
+{/block}
+{block name="body"}
+<style>
+    html {
+        height: 100%;
+    }
+
+    .flag_return_point {
+        height: 25px;
+        width: 80%;
+        margin-left: 10%;
+        position: absolute;
+        top: 55px;
+        z-index: 800;
+        opacity: 0.9;
+        text-align: center;
+        background: #FBFCFE;
+    }
+
+    .use_car_btn {
+        border-radius: 20px;
+        width: 35%;
+        left: 32.5%;
+        height: 40px;
+        display: flex;
+        position: fixed;
+        bottom: 30px;
+        z-index: 500;
+        justify-content: center;
+        align-items: center;
+        background: -webkit-linear-gradient(left top, #ffbb00, #ede354); /* Safari 5.1 - 6.0 */
+        background: -o-linear-gradient(bottom right, #ffbb00, #ede354); /* Opera 11.1 - 12.0 */
+        background: -moz-linear-gradient(bottom right, #ffbb00, #ede354); /* Firefox 3.6 - 15 */
+        background: linear-gradient(to bottom right, #ffbb00, #ede354); /* 标准的语法 */
+    }
+    .pop_return_car{
+        height: auto;
+        width: 90%;
+        opacity: 0.9;
+        border-radius: 10px;
+        position: absolute;
+        bottom: 75px;
+        background-color: #ffffff;
+        margin: 5px 5%;
+        padding-left: 10px;
+        padding-bottom: 10px
+    }
+
+    .return_car_place{
+        width: 70%;
+        height: 100%;
+        font-size: 14px;
+        float: left;
+        padding-top: 10px;
+    }
+    .return_car_place_img{
+        width: 30%;
+        height: 100%;
+        font-size: 14px;
+        float: left;
+        padding: 5px;
+    }
+
+    .return_car_place_img img{
+        height: 100%;
+        width: 100%;
+    }
+
+    .marker_store_label{
+        height: 30px;
+        max-width: 300px;
+        text-align: center;
+        line-height: 20px;
+        background-image: url("http://img.youchedongli.cn/public/static/mobile/images/pop_car_distance.png");
+        background-repeat: no-repeat;
+        color: #fff;
+        background-size:100% 100%;
+        -moz-background-size:100% 100%;
+        padding: 0 5px 0 5px;
+        background-color: rgba(255,255,255,0.01);
+
+    }
+</style>
+<body style="height: 100%">
+
+<header id="header" class="mui-bar mui-bar-nav" style="background: #ffdb30;color: #ffffff;">
+    <span id="goback" class="mui-icon mui-icon-back mui-pull-left"></span>
+    <h1 class="mui-title" style="color: #ffffff">快速还车</h1>
+    <span class="mui-icon mui-icon-list mui-pull-right"></span>
+</header>
+<div class="flag_return_point" style="display: none">
+    <span id="js_search_plate" class="search_by_qrcode" style="width: 100%;height: 100%;font-size: 12px;">
+        红色还车点为异地还车点，需要缴纳<span style="color: #ff0000">30元</span>异地还车费
+    </span>
+</div>
+<div id="l-map" style="height: 100%"></div>
+<div class="pop_return_car" id="js_pop_return_car" style="display: none">
+    <div class="return_car_place">
+        <div class="js_return_car_name" style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">贵州民族大学停车场</div>
+        <div style="max-height: 90px;">
+            <span class="js_return_car_address">贵州省贵阳市花溪区贵州民族大学停车场</span>
+            <span class="js_return_car_navi mui-icon mui-icon-navigate" style="padding-left: 10px;color: rgb(1,181,227);font-size: 20px"></span>
+        </div>
+    </div>
+    <div class="return_car_place_img">
+        <img data-preview-src='' data-preview-group='store_img' class="js_store_img" src="http://img.youchedongli.cn/public/static/mobile/images/entrance_and_exit.png">
+    </div>
+</div>
+<div id="js_user_map_fun" class="use_car_btn">
+    立即还车
+</div>
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=84chcOlNtuGKpKkIfp0oprKRveLSXEnj"></script>
+<script type="text/javascript" src="__STATIC__/mobile/js/jquery.min.js"></script>
+<script type="text/javascript" src="__STATIC__/mobile/js/public-js.js?rand={$js_rand}"></script>
+<script type="text/javascript" src="__STATIC__/mui/js/mui.min.js?rand={$css_rand}"></script>
+<script type="text/javascript" src="__STATIC__/mui/js/mui.js?rand={$js_rand}"></script>
+<script type="text/javascript" src="__STATIC__/mui/js/mui.zoom.js?rand={$js_rand}"></script>
+<script type="text/javascript" src="__STATIC__/mui/js/mui.previewimage.js?rand={$js_rand}"></script>
+
+<script type="text/javascript" src="__STATIC__/mobile/js/map-return-car-js.js?rand={$js_rand}"></script>
+
+<script>
+    mui.previewImage();
+</script>
+
+{if condition="$is_wxBrowser eq 'yes'"}
+<script src="http://res.wx.qq.com/open/js/jweixin-1.4.0.js?rand={$js_rand}"></script>
+<script>
+    /*
+     * 注意：
+     * 1. 所有的JS接口只能在公众号绑定的域名下调用，公众号开发者需要先登录微信公众平台进入“公众号设置”的“功能设置”里填写“JS接口安全域名”。
+     * 2. 如果发现在 Android 不能分享自定义内容，请到官网下载最新的包覆盖安装，Android 自定义分享接口需升级至 6.0.2.58 版本及以上。
+     * 3. 常见问题及完整 JS-SDK 文档地址：http://mp.weixin.qq.com/wiki/7/aaa137b55fb2e0456bf8dd9148dd613f.html
+     *
+     * 开发中遇到问题详见文档“附录5-常见错误及解决办法”解决，如仍未能解决可通过以下渠道反馈：
+     * 邮箱地址：weixin-open@qq.com
+     * 邮件主题：【微信JS-SDK反馈】具体问题
+     * 邮件内容说明：用简明的语言描述问题所在，并交代清楚遇到该问题的场景，可附上截屏图片，微信团队会尽快处理你的反馈。
+     */
+    wx.config({
+        debug: false,
+        appId: "{$jssdk['appid']}",
+        timestamp: "{$jssdk['timestamp']}",
+        nonceStr: "{$jssdk['nonceStr']}",
+        signature: "{$jssdk['signature']}",
+        jsApiList: [
+            'checkJsApi',
+            'openLocation',
+            'getLocation'
+        ]
+    });
+
+    wx.ready(function (res) {
+        if (marker_self != null) {
+            marker_self.remove();
+        }
+        weixinLocation(true);
+    });
+
+    wx.error(function (res) {
+//        alert(JSON.stringify(res));
+    });
+</script>
+<script>
+
+
+    /**
+     * 调用第三方导航软件实现导航
+     * @param lat  目的地纬度
+     * @param lng  目的地经度
+     */
+    function go_openLocation(lat, lng) {
+        var ponitx = wgs2gcj(lat, lng);//将gps坐标转为百度地图坐标
+        wx.openLocation({
+            latitude: ponitx[0], // 纬度，浮点数，范围为90 ~ -90
+            longitude: ponitx[1], // 经度，浮点数，范围为180 ~ -180。
+            name: '还车地址', // 位置名
+            address: '请按照导航去还车', // 地址详情说明
+            scale: 18, // 地图缩放级别,整形值,范围从1~28。默认为最大
+            infoUrl: '' // 在查看位置界面底部显示的超链接,可点击跳转
+        });
+    }
+
+    //微信定位
+    function weixinLocation(is_get_car) {
+        wx.getLocation({
+            success: function (res) {
+                is_up_location = true;
+                var latitude = res.latitude; //纬度
+                var longitude = res.longitude; //经度
+                localStorage.setItem("old_marker_self_lat", latitude);
+                localStorage.setItem("old_marker_self_lng", longitude);
+                var pointx = wgs2bd(parseFloat(latitude), parseFloat(longitude));
+                if (marker_self != null) {
+                    marker_self.remove();
+                }
+                var points = new BMap.Point(pointx[1], pointx[0]);
+                localStorage.setItem("marker_self_lat", points.lat);
+                localStorage.setItem("marker_self_lng", points.lng);
+                var myIcon;
+                myIcon = new BMap.Icon("http://img.youchedongli.cn/public/static/mobile/images/marker_self.png?rand=2019&x-oss-process=image/resize,w_25", new BMap.Size(40, 40));
+                marker_self = new BMap.Marker(points, {icon: myIcon});
+                map.addOverlay(marker_self);
+                map.setCenter(points);
+                if (is_get_car) {
+                    setTimeout(function () {
+                        getStoreByCar(goods_id,longitude,latitude);
+                    }, 2000);
+                }
+            },
+            cancel: function (res) {
+                // alert('用户拒绝授权获取地理位置');
+            },
+            fail: function (res) {
+//                alert(JSON.stringify(res));
+            }
+        });
+    }
+</script>
+{/if}
+{include file="user_message" /}
+{include file="login" /}
+{include file="loading" /}
+<script>
+    //导航
+    $(".js_return_car_navi").on("click",function () {
+        var navi_lat = $("#js_pop_return_car").attr("data-store-lat");
+        var navi_lng = $("#js_pop_return_car").attr("data-store-lng");
+        go_openLocation(parseFloat(navi_lat),parseFloat(navi_lng));
+    });
+</script>
+
+</body>
+</html>
+{/block}

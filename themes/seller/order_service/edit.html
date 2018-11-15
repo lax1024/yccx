@@ -1,0 +1,530 @@
+{extend name="base" /}
+{block name="body"}
+<style>
+    .layui-form-item {
+        margin-bottom: 5px;
+    }
+
+    .layui-form-label {
+        padding: 0 15px;
+    }
+
+    .layui-inline {
+        margin: 0;
+    }
+
+    .layui-form-mid {
+        padding: 0;
+    }
+
+    .img_tip span {
+        margin-right: 17px;
+    }
+</style>
+<div class="layui-body">
+    <!--tab标签-->
+    <div class="layui-tab layui-tab-brief">
+        <ul class="layui-tab-title">
+            <li class=""><a href="{:url('seller/order_service/index')}">订单管理</a></li>
+            <li class="layui-this">查看订单</li>
+        </ul>
+        <div class="layui-form">
+            <fieldset class="layui-elem-field layui-field-title">
+                <legend>订单信息</legend>
+            </fieldset>
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">订单号:</label>
+                    <div class="layui-input-inline">
+                        <div class="layui-form-mid ">{$order['order_sn']}</div>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">支付单号:</label>
+                    <div class="layui-input-inline" style="width: 230px">
+                        <div class="layui-form-mid ">{$order['pay_sn']}</div>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">店铺（id）:</label>
+                    <div class="layui-input-inline">
+                        <div class="layui-form-mid ">{$order['store_name']}({$order['store_id']})</div>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">下单时间:</label>
+                    <div class="layui-input-inline">
+                        <div class="layui-form-mid ">{$order['create_time']}</div>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">付款时间:</label>
+                    <div class="layui-input-inline" style="width: 230px">
+                        <div class="layui-form-mid ">{$order['payment_time']}</div>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">付款方式:</label>
+                    <div class="layui-input-inline">
+                        <div class="layui-form-mid">{$order['payment_code_str']}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">取车门店:</label>
+                    <div class="layui-input-inline">
+                        <div class="layui-form-mid">{$order['acquire_store_name']}({$order['acquire_store_id']})</div>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">还车门店:</label>
+                    <div class="layui-input-inline">
+                        <div class="layui-form-mid">{$order['return_store_name']}({$order['return_store_id']})</div>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">行驶里程:</label>
+                    <div class="layui-input-inline">
+                        <div class="layui-form-mid">{$order['return_mileage']-$order['acquire_mileage']}(Km)</div>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">取车时间:</label>
+                    <div class="layui-input-inline">
+                        <div class="layui-form-mid">{$order['acquire_time_str']}</div>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">还车时间:</label>
+                    <div class="layui-input-inline" style="width: 230px">
+                        <div class="layui-form-mid">{$order['return_time_str']}</div>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">订单总价格:</label>
+                    <div class="layui-input-inline" style="width: 230px">
+                        <div class="layui-form-mid">{$order['order_amount']}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">使用余额:</label>
+                    <div class="layui-input-inline">
+                        <div class="layui-form-mid">{$order['pd_amount']}</div>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">三方支付:</label>
+                    <div class="layui-input-inline">
+                        <div class="layui-form-mid">{php} echo floatval($order['order_amount'])-floatval($order['pd_amount'])-floatval($order['coupon_amount']){/php}
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">订单状态:</label>
+                    <div class="layui-input-inline">
+                        <div class="layui-form-mid">{$order['order_status_str']}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">代金券编号:</label>
+                    <div class="layui-input-inline">
+                        <div class="layui-form-mid">{$order['coupon_sn']}</div>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">代金券金额:</label>
+                    <div class="layui-input-inline">
+                        <div class="layui-form-mid">{$order['coupon_amount']}</div>
+                    </div>
+                </div>
+                <div class="layui-inline">
+
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">额外费用:</label>
+                    <div class="layui-input-inline">
+                        <div class="layui-form-mid">{$order['rests_cost']}</div>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">额外费用备注:</label>
+                    <div class="layui-input-inline">
+                        <div class="layui-form-mid">{$order['rests_cost_notes']}</div>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">费用设置时间:</label>
+                    <div class="layui-input-inline">
+                        <div class="layui-form-mid">{$order['rests_cost_time']}</div>
+                    </div>
+                </div>
+            </div>
+            {if condition="$order['goods_type']==1"}
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">取车地址:</label>
+                    <div class="layui-input-inline">
+                        <div class="layui-form-mid">{$order['acquire_address']['name']}</div>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">取车方式:</label>
+                    <div class="layui-input-inline">
+                        <div class="layui-form-mid">{php}echo $order['acquire_visit']?"送车上门":"到店取车"{/php}</div>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">取车时间:</label>
+                    <div class="layui-input-inline">
+                        <div class="layui-form-mid">{$order['acquire_time_str']}</div>
+                    </div>
+                </div>
+            </div>
+            {if condition="$order['return_expect']==0"}
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">还车地址:</label>
+                    <div class="layui-input-inline">
+                        <div class="layui-form-mid">{$order['return_address']['name']}</div>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">还车方式:</label>
+                    <div class="layui-input-inline">
+                        <div class="layui-form-mid">{php}echo $order['return_visit']?"上门取车":"到店还车"{/php}</div>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">还车时间:</label>
+                    <div class="layui-input-inline">
+                        <div class="layui-form-mid">{$order['return_time_str']}</div>
+                    </div>
+                </div>
+            </div>
+            {/if}
+            {if condition="$order['return_expect']==1"}
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">还车地址:</label>
+                    <div class="layui-input-inline">
+                        <div class="layui-form-mid">{$order['return_address']['name']}</div>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">还车方式:</label>
+                    <div class="layui-input-inline">
+                        <div class="layui-form-mid">{php}echo $order['return_visit']?"上门取车":"到店还车"{/php}</div>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">还车时间:</label>
+                    <div class="layui-input-inline">
+                        <div class="layui-form-mid">{$order['return_expect_time']}<span style="color: red">（提前还车）</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {/if}
+            {/if}
+            {if condition="$order['goods_type']==2"}
+            <div class="layui-form-item">
+                <label class="layui-form-label">照片说明:</label>
+                <p class="img_tip"><span>左前图片</span><span>右前图片</span><span>车后图片</span><span>&nbsp;&nbsp;票据&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span>特写图片</span>
+                </p>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">取车照片:</label>
+                {foreach name="$order['acquire_picture']" item="vo" key="kv"}
+                <img src="{$vo}" onclick="show_img($(this))" data-title="预览照片" width="70px"
+                     onerror="javascript:this.src='http://img.youchedongli.cn/public/static/images/error_img.png'">
+                {if condition="$kv=='other_pic'"}
+                {foreach name="$order['acquire_picture']['other_pic']" item="vox"}
+                <img src="{$vox}" onclick="show_img($(this))" data-title="预览照片" width="70px"
+                     onerror="javascript:this.src='http://img.youchedongli.cn/public/static/images/error_img.png'">
+                {/foreach}
+                {/if}
+                {/foreach}
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">照片说明:</label>
+                <p class="img_tip"><span>左前图片</span><span>右前图片</span><span>车后图片</span><span>内部照片</span><span>票据图片</span><span>特写图片</span>
+                </p>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">还车照片:</label>
+                {foreach name="$order['return_picture']" item="vo" key="kv"}
+                {if condition="$kv=='add_pic'"}
+                {foreach name="$order['acquire_picture']['add_pic']" item="vox"}
+                <img src="{$vox}" onclick="show_img($(this))" data-title="预览照片" width="70px"
+                     onerror="javascript:this.src='http://img.youchedongli.cn/public/static/images/error_img.png'">
+                {/foreach}
+                {else/}
+                <img src="{$vo}" onclick="show_img($(this))" data-title="预览照片" width="70px"
+                     onerror="javascript:this.src='http://img.youchedongli.cn/public/static/images/error_img.png'">
+                {/if}
+                {/foreach}
+            </div>
+            {/if}
+            <hr/>
+            <div class="layui-tab-content">
+                <div class="layui-tab-item layui-show">
+                    <form class="layui-form form-container" action="{:url('seller/order/update')}" method="post">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label" style="width: 120px">当前订单状态:</label>
+                            <div class="layui-input-inline" style="width: 230px">
+                                <div class="layui-form-mid">{$order['order_status_str']}</div>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">可操作:</label>
+                            <div class="layui-input-block">
+                                {if condition="$order['order_status'] eq 10"}
+                                <a href="{:url('seller/order_service/cancel_order',['id'=>$order['id']])}"
+                                   class="layui-btn layui-btn-danger  ajax-common">取消订单</a>
+                                {/if}
+                                {if condition="$order['order_status'] eq 20"}
+                                <a href="{:url('seller/order_service/acquire_order',['id'=>$order['id']])}"
+                                   class="layui-btn layui-btn-danger ajax-common">确认取车</a>
+                                {/if}
+                                {if condition="$order['order_status'] eq 30"}
+                                <form class="layui-form layui-form-pane">
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label">站点</label>
+                                        <div class="layui-inline">
+                                            <select id="store_id" lay-verify="required">
+                                                <option value="0">未选择</option>
+                                                {foreach name="store_site_list" item="vo"}
+                                                {if condition="$order.return_store_id==$vo.id"}
+                                                <option value="{$vo.id}" selected>{neq name="vo.level" value="1"}|{php}
+                                                    for($i=1;$i<$vo['level'];$i++){echo'--';}{/php}{/neq}{$vo.store_name}
+                                                </option>
+                                                {else/}
+                                                <option value="{$vo.id}">{neq name="vo.level" value="1" }|{php}
+                                                    for($i=1;$i<$vo['level'];$i++){ echo
+                                                    '--';}{/php}{/neq}{$vo.store_name}
+                                                </option>
+                                                {/if}
+                                                {/foreach}
+                                            </select>
+                                        </div>
+                                    </div>
+                                </form>
+                                <br/>
+                                <a href="{:url('seller/order_service/rests_cost_order',['id'=>$order['id']])}"
+                                   class="layui-btn layui-btn-danger layui-btn-mini ajax-cost">设置额外费用</a>
+                                <a href="{:url('seller/order_service/return_order',['id'=>$order['id']])}"
+                                   class="layui-btn layui-btn-danger layui-btn-mini ajax-common-ok">确认还车</a>
+                                {/if}
+                                {if condition="$order['order_status'] eq 40"}
+                                <a href="{:url('seller/order_service/end_order',['id'=>$order['id']])}"
+                                   class="layui-btn layui-btn-danger layui-btn-mini ajax-common">确认完成</a>
+                                {/if}
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label"></label>
+                            <div class="layui-input-inline">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label"></label>
+                            <div class="layui-input-inline">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label"></label>
+                            <div class="layui-input-inline">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <fieldset class="layui-elem-field layui-field-title">
+                <legend>客户信息</legend>
+            </fieldset>
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">客户id:</label>
+                    <div class="layui-input-inline">
+                        <div class="layui-form-mid">{$order['customer_id']}</div>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">客户名称:</label>
+                    <div class="layui-input-inline" style="width: 230px">
+                        <div class="layui-form-mid">{$order['customer_information']['vehicle_drivers']}</div>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">电话号码:</label>
+                    <div class="layui-input-inline">
+                        <div class="layui-form-mid">{$order['customer_name']}</div>
+                    </div>
+                </div>
+            </div>
+            <fieldset class="layui-elem-field layui-field-title">
+                <legend>车辆信息</legend>
+            </fieldset>
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">车型:</label>
+                    <div class="layui-input-inline">
+                        <div class="layui-form-mid">{$order['order_goods']['goods_name']}</div>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">车牌号:</label>
+                    <div class="layui-input-inline" style="width: 230px">
+                        <div class="layui-form-mid">{$order['order_goods']['licence_plate']}</div>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">每小时费用:</label>
+                    <div class="layui-input-inline">
+                        <div class="layui-form-mid">{$order['order_goods']['goods_price']}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">每公里费用:</label>
+                    <div class="layui-input-inline">
+                        <div class="layui-form-mid">{$order['order_goods']['goods_km_price']}</div>
+                    </div>
+                </div>
+                <div class="layui-inline">
+
+                </div>
+                <div class="layui-inline">
+
+                </div>
+            </div>
+            {if condition="$order_comment['creat_time']"}
+            <fieldset class="layui-elem-field layui-field-title">
+                <legend>评论信息</legend>
+            </fieldset>
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">出行评价:</label>
+                    <div class="layui-input-inline">
+                        <div class="layui-form-mid">{$order_comment['star_level']}星</div>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">评论时间:</label>
+                    <div class="layui-input-inline" style="width: 230px">
+                        <div class="layui-form-mid">{$order_comment['creat_time']}</div>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">是否匿名:</label>
+                    <div class="layui-input-inline">
+                        <div class="layui-form-mid">{$order_comment['is_hide_str']}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">反馈标签:</label>
+                <div class="layui-input-block">
+                    {foreach name="$order_comment['tag']" item="vo"}
+                    <button class="layui-btn layui-btn-danger layui-btn-sm" style="height: 28px;line-height: 28px">
+                        {$vo}
+                    </button>
+                    {/foreach}
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">评论内容:</label>
+                <div class="layui-input-block">
+                    <div class="layui-form-mid">{$order_comment['content']}</div>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">评论语音:</label>
+                {if condition="$order_comment['voice']!=''"}
+                <a href="__OSSIMG__{$order_comment['voice']}">下载语音</a>
+                {/if}
+            </div>
+            {/if}
+        </div>
+    </div>
+</div>
+{/block}
+{block name="script"}
+<script>
+    function show_img(node) {
+        var imgurl = node.attr('src');
+        var title = node.attr('data-title');
+        var texts = "<img src='" + imgurl + "' width='100%'/>";
+        layer.open({
+            title: title,
+            area: 'auto',
+            content: texts
+        });
+    }
+
+    $(".ajax-common-ok").on('click', function () {
+        var store_site_id = $("#store_id").val();
+        var _href = $(this).attr('href');
+        layer.open({
+            shade: false,
+            content: '确定车辆位置与还车站点一致吗？如果不一致请选择对应站点还车',
+            btn: ['确定', '取消'],
+            yes: function (index1) {
+                layer.close(index1);
+                $.ajax({
+                    url: "{:url('seller/order_service/return_site')}",
+                    type: "POST",
+                    data: {
+                        id: "{$order.id}",
+                        site_id: store_site_id
+                    },
+                    dataType: 'json',
+                    success: function (info) {
+                        if (info.code === 1) {
+                            layer.open({
+                                shade: false,
+                                content: '确定立即还车吗？',
+                                btn: ['确定', '取消'],
+                                yes: function (index) {
+                                    $.ajax({
+                                        url: _href,
+                                        type: "get",
+                                        success: function (info) {
+                                            if (info.code === 1) {
+                                                setTimeout(function () {
+                                                    location.reload();
+                                                }, 1000);
+                                            }
+                                            if (info.msg === undefined || info.msg === '') {
+                                                layer.msg(info.info);
+                                            } else {
+                                                layer.msg(info.msg);
+                                            }
+                                        }
+                                    });
+                                    layer.close(index);
+                                }
+                            });
+                        } else {
+                            layer.msg(info.msg);
+                        }
+                    }
+                });
+            }
+        });
+        return false;
+    });
+</script>
+{/block}

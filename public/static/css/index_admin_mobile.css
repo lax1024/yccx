@@ -1,0 +1,20 @@
+.layui-layout-admin .layui-side {
+    width: 12%;
+}
+
+.layui-side-scroll {
+    width: 100%;
+}
+
+.layui-nav-tree {
+    width: 100%;
+}
+
+.layui-body {
+    left: 12%;
+    width: 88%;
+}
+
+.layui-table td, .layui-table th {
+    padding: 5px 2px;
+}

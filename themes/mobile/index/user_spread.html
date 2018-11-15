@@ -1,0 +1,128 @@
+{extend name="base" /}
+{block name="css"}
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=84chcOlNtuGKpKkIfp0oprKRveLSXEnj"></script>
+<script type="text/javascript" src="__STATIC__/mobile/js/jquery.min.js"></script>
+<script type="text/javascript" src="__STATIC__/mobile/js/public-js.js?rand={$js_rand}"></script>
+
+<link rel="stylesheet" href="__STATIC__/mui/css/mui.min.css?rand={$css_rand}">
+<link rel="stylesheet" href="__STATIC__/mui/css/mui-icons-extra.css?rand={$css_rand}">
+
+<script>
+
+</script>
+
+<style>
+    html {
+        height: 100%;
+    }
+
+    .mui-table-view .mui-media-object {
+        max-height: 60px;
+        max-width: 60px;
+    }
+</style>
+
+{/block}
+{block name="body"}
+<body style="height: 100%;">
+
+<header id="header" class="mui-bar mui-bar-nav" style="background: #ffdb30;color: #ffffff;">
+    <span id="goback" class="mui-icon mui-icon-back mui-pull-left"></span>
+    <h1 class="mui-title" style="color: #ffffff">我的推广用户</h1>
+    <span id="js_user_center" class="mui-icon mui-icon-contact mui-pull-right"></span>
+</header>
+<ul id="js_spread_list" class="mui-table-view" style="padding-top: 50px;height: 100%;overflow: auto">
+    <div style="width: 90%;margin: 2px 5%;">
+        <div style="font-size:12px;display: inline-block;background: #4cd964;color: white;border-radius: 5px">点击右上角分享给好友或朋友圈，如有朋友完成实名制注册，您将立刻获得15元代金券一张，不限次数，快快转发哦。</div>
+    </div>
+    <li class="mui-table-view-cell mui-media js_coupon_item" style="background: rgba(250,250,250,0.6)">
+        <img style="height: 60px;width: 60px;border-radius: 30px" class="mui-media-object mui-pull-left"
+             src="http://img.youchedongli.cn/public/static/mobile/images/seller_logo.png">
+
+        <div class="mui-media-body">
+            <p class="js_user_nickname" style="font-size: 14px;height: 25%;color: rgba(0,0,0,0.8);">不存在的存在</p>
+            <div style="height: 25%;">
+                <div class="js_user_phone"
+                     style="float: left;width: 50%;height:100%;color: rgba(0,0,0,0.5);font-size: 14px;">**********
+                </div>
+                <div class="js_user_create_time"
+                     style="float: left;width: 50%;height:100%;color: rgba(0,0,0,0.5);font-size: 14px;">2018-07-05
+                    23:19:30
+                </div>
+            </div>
+            <div style="height: 25%;">
+                <div class="js_user_status"
+                     style="float: left;width: 50%;height:100%;color: rgba(0,0,0,0.8);font-size: 14px;">已实名
+                </div>
+                <div class="js_user_end_time"
+                     style="float: left;width: 50%;height:100%;color: rgba(0,0,0,0.5);font-size: 14px;">2018-05-05
+                    23:19:30
+                </div>
+            </div>
+        </div>
+    </li>
+</ul>
+{include file="user_message" /}
+{include file="login" /}
+<script type="text/javascript" src="__STATIC__/mobile/js/user-spread-js.js?rand={$js_rand}"></script>
+{if condition="$is_wxBrowser eq 'yes'"}
+<script src="http://res.wx.qq.com/open/js/jweixin-1.4.0.js?rand={$js_rand}"></script>
+<script>
+    /*
+     * 注意：
+     * 1. 所有的JS接口只能在公众号绑定的域名下调用，公众号开发者需要先登录微信公众平台进入“公众号设置”的“功能设置”里填写“JS接口安全域名”。
+     * 2. 如果发现在 Android 不能分享自定义内容，请到官网下载最新的包覆盖安装，Android 自定义分享接口需升级至 6.0.2.58 版本及以上。
+     * 3. 常见问题及完整 JS-SDK 文档地址：http://mp.weixin.qq.com/wiki/7/aaa137b55fb2e0456bf8dd9148dd613f.html
+     *
+     * 开发中遇到问题详见文档“附录5-常见错误及解决办法”解决，如仍未能解决可通过以下渠道反馈：
+     * 邮箱地址：weixin-open@qq.com
+     * 邮件主题：【微信JS-SDK反馈】具体问题
+     * 邮件内容说明：用简明的语言描述问题所在，并交代清楚遇到该问题的场景，可附上截屏图片，微信团队会尽快处理你的反馈。
+     */
+    wx.config({
+        debug: false,
+        appId: "{$jssdk['appid']}",
+        timestamp: "{$jssdk['timestamp']}",
+        nonceStr: "{$jssdk['nonceStr']}",
+        signature: "{$jssdk['signature']}",
+        jsApiList: [
+            'checkJsApi',
+            'onMenuShareTimeline',
+            'onMenuShareAppMessage'
+        ]
+    });
+
+    //自定义内容
+    wx.ready(function () {
+        wx.onMenuShareTimeline({
+            title: '共享汽车——优车出行，注册即用，全市上百个取还点，10天自动退押金', // 分享标题
+            link: '{$fxurl}', // 分享链接
+            imgUrl: 'http://img.youchedongli.cn/public/static/mobile/images/seller_logo.png?x-oss-process=image/resize,h_100',
+            success: function () {
+                // 用户确认分享后执行的回调函数
+            },
+            cancel: function () {
+                // 用户取消分享后执行的回调函数
+            }
+        });
+
+        wx.onMenuShareAppMessage({
+            title: '共享汽车——优车出行',
+            desc: '注册即用，全市上百个取还点，10天自动退押金',
+            link: '{$fxurl}',
+            imgUrl: 'http://img.youchedongli.cn/public/static/mobile/images/seller_logo.png?x-oss-process=image/resize,h_100',
+            success: function () {
+                // 用户确认分享后执行的回调函数
+            },
+            cancel: function () {
+                // 用户取消分享后执行的回调函数
+            }
+        });
+    });
+    wx.error(function (res) {
+        // alert(res.errMsg);
+    });
+</script>
+{/if}
+</body>
+{/block}

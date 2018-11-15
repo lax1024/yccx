@@ -1,0 +1,78 @@
+{extend name="base" /}
+{block name="body"}
+<div class="layui-body">
+    <!--tab标签-->
+    <div class="layui-tab layui-tab-brief">
+        <ul class="layui-tab-title">
+            <li class="layui-this">站点车辆情况</li>
+            <!--<li class=""><a href="{:url('mansellertore/add')}">添加店铺</a></li>-->
+        </ul>
+        <div class="layui-tab-content">
+            <div class="layui-tab-item layui-show">
+                <form class="layui-form layui-form-pane" action="{:url('seller/StoreCondition/index')}" method="get">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">关键词</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="keyword" value="{$keyword}" placeholder="请输入关键词"
+                                   class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <button id="submit_btn" class="layui-btn">搜索</button>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">状态</label>
+                        <div class="layui-inline">
+                            <select name="store_status" lay-filter="statusselect">
+                                <option value="0" {php} echo $store_status==0?"selected":"";{/php}>全部信息</option>
+                                <option value="1" {php} echo $store_status==1?"selected":"";{/php}>未满足要求</option>
+                                <option value="2" {php} echo $store_status==2?"selected":"";{/php}>满足要求</option>
+                            </select>
+                        </div>
+                    </div>
+                </form>
+                <hr>
+                <table class="layui-table">
+                    <thead>
+                    <tr>
+                        <th style="width: 30px;">站点id</th>
+                        <th>站点名称</th>
+                        <th>最小车辆数</th>
+                        <th>实际停放</th>
+                        <th>续航小于120km</th>
+                        <th>掉线车辆</th>
+                        <th>状态</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {foreach name="store_list" item="vo"}
+                    <tr>
+                        <td>{$vo.id}</td>
+                        <td>{$vo.store_name}</td>
+                        <td>{$vo.car_num}</td>
+                        <td>{$vo.park_car}</td>
+                        <td>{$vo.mileage_car}</td>
+                        <td>{$vo.online_car}</td>
+                        <td>{$vo.store_status_str}</td>
+                        <td>
+                            <a href="{:url('seller/electrocar/index',['store_id'=>$vo['id']])}"
+                               class="layui-btn layui-btn-normal layui-btn-mini">查看车辆</a>
+                        </td>
+                    </tr>
+                    {/foreach}
+                    </tbody>
+                </table>
+                <!--分页-->
+            </div>
+        </div>
+    </div>
+</div>
+{/block}
+{block name="script"}
+<script>
+    form.on('select(statusselect)', function (data) {
+        $(".layui-form-pane").submit();
+    });
+</script>
+{/block}

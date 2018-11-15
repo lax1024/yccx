@@ -1,0 +1,99 @@
+{extend name="base" /}
+{block name="body"}
+<div class="layui-body">
+    <!--tab标签-->
+    <div class="layui-tab layui-tab-brief">
+        <ul class="layui-tab-title">
+            <li class=""><a href="{:url('seller/CarRegulations/index')}">车辆违章管理</a></li>
+            <li class="layui-this">添加车辆违章</li>
+        </ul>
+        <div class="layui-tab-content">
+            <div class="layui-tab-item layui-show">
+                <form class="layui-form form-container" action="{:url('seller/CarRegulations/save')}" method="post">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">违章人姓名</label>
+                        <div class="layui-input-block">
+                            <input hidden name="order_id" value="{$order_id}">
+                            <div class="layui-form-mid ">{$customer_name}</div>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">违章电话号码</label>
+                        <div class="layui-input-block">
+                            <div class="layui-form-mid ">{$customer_phone}</div>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">违章车牌号</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="licence_plate" value="{$licence_plate}" required
+                                   lay-verify="required" placeholder="请输入违章车牌号" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">违章时间</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="start_time" style="float: left;width: 150px"
+                                   placeholder="违章时间"
+                                   class="layui-input datetime">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">违章信息</label>
+                        <div class="layui-input-block">
+                            <textarea name="info" placeholder="请输入违章信息" class="layui-textarea" required lay-verify="required"></textarea>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">处理时间</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="end_time" style="float: left;width: 150px"
+                                   placeholder="违章时间"
+                                   class="layui-input datetime">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">处理备注</label>
+                        <div class="layui-input-block">
+                            <textarea name="remark" placeholder="请输入处理备注" class="layui-textarea"></textarea>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">状态</label>
+                            <div class="layui-input-block">
+                                <input type="radio" name="state" value="10" title="未处理" checked="checked">
+                                <input type="radio" name="state" value="20" title="已处理">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <div class="layui-input-block">
+                            <button class="layui-btn" lay-submit lay-filter="*">保存</button>
+                            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}
+{block name="js"}
+<script type="text/javascript" src="__JS__/ueditor/ueditor.config.js"></script>
+<script type="text/javascript" src="__JS__/ueditor/ueditor.all.min.js"></script>
+{/block}
+{block name="script"}
+<script>
+    /**
+     * 通用日期时间选择
+     */
+    $('.datetime').on('click', function () {
+        laydate({
+            elem: this,
+            istime: true,
+            format: 'YYYY-MM-DD hh:mm:ss'
+        })
+    });
+</script>
+{/block}

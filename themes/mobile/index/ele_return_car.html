@@ -1,0 +1,188 @@
+{extend name="base" /}
+{block name="css"}
+<link rel="stylesheet" href="__STATIC__/mui/css/mui.min.css?rand={$css_rand}">
+<link rel="stylesheet" href="__STATIC__/mui/css/mui-icons-extra.css?rand={$css_rand}">
+{/block}
+{block name="body"}
+<style>
+    html,body{
+        height: 100%;
+        width: 100%;
+    }
+</style>
+<body>
+<header class="mui-bar mui-bar-nav" style="background: #ffd31c">
+    <span id="js_user_back" class="mui-icon mui-icon-arrowleft"></span>
+    <h1 class="mui-title">运维还车</h1>
+</header>
+<div id="js_car_pop"
+     style="width: 98%;height: 140px;background: rgba(255,255,255,0.8);border-radius: 10px;margin-top: 50px">
+    <div style="width: 100%;height: 160px">
+        <div style="width: 40%;height: 100%;float: left;">
+            <div style="width: 100%;height: 61%;float: top;">
+                <img class="js_marker_car_series_img" style="width: 80%;margin-left: 10%;padding-top: 25px"
+                     src="http://img.youchedongli.cn/public/car_show_image/X/%E6%96%B0%E8%83%BD%E6%BA%90/EC200.png?x-oss-process=image/resize,w_275">
+            </div>
+            <div class="js_marker_car_plate"
+                 style="width: 100%;height: auto;float: bottom;text-align: center;padding: auto;font-size: large;margin-top: 5px">
+                贵A196CX
+            </div>
+        </div>
+        <div style="width: 59%;height: 100%;float: right;margin-left: 1%">
+            <div style="height: 20%;width: 100%;">
+                <div style="height: 40px;width: 100%;display: flex;align-items: center;vertical-align: center;">
+                    <img style="height: 20px;width: 15px" src="../../.././public/static/mobile/images/ele_flag.png">
+                    <span style="margin-left: 2px" class="js_marker_car_driving_mileage">35%</span>
+                    <span style="margin-left: 2px" class="js_marker_car_driving_mileage">（50km）</span>
+                </div>
+            </div>
+            <div style="height: 80%;width: 100%">
+                <div style="height: 30%;display: flex;vertical-align: center;align-items: center">
+                    <span class="js_marker_car_name" style="font-size: 16px">奇瑞EQ</span>
+                </div>
+                <div>
+                    <span style="padding: 2px 6px;border: #aaaaaa solid 1px;border-radius: 6px;font-size: 14px">4/5座</span>
+                </div>
+                <div style="margin-top: 10px;">
+                    <span class="js_marker_car_price" style="color: #ff8730;font-size: 18px;font-weight: bold">5.8</span>
+                    <span> 元/小时 + </span>
+                    <span class="js_marker_km_price" style="color: #ff8730;font-size: 18px;font-weight: bold">0.9</span>
+                    <span> 元/公里</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="mui-content" style="background-color:#fff;padding-top: 0">
+    <ul id="js_pic_parent" class="mui-table-view mui-grid-view js_car_pic_choose">
+        <li class="mui-table-view-cell mui-media mui-col-xs-6">
+            <img id="js_pic_inner" class="mui-media-object"
+                 src="http://img.youchedongli.cn/public/static/mobile/images/car_pic_inner.png?rand=2018"
+                 style="height: 100px">
+            <div class="mui-media-body">内部</div>
+        </li>
+        <li class="mui-table-view-cell mui-media mui-col-xs-6">
+            <img id="js_pic_left_front" class="mui-media-object"
+                 src="http://img.youchedongli.cn/public/static/mobile/images/car_pic_left_front.png?rand=2018"
+                 style="height: 100px">
+            <div class="mui-media-body">左前</div>
+        </li>
+        <li class="mui-table-view-cell mui-media mui-col-xs-6">
+            <img id="js_pic_right_front" class="mui-media-object"
+                 src="http://img.youchedongli.cn/public/static/mobile/images/car_pic_right_front.png?rand=2018"
+                 style="height: 100px">
+            <div class="mui-media-body">右前</div>
+        </li>
+        <li class="mui-table-view-cell mui-media mui-col-xs-6">
+            <img id="js_pic_back" class="mui-media-object"
+                 src="http://img.youchedongli.cn/public/static/mobile/images/car_pic_back.png?rand=2018"
+                 style="height: 100px">
+            <div class="mui-media-body">后方</div>
+        </li>
+    </ul>
+</div>
+<div style="width: 100%;margin-top: 10px;">
+    <button>寻车</button>
+    <button>开门</button>
+    <button>熄火</button>
+    <button>关门</button>
+</div>
+<input id="js_submit_use_car_pic" type="button" value="立即还车"
+       style="width: 100%;height: 50px;background: #f3e856;position: fixed;bottom: 0;font-size: 16px">
+
+{if condition="$is_wxBrowser eq 'yes'"}
+<script src="http://res.wx.qq.com/open/js/jweixin-1.4.0.js?rand={$js_rand}"></script>
+<script>
+    /*
+     * 注意：
+     * 1. 所有的JS接口只能在公众号绑定的域名下调用，公众号开发者需要先登录微信公众平台进入“公众号设置”的“功能设置”里填写“JS接口安全域名”。
+     * 2. 如果发现在 Android 不能分享自定义内容，请到官网下载最新的包覆盖安装，Android 自定义分享接口需升级至 6.0.2.58 版本及以上。
+     * 3. 常见问题及完整 JS-SDK 文档地址：http://mp.weixin.qq.com/wiki/7/aaa137b55fb2e0456bf8dd9148dd613f.html
+     *
+     * 开发中遇到问题详见文档“附录5-常见错误及解决办法”解决，如仍未能解决可通过以下渠道反馈：
+     * 邮箱地址：weixin-open@qq.com
+     * 邮件主题：【微信JS-SDK反馈】具体问题
+     * 邮件内容说明：用简明的语言描述问题所在，并交代清楚遇到该问题的场景，可附上截屏图片，微信团队会尽快处理你的反馈。
+     */
+    wx.config({
+        debug: false,
+        appId: "{$jssdk['appid']}",
+        timestamp: "{$jssdk['timestamp']}",
+        nonceStr: "{$jssdk['nonceStr']}",
+        signature: "{$jssdk['signature']}",
+        jsApiList: [
+            'checkJsApi',
+            'chooseImage',
+            'uploadImage'
+        ]
+    });
+
+    wx.ready(function () {
+        var use_pic_img = $("#js_pic_parent").find("img");
+        use_pic_img.on("click", function () {
+            take_user_pic($(this).attr("id"), "order", "");
+            return false;
+        });
+    });
+    wx.error(function (res) {
+        //alert(res.errMsg);
+    });
+
+
+    function take_user_pic(viewId, path, field) {
+        wx.chooseImage({
+            count: 1, // 默认9
+            sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
+            sourceType: ['camera'], // 调用相机拍照
+            // sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+            success: function (res) {
+                var localIds = res.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
+                $("#" + viewId).attr('src', localIds[0]);
+                wx.uploadImage({
+                    localId: localIds[0] + '',
+                    isShowProgressTips: 1,
+                    success: function (res) {
+                        upload_use_car_pic(viewId, res.serverId, "jpg", path, field);
+                    },
+                    fail: function (res) {
+                        mui.alert("上传失败" + res.errMsg, '提示');
+                    }
+                });
+            },
+            cancel: function (res) {
+            },
+            fail: function (res) {
+            }
+        });
+    }
+
+    function upload_use_car_pic(viewId, localIds, type, path, field) {
+        $.ajax({
+            url: website + "/api/Dynupload/upload.html",
+            type: "POST",
+            async: true,
+            data: {
+                sid: localIds,
+                type: type,
+                path: path,
+                field: field
+            },
+            timeout: 5000,
+            dataType: "json",
+            success: function (data) {
+                if (data.code == 0) {
+                    $("#" + viewId).attr('src', "http://img.youchedongli.cn" + data.url);
+                    $("#" + viewId).attr('data-picUrl', "http://img.youchedongli.cn" + data.url);
+                } else {
+                    Toast(data.info, 2000);
+                }
+            }
+        });
+    }
+</script>
+{/if}
+<script type="text/javascript" src="__STATIC__/mobile/js/ele_return_car.js?rand={$js_rand}"></script>
+</body>
+{/block}
+

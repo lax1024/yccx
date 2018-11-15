@@ -1,0 +1,55 @@
+{extend name="base" /}
+{block name="css"}
+<link rel="stylesheet" href="__STATIC__/mui/css/mui.css?rand={$css_rand}" type="text/css">
+<link rel="stylesheet" href="__STATIC__/mui/css/mui-icons-extra.css?rand={$css_rand}" type="text/css">
+{/block}
+{block name="body"}
+<style>
+    .mui-table-view .mui-media-object.mui-pull-left{
+        max-width: 60px;
+    }
+</style>
+<body>
+<header id="header" class="mui-bar mui-bar-nav" style="background: rgb(252, 204, 49);color: white">
+    <span class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></span>
+    <h1 class="mui-title" style="color: white">我的订单</h1>
+</header>
+<div class="mui-content">
+    <ul class="mui-table-view">
+        <li class="mui-table-view-cell mui-media">
+            <img src="http://img.youchedongli.cn/public/static/mobile/images/pile_order_finished.png?rand=20180622" style="height: 50px;width: 50px;position: absolute;left: 70%;top: 5px;">
+            <div style="width:100%;height: 30px;margin-bottom: 20px;font-size: 16px;">
+                <div style="width: 20px;height: 20px;line-height: 20px;margin-top: 5px;float: left;margin-right: 10px">
+                    <img style="width: 100%;height: 100%;" src="http://img.youchedongli.cn/public/static/mobile/images/pile_store_manange.png?rand=20180622">
+                </div>
+                <span>优车酷中曹司店</span>
+                <span class="mui-icon mui-icon-arrowdown"></span>
+                <span class="mui-icon mui-icon-trash" style="float: right"></span>
+            </div>
+            <img class="mui-media-object mui-pull-left"
+                 src="http://img.youchedongli.cn/public/static/mobile/images/logo_pile_store.png?rand=20180622">
+            <div class="mui-media-body">
+                <span style="font-size: 14px">优车酷中曹司店/中曹司慢充09(P1)</span>
+                <p class='mui-ellipsis'>2018/08/03 08:03</p>
+                <div style="width: 50%;float: left;margin-top: 10px">
+                    <span style="font-size: 14px">充电量</span><span style="font-size: 14px;color: rgb(255,152,1)">13.50(度)</span>
+                </div>
+                <div style="width: 50%;float: left;margin-top: 10px">
+                    <span style="font-size: 14px">总费用</span><span style="font-size: 14px;color: rgb(255,152,1)">￥23.05</span>
+                </div>
+                <div style="width: 100%;float: left;margin-top: 5px">
+                    <div style="width:28%;float: left;font-size: 14px;border: #999999 solid 1px;text-align: center;border-radius: 15px;margin-right: 5%">订单详情</div>
+                    <div style="width:28%;float: left;font-size: 14px;border: #999999 solid 1px;text-align: center;border-radius: 15px;margin-right: 5%">订单评价</div>
+                    <div style="width:28%;float: left;font-size: 14px;border: red solid 1px;text-align: center;border-radius: 15px;color: red">充电换算</div>
+                </div>
+            </div>
+        </li>
+    </ul>
+</div>
+
+{include file="login" /}
+{include file="user_message" /}
+{include file="loading" /}
+</body>
+{/block}
+

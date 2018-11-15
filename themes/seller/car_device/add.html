@@ -1,0 +1,72 @@
+{extend name="base" /}
+{block name="body"}
+<div class="layui-body">
+    <!--tab标签-->
+    <div class="layui-tab layui-tab-brief">
+        <ul class="layui-tab-title">
+            <li class=""><a href="{:url('seller/CarDevice/index')}">车机设备管理</a></li>
+            <li class="layui-this">添加车机设备</li>
+        </ul>
+        <div class="layui-tab-content">
+            <div class="layui-tab-item layui-show">
+                <form class="layui-form form-container" action="{:url('seller/CarDevice/save')}" method="post">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">设备名称</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="name" value="" required
+                                   lay-verify="required" placeholder="请输入车机设备名称" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">设备编号</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="device_number" value="" required
+                                   lay-verify="required" placeholder="请输入设备编号" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">SIM卡号</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="sim_imsi" value="" required
+                                   lay-verify="required" placeholder="请输入SIM卡号" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">OBD版本</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="obd_versions" value="" required
+                                   lay-verify="required" placeholder="请输入OBD版本" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">设备类型</label>
+                        <div class="layui-input-inline">
+                            <select name="device_type">
+                                {foreach name="device_type" item="vo" key="ke"}
+                                <option value="{$ke}">{$vo}</option>
+                                {/foreach}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">设备状态</label>
+                        <div class="layui-input-inline">
+                            <select name="device_status" lay-verify="required">
+                                {foreach name="device_status" item="vo" key="ke"}
+                                <option value="{$ke}">{$vo}</option>
+                                {/foreach}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <div class="layui-input-block">
+                            <button class="layui-btn" lay-submit lay-filter="*">保存</button>
+                            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}

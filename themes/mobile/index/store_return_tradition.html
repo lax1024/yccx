@@ -1,0 +1,192 @@
+{extend name="base" /}
+{block name="css"}
+<link rel="stylesheet" type="text/css" href="__STATIC__/mui/css/mui.min.css?rand={$css_rand}">
+<link rel="stylesheet" type="text/css" href="__STATIC__/mui/css/mui-icons-extra.css?rand={$css_rand}">
+<link rel="stylesheet" type="text/css" href="__STATIC__/mui/css/app-self.css?rand={$css_rand}">
+{/block}
+{block name="body"}
+<style>
+    html{
+        height: 100%;
+    }
+
+    .pop_return_car{
+        height: 150px;
+        width: 98%;
+        /*opacity: 0.8;*/
+        border-radius: 10px;
+        position: fixed;
+        z-index: auto;
+        bottom: 5px;
+        background-color: #ffffff;
+        margin: 0 1%;
+        padding-left: 10px;
+    }
+
+    .return_car_place{
+        width: 70%;
+        height: 80px;
+        font-size: 14px;
+        float: left;
+        padding-top: 10px;
+    }
+    .return_car_place_img{
+        width: 30%;
+        height: 65px;
+        font-size: 14px;
+        float: left;
+        padding: 5px;
+    }
+
+    .return_car_place_img img{
+        height: 100%;
+        width: 100%;
+    }
+
+
+    .marker_store_label{
+        height: 40px;
+        width: 120px;
+        text-align: center;
+        line-height: 30px;
+        background-image: url("http://img.youchedongli.cn/public/static/mobile/images/pop_car_distance.png");
+        background-repeat: no-repeat;
+        color: #fff;
+        background-size:100% 100%;
+        -moz-background-size:100% 100%;
+        padding: 0px 10px 5px 10px;
+        background-color: rgba(255,255,255,0.01);
+
+    }
+
+</style>
+
+<script>
+    var marker_self;
+</script>
+<body style="height: 100%">
+<header class="mui-bar mui-bar-nav" style="background-color: #ffd31c">
+    <span id="js_go_back" style="color: white" class="mui-icon mui-icon-back"></span>
+    <h1 class="mui-title" style="color: white">还车门店</h1>
+</header>
+<div class="mui-input-row mui-search" style="position: fixed;top: 50px;z-index: 500;width: 100%;height: 50px;display:none;">
+    <input type="search" class="mui-input-clear" placeholder="输入门店名进行搜索">
+</div>
+<div id="store_map" style="height: 100%;"></div>
+
+<div id="js_user_map_fun"
+     style="width:auto; height:8%; background-color:rgba(255,255,255,0);display:flex;position: fixed;bottom: 90px;z-index: auto;justify-content:center;align-items:center;">
+    <img style="width:35px; height:35px; position:fixed;left: 8px;bottom: 100px;" id="user_location_self"
+         src="http://img.youchedongli.cn/public/static/mobile/images/location_marker_self.png?rand=20180622"/>
+</div>
+
+<div class="pop_return_car" id="js_pop_store_take" style="display: none">
+    <div style="width: 100%;height: 10px;">
+        <span class="mui-icon mui-icon-closeempty js_store_close" style="font-weight: bold;font-size: 32px;float: right"></span>
+    </div>
+    <div class="return_car_place">
+        <div style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;"><span>门店名：</span><span class="js_store_name" >贵州民族大学停车场</span></div>
+        <div style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;"><span>门店地址：</span><span class="js_store_address" >贵州省贵阳市花溪区贵州民族大学停车场</span></div>
+        <div style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;"><span>门店电话：</span><span class="js_store_tel" ></span></div>
+    </div>
+    <div class="return_car_place_img">
+        <!--<img class="js_store_img" src="http://img.youchedongli.cn/public/static/mobile/images/img_return_car_no.png">-->
+        <!--<img data-preview-src='' data-preview-group='store_img' src="http://img.youchedongli.cn/public/static/mobile/images/img_return_car_no.png">-->
+    </div>
+
+    <div id="js_choose_this_store" style="height: 40px;width: 100%;background: #f3e856;line-height: 40px;text-align: center;float: left">选择该门店</div>
+</div>
+
+{include file="loading" /}
+<script type="text/javascript"
+        src="http://api.map.baidu.com/api?v=2.0&ak=84chcOlNtuGKpKkIfp0oprKRveLSXEnj"></script>
+
+<script type="text/javascript" src="__STATIC__/mobile/js/jquery.min.js"></script>
+<script type="text/javascript" src="__STATIC__/mobile/js/public-js.js?rand={$js_rand}"></script>
+<script type="text/javascript" src="__STATIC__/mobile/js/gps-transform-js.js?rand={$js_rand}"></script>
+
+<script type="text/javascript" src="__STATIC__/mui/js/mui.min.js?rand={$css_rand}"></script>
+<script type="text/javascript" src="__STATIC__/mui/js/mui.js?rand={$js_rand}"></script>
+<script type="text/javascript" src="__STATIC__/mui/js/mui.zoom.js?rand={$js_rand}"></script>
+<script type="text/javascript" src="__STATIC__/mui/js/mui.previewimage.js?rand={$js_rand}"></script>
+
+<script>
+    mui.previewImage();
+</script>
+
+<script type="text/javascript" src="__STATIC__/mobile/js/store-return-tradition-js.js?rand={$css_rand}"></script>
+
+{if condition="$is_wxBrowser eq 'yes'"}
+<script src="http://res.wx.qq.com/open/js/jweixin-1.4.0.js?rand={$js_rand}"></script>
+<script>
+    /*
+     * 注意：
+     * 1. 所有的JS接口只能在公众号绑定的域名下调用，公众号开发者需要先登录微信公众平台进入“公众号设置”的“功能设置”里填写“JS接口安全域名”。
+     * 2. 如果发现在 Android 不能分享自定义内容，请到官网下载最新的包覆盖安装，Android 自定义分享接口需升级至 6.0.2.58 版本及以上。
+     * 3. 常见问题及完整 JS-SDK 文档地址：http://mp.weixin.qq.com/wiki/7/aaa137b55fb2e0456bf8dd9148dd613f.html
+     *
+     * 开发中遇到问题详见文档“附录5-常见错误及解决办法”解决，如仍未能解决可通过以下渠道反馈：
+     * 邮箱地址：weixin-open@qq.com
+     * 邮件主题：【微信JS-SDK反馈】具体问题
+     * 邮件内容说明：用简明的语言描述问题所在，并交代清楚遇到该问题的场景，可附上截屏图片，微信团队会尽快处理你的反馈。
+     */
+    wx.config({
+        debug: false,
+        appId: "{$jssdk['appid']}",
+        timestamp: "{$jssdk['timestamp']}",
+        nonceStr: "{$jssdk['nonceStr']}",
+        signature: "{$jssdk['signature']}",
+        jsApiList: [
+            'checkJsApi',
+            'openLocation',
+            'getLocation',
+        ]
+    });
+
+    wx.ready(function (res) {
+        if (marker_self != null) {
+            marker_self.remove();
+        }
+        weixinLocation();
+    });
+
+    wx.error(function (res) {
+//        alert(JSON.stringify(res));
+    });
+</script>
+<script>
+    //微信定位
+    function weixinLocation() {
+        loadMessageBox("微信定位中...", 10);
+        wx.getLocation({
+            success: function (res) {
+                var latitude = res.latitude; //纬度
+                var longitude = res.longitude; //经度
+                localStorage.setItem("old_marker_self_lat", latitude);
+                localStorage.setItem("old_marker_self_lng", longitude);
+                var pointx = wgs2bd(parseFloat(latitude), parseFloat(longitude));
+                if (marker_self != null) {
+                    marker_self.remove();
+                }
+                var points = new BMap.Point(pointx[1], pointx[0]);
+                localStorage.setItem("marker_self_lat", pointx[0]);
+                localStorage.setItem("marker_self_lng", pointx[1]);
+                var myIcon = new BMap.Icon("http://img.youchedongli.cn/public/static/mobile/images/marker_self.png", new BMap.Size(20, 20),{imageSize: new BMap.Size(20,20)});
+                marker_self = new BMap.Marker(points, {icon: myIcon});
+                map.addOverlay(marker_self);
+                map.setCenter(points);
+                closeLoadMessageBox();
+                get_store_list_ajax();
+            },
+            cancel: function (res) {
+                // alert('用户拒绝授权获取地理位置');
+            },
+            fail: function (res) {
+//                alert(JSON.stringify(res));
+            }
+        });
+    }
+</script>
+{/if}
+</body>
+{/block}

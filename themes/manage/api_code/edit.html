@@ -1,0 +1,44 @@
+{extend name="base" /}
+{block name="body"}
+<div class="layui-body">
+    <!--tab标签-->
+    <div class="layui-tab layui-tab-brief">
+        <ul class="layui-tab-title">
+            <li class=""><a href="{:url('manage/ApiCode/index')}">错误代码管理</a></li>
+            <li class=""><a href="{:url('manage/ApiCode/add',['pid'=>$pid])}">添加错误代码</a></li>
+            <li class="layui-this">编辑错误代码</li>
+        </ul>
+        <div class="layui-tab-content">
+            <div class="layui-tab-item layui-show">
+                <form class="layui-form form-container" action="{:url('manage/ApiCode/update')}" method="post">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">错误代码编号</label>
+                        <div class="layui-input-block">
+                            <input type="text" disabled="disabled" value="{$apicode.api_code}" required  lay-verify="required" placeholder="请输入错误代码编号" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">接口地址</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="api_url" value="{$apicode.api_url}" required  lay-verify="required" placeholder="请输入接口地址" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">错误代码介绍</label>
+                        <div class="layui-input-block">
+                            <textarea name="api_code_intro" placeholder="" class="layui-textarea">{$apicode.api_code_intro}</textarea>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <div class="layui-input-block">
+                            <input name="id" value="{$apicode.id}" hidden>
+                            <button class="layui-btn" lay-submit lay-filter="*">保存</button>
+                            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}

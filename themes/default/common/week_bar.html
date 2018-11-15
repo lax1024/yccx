@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no"/>
+    <script src="http://libs.baidu.com/jquery/1.9.0/jquery.js"></script>
+    <script src="__JS__/echarts/echarts.min.js"></script>
+    <title>取车还车调图</title>
+</head>
+<body>
+<div id="main" style="width: 100%;height: 280px">
+
+</div>
+</body>
+<script>
+    setInterval(function () {
+        $("#main").css("height", $(document.body).height());
+    }, 2000);
+    var myChart = echarts.init(document.getElementById('main'));
+
+    var option = {
+        title: {
+            text: '取还车周统计图',
+            subtext: '分析一个月内安周几划分时间段取车情况'
+        },
+        tooltip: {
+            trigger: 'axis'
+        },
+        legend: {
+            data: ['取车情况', '还车情况']
+        },
+        xAxis: {
+            type: 'category',
+            boundaryGap: false,
+            data: ['周日', '周一', '周二', '周三', '周四', '周五', '周六']
+        },
+        yAxis: {
+            type: 'value',
+            axisLabel: {
+                formatter: '{value} 次'
+            }
+        },
+        series: [
+            {
+                name: '取车情况',
+                type: 'line',
+                data: {$acquire_data}
+            },
+            {
+                name: '还车情况',
+                type: 'line',
+                data: {$return_data}
+            }
+        ]
+    };
+    // 使用刚指定的配置项和数据显示图表。
+    myChart.setOption(option);
+</script>
+</html>

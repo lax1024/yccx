@@ -1,0 +1,70 @@
+{extend name="base" /}
+{block name="body"}
+<div class="layui-body">
+    <!--tab标签-->
+    <div class="layui-tab layui-tab-brief">
+        <ul class="layui-tab-title">
+            <li class="layui-this">用户代金券列表</li>
+            <li class=""><a href="{:url('manage/customer/add_coupon',['id'=>$id])}">添加代金券</a></li>
+        </ul>
+        <div class="layui-tab-content">
+            <div class="layui-tab-item layui-show">
+                <form class="layui-form layui-form-pane" action="{:url('manage/customer/list_coupon')}" method="get">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">关键词</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="keyword" value="{$keyword}" placeholder="请输入关键词"
+                                   class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <button class="layui-btn">搜索</button>
+                    </div>
+                </form>
+                <hr>
+                <table class="layui-table">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>用户id</th>
+                        <th>代金券编号</th>
+                        <th>获得方式</th>
+                        <th>代金券面值</th>
+                        <th>发放时间</th>
+                        <th>使用时间</th>
+                        <th>有效期</th>
+                        <th>发放者</th>
+                        <th>状态</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {foreach name="customer_coupon_list" item="vo"}
+                    <tr>
+                        <td>{$vo.id}</td>
+                        <td>{$vo.customer_id}</td>
+                        <td>{$vo.coupon_sn}</td>
+                        <td>{$vo.coupon_code_str}</td>
+                        <td>{$vo.coupon_type}</td>
+                        <td>{$vo.start_time}</td>
+                        <td>{$vo.user_time}</td>
+                        <td>{$vo.end_time_str}</td>
+                        <td>{$vo.admin_name}({$vo.admin_id})</td>
+                        <td>{$vo.state_str}</td>
+                    </tr>
+                    {/foreach}
+                    </tbody>
+                </table>
+                <!--分页-->
+                {$customer_coupon_list->render()}
+            </div>
+        </div>
+    </div>
+</div>
+{/block}
+{block name="script"}
+<script>
+    form.on('select(statusselect)', function (data) {
+        $(".layui-form-pane").submit();
+    });
+</script>
+{/block}

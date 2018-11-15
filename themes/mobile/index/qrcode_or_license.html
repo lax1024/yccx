@@ -1,0 +1,124 @@
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <title>扫码租车</title>
+    <script>
+        var website = "http://www.youchedongli.cn";
+    </script>
+    <script type="text/javascript" src="__STATIC__/mobile/js/jquery.min.js"></script>
+    <script type="text/javascript" src="__STATIC__/mobile/js/public-js.js?rand={$css_rand}"></script>
+    <link rel="stylesheet" href="__STATIC__/mobile/css/index-css2.css?rand={$css_rand}" type="text/css">
+    <link rel="stylesheet" href="__STATIC__/mobile/css/qrcode-or-license-css.css?rand={$css_rand}" type="text/css">
+</head>
+<body>
+<div class="headCap">
+    <p class="iph"></p>
+    <p class="sys">
+    <span class="topBack colorF">
+        <em class="searIco"></em>
+    </span>
+    </p>
+</div>
+<div class="welcome_content">
+    <div class="content_title">
+        <span class="car_info">欢迎使用  优车动力</span>
+    </div>
+
+    <div class="content_qrcode">
+        <span class="car_info" id="car_qrcode">扫码用车</span>
+    </div>
+
+    <input id="input_license" class="content_license" type="text" value="" placeholder="手动输入完整车牌号(七位)" />
+</div>
+
+<div class="info_check" id="js_info_sure">
+
+    <!--车辆信息：信息，车型，车型描述-->
+    <div class="car_details">
+        <div class="car_details_img_parent">
+            <img id="js_series_img" class="car_details_img" src="">
+        </div>
+        <div class="car_details_name">
+            <div class="car_details_brand_parent">
+                <span class="car_details_brand_name" id="js_brand_name"></span>
+            </div>
+            <div class="car_details_cartype_parent">
+                <span class="car_details_cartype_name" id="js_cartype_name"></span>
+            </div>
+        </div>
+    </div>
+    <!--车辆信息：单价，车牌号-->
+    <div class="goods_details">
+        <div class="goods_details_price_parent">
+            <span class="goods_details_day_price" id="js_day_price"></span>
+        </div>
+        <div class="goods_details_license_parent">
+            <span class="goods_details_license_plate" id="js_license_plate"></span>
+        </div>
+    </div>
+
+    <!--车辆信息：门店-->
+    <div class="goods_details">
+        <div class="goods_details_store_parent">
+            <span class="goods_details_day_price" style="color: #000000">租车门店：</span>
+            <span class="goods_details_license_plate" id="js_take_store_site_name" style="color: #000000"></span>
+        </div>
+    </div>
+    <!--<div class="goods_details">-->
+        <!--<div class="goods_details_store_parent">-->
+            <!--<span class="goods_details_day_price" style="color: #000000">还车门店：</span>-->
+            <!--<span class="goods_details_license_plate" id="js_return_store_site_name" style="color: #000000">点击选择还车门店</span>-->
+        <!--</div>-->
+    <!--</div>-->
+
+    <div class="info_sure_sure">
+        <div class="content_check_sure">
+            <span id="js_info_sure_sure" class="car_info">立即用车</span>
+        </div>
+    </div>
+    <div class="info_sure_cancel">
+        <div class="content_check_cancel">
+            <span id="js_info_sure_cancel" class="car_info">取消用车</span>
+        </div>
+    </div>
+</div>
+
+<div class="info_check" id="js_info_error" style="display: none">
+    <div class="info_sure_info">
+        <span class="car_info"></span>
+    </div>
+</div>
+{if condition="$is_wxBrowser eq 'yes'"}
+<script src="http://res.wx.qq.com/open/js/jweixin-1.4.0.js?rand={$js_rand}"></script>
+<script>
+    /*
+     * 注意：
+     * 1. 所有的JS接口只能在公众号绑定的域名下调用，公众号开发者需要先登录微信公众平台进入“公众号设置”的“功能设置”里填写“JS接口安全域名”。
+     * 2. 如果发现在 Android 不能分享自定义内容，请到官网下载最新的包覆盖安装，Android 自定义分享接口需升级至 6.0.2.58 版本及以上。
+     * 3. 常见问题及完整 JS-SDK 文档地址：http://mp.weixin.qq.com/wiki/7/aaa137b55fb2e0456bf8dd9148dd613f.html
+     *
+     * 开发中遇到问题详见文档“附录5-常见错误及解决办法”解决，如仍未能解决可通过以下渠道反馈：
+     * 邮箱地址：weixin-open@qq.com
+     * 邮件主题：【微信JS-SDK反馈】具体问题
+     * 邮件内容说明：用简明的语言描述问题所在，并交代清楚遇到该问题的场景，可附上截屏图片，微信团队会尽快处理你的反馈。
+     */
+    wx.config({
+        debug: false,
+        appId: "{$jssdk['appid']}",
+        timestamp: "{$jssdk['timestamp']}",
+        nonceStr: "{$jssdk['nonceStr']}",
+        signature: "{$jssdk['signature']}",
+        jsApiList: [
+            'checkJsApi',
+            'scanQRCode'
+        ]
+    });
+    wx.error(function (res) {
+        alert(JSON.stringify(res));
+    });
+</script>
+{/if}
+<script type="text/javascript" src="__STATIC__/mobile/js/qrcode-or-license-js.js?rand={$css_rand}"></script>
+</body>
+</html>

@@ -1,0 +1,90 @@
+{extend name="base" /}
+{block name="body"}
+<div class="layui-body">
+    <!--tab标签-->
+    <div class="layui-tab layui-tab-brief">
+        <ul class="layui-tab-title">
+            <li class="layui-this">押金管理</li>
+            <li class=""><a href="{:url('manage/customerCash/log')}">押金日志</a></li>
+        </ul>
+        <div class="layui-tab-content">
+            <div class="layui-tab-item layui-show">
+                <form class="layui-form layui-form-pane" action="{:url('manage/customerCash/index')}" method="get">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">关键词</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="keyword" value="{$keyword}" placeholder="请输入关键词"
+                                   class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <button class="layui-btn">搜索</button>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">押金状态</label>
+                        <div class="layui-inline">
+                            <select name="state" lay-filter="statusselect">
+                                <option value="-1">未选择</option>
+                                {foreach name="state_list" item="vo" key="kv"}
+                                <option value="{$kv}" {php} echo $kv==$state?"selected":"";{/php}>{$vo}</option>
+                                {/foreach}
+                            </select>
+                        </div>
+                    </div>
+                </form>
+                <hr>
+                <table class="layui-table">
+                    <thead>
+                    <tr>
+                        <th style="width: 30px;">ID</th>
+                        <th>用户id</th>
+                        <th>用户姓名</th>
+                        <th>手机号码</th>
+                        <th>押金单号</th>
+                        <th>退还单号</th>
+                        <th>押金金额</th>
+                        <th>支付方式</th>
+                        <th>支付时间</th>
+                        <th>押金状态</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {foreach name="customer_cash_list" item="vo"}
+                    <tr>
+                        <td>{$vo.id}</td>
+                        <td>{$vo.customer_id}</td>
+                        <td>{$vo.customer_name}</td>
+                        <td>{$vo.mobile_phone}</td>
+                        <td>{$vo.pay_sn}</td>
+                        <td>{$vo.refund_sn}</td>
+                        <td>{$vo.cash}</td>
+                        <td>{$vo.payment_code_str}</td>
+                        <td>{$vo.payment_time_str}</td>
+                        <td>{$vo.state_str}</td>
+                        <td>
+                            {if condition="$vo['state'] eq 20"}
+                            <a href="{:url('api/Pay/wxpayRefund',['pay_sn'=>$vo['pay_sn']])}"
+                               class="layui-btn layui-btn-normal layui-btn-mini ajax-common">退还</a>
+                            <a href="{:url('manage/CustomerCash/deduct_cash',['pay_sn'=>$vo['pay_sn']])}"
+                               class="layui-btn layui-btn-danger layui-btn-mini ajax-common">后台扣除</a>
+                            {/if}
+                        </td>
+                    </tr>
+                    {/foreach}
+                    </tbody>
+                </table>
+                <!--分页-->
+                {$customer_cash_list->render()}
+            </div>
+        </div>
+    </div>
+</div>
+{/block}
+{block name="script"}
+<script>
+    form.on('select(statusselect)', function (data) {
+        $(".layui-form-pane").submit();
+    });
+</script>
+{/block}

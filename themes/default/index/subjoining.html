@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>优车动力商户系统</title>
+    <meta name="description" content="优车动力商户系统">
+    <link rel="stylesheet" href="__JS__/layui/css/layui.css">
+    <link rel="stylesheet" href="__CSS__/font-awesome.min.css">
+    <style>
+        .area_div .layui-input-inline {
+            width: 160px;
+        }
+    </style>
+</head>
+<body>
+<div class="layui-body">
+    <!--tab标签-->
+    <div class="layui-tab layui-tab-brief">
+        <ul class="layui-tab-title">
+            <li class="layui-this">申请开店</li>
+        </ul>
+        <div class="layui-tab-content">
+            <p>*审核中 不能修改修改信息</p>
+            <div class="layui-tab-item layui-show">
+                <form class="layui-form form-container">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">单位名称:</label>
+                        <div class="layui-input-inline">
+                            <div class="layui-form-mid ">{$subjoin['store_name']}</div>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">单位地址:</label>
+                        <div class="layui-input-inline">
+                            <div class="layui-form-mid ">{$subjoin['address']}</div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!--JS引用-->
+<script src="__JS__/jquery.min.js"></script>
+<script src="__JS__/layui/lay/dest/layui.all.js"></script>
+</body>
+</html>

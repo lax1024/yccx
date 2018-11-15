@@ -1,0 +1,85 @@
+{extend name="base" /}
+{block name="body"}
+<div class="layui-body">
+    <!--tab标签-->
+    <div class="layui-tab layui-tab-brief">
+        <ul class="layui-tab-title">
+            <li class="layui-this">充电桩店铺管理</li>
+            <li class=""><a href="{:url('manage/storeCharging/add')}">充电桩添加店铺</a></li>
+        </ul>
+        <div class="layui-tab-content">
+            <div class="layui-tab-item layui-show">
+
+                <form class="layui-form layui-form-pane" action="{:url('manage/storeCharging/index')}" method="get">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">关键词</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="keyword" value="{$keyword}" placeholder="请输入关键词"
+                                   class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <button class="layui-btn">搜索</button>
+                    </div>
+                </form>
+                <hr>
+                <table class="layui-table">
+                    <thead>
+                    <tr>
+                        <th style="width: 30px;">ID</th>
+                        <th>归属总店</th>
+                        <th>店铺名称</th>
+                        <th>店铺负责人</th>
+                        <th>联系电话</th>
+                        <th>电价</th>
+                        <th>停车费</th>
+                        <th>功率</th>
+                        <th>快充数</th>
+                        <th>慢充数</th>
+                        <th>地址</th>
+                        <th>店铺状态</th>
+                        <th>更新时间</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {foreach name="store_list" item="vo"}
+                    <tr>
+                        <td>{$vo.id}</td>
+                        <td>{$vo.store_key_name}</td>
+                        <td>{$vo.store_name}</td>
+                        <td>{$vo.store_principal}</td>
+                        <td>{$vo.store_tel}</td>
+                        <td>{$vo.charging_price}</td>
+                        <td>{$vo.parting_price}</td>
+                        <td>{$vo.power}</td>
+                        <td>{$vo.num_quick}</td>
+                        <td>{$vo.num_slow}</td>
+                        <td>{$vo.address}</td>
+                        <td>{php}echo $vo['store_status']==0 ? '正常' : '关闭';{/php}</td>
+                        <td>{$vo.update_time}</td>
+                        <td>
+                            <a href="{:url('manage/storeCharging/edit',['id'=>$vo['id']])}"
+                               class="layui-btn layui-btn-normal layui-btn-mini">编辑</a>
+                            {if condition="$vo['store_status']==0"}
+                            <a href="{:url('manage/storeCharging/lock',['id'=>$vo['id']])}"
+                               class="layui-btn layui-btn-danger layui-btn-mini ajax-common">关闭</a>
+                            {/if}
+                            {if condition="$vo['store_status']==1"}
+                            <a href="{:url('manage/storeCharging/del_lock',['id'=>$vo['id']])}"
+                               class="layui-btn layui-btn-danger layui-btn-mini ajax-common">开启</a>
+                            {/if}
+                            <a href="{:url('manage/storeCharging/delete',['id'=>$vo['id']])}"
+                               class="layui-btn layui-btn-danger layui-btn-mini ajax-common">删除</a>
+                        </td>
+                    </tr>
+                    {/foreach}
+                    </tbody>
+                </table>
+                <!--分页-->
+                {$store_list->render()}
+            </div>
+        </div>
+    </div>
+</div>
+{/block}

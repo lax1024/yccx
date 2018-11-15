@@ -1,0 +1,351 @@
+{extend name="base" /}
+{block name="css"}
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="pragma" content="no-cache">
+<meta http-equiv="cache-control" content="no-cache">
+<meta http-equiv="expires" content="0">
+<meta name="viewport"
+      content="width=device-width,height=device-height,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes"><!-- 设置Web应用以全屏模式运行 -->
+<meta name="apple-mobile-web-app-status-bar-style" content="black"><!-- 隐藏状态栏 -->
+<meta name="format-detection" content="telephone=no"><!-- 告诉设备忽略将页面中的数字识别为电话号码 -->
+
+<script type="text/javascript" src="__STATIC__/mobile/js/jquery.min.js"></script>
+<script type="text/javascript" src="__STATIC__/mobile/js/public-js.js?rand={$js_rand}"></script>
+
+<link rel="stylesheet" type="text/css" href="__STATIC__/mui/css/mui.min.css?rand={$css_rand}">
+<link rel="stylesheet" type="text/css" href="__STATIC__/mui/css/mui-icons-extra.css?rand={$css_rand}">
+<link rel="stylesheet" type="text/css" href="__STATIC__/mui/css/app-self.css?rand={$css_rand}">
+
+
+{/block}
+{block name="body"}
+<style type="text/css">
+    html, body {
+        height: 100%;
+    }
+
+    .mui-table-view .mui-media-object {
+        max-width: 100px;
+        line-height: 80px;
+    }
+
+    .mui-popover {
+        height: 100px;
+    }
+
+    .mui-content {
+        padding: 10px;
+    }
+
+    .mui-row {
+        padding: 2px;
+    }
+
+    .mui-content > .mui-table-view:first-child {
+        margin-top: 0;
+    }
+</style>
+<body>
+<header class="mui-bar mui-bar-nav" style="background: #f3e856;">
+    <span id="goback" class="mui-icon mui-icon-contact mui-icon-left-nav"></span>
+    <h1 class="mui-title">车辆维护</h1>
+</header>
+<div style="margin-top: 80px">
+    <div id="js_take_pic"
+         style="width: 80%;margin-left: 10%;background: #ffd31c;text-align: center;padding: 10px;border-radius: 20px">
+        拍照取车
+    </div>
+
+    <input id="js_input_plate" type="text"
+           style="width: 80%;margin-left: 10%;border-radius: 20px;margin-top: 20px;text-align: center"
+           placeholder="输入车牌号取车">
+</div>
+<div id="js_car_info" class="mui-content" style="padding-top: 0;display: none">
+    <ul class="mui-table-view">
+        <li class="mui-table-view-cell mui-media" style="height: 80px;padding-top: 0">
+            <img id="js_car_image" style="height: 100%;padding-top: 5px" class="mui-media-object mui-pull-left"
+                 src="">
+            <div class="mui-media-body" style="margin-top: 20px">
+                <span id="js_car_plate"></span>
+                <p id="js_car_name" class='mui-ellipsis'></p>
+            </div>
+        </li>
+    </ul>
+
+    <div class="mui-content" style="background: white">
+        <div class="mui-row">
+            <div class="mui-col-sm-4 mui-col-xs-4">
+                续航：
+            </div>
+            <div id="js_car_renewal" class="mui-col-sm-8 mui-col-xs-8">
+
+            </div>
+        </div>
+        <div class="mui-row">
+            <div class="mui-col-sm-4 mui-col-xs-4">
+                小电瓶电压：
+            </div>
+            <div id="js_car_voltage" class="mui-col-sm-8 mui-col-xs-8">
+
+            </div>
+        </div>
+        <div class="mui-row">
+            <div class="mui-col-sm-4 mui-col-xs-4">
+                车机状态：
+            </div>
+            <div id="js_car_status" class="mui-col-sm-8 mui-col-xs-8">
+
+            </div>
+        </div>
+        <div class="mui-row">
+            <div class="mui-col-sm-12 mui-col-xs-12">
+                <a id="js_type_maintain" href="#popover_type_maintain"
+                   class="mui-btn mui-btn-primary mui-btn-block mui-btn-outlined" style="padding: 5px 20px;">
+                    选择维护类型
+                </a>
+            </div>
+        </div>
+        <div class="mui-row">
+            <div id="js_goto_maintain" class="mui-col-sm-12 mui-col-xs-12">
+                <span class="mui-btn mui-btn-success" style="width: 100%;padding: 5px 20px;font-size: 18px">立即维护</span>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="popover_type_maintain" class="mui-popover">
+    <div class="mui-popover-arrow"></div>
+    <div class="mui-scroll-wrapper">
+        <div class="mui-scroll">
+            <ul class="mui-table-view">
+                <li class="mui-table-view-cell" data-type="7">移车</li>
+                <li class="mui-table-view-cell" data-type="3">调度</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" src="__STATIC__/mui/js/mui.min.js?rand={$css_rand}"></script>
+
+
+{if condition="$is_wxBrowser eq 'yes'"}
+<script src="http://res.wx.qq.com/open/js/jweixin-1.4.0.js"></script>
+<script>
+    /*
+     * 注意：
+     * 1. 所有的JS接口只能在公众号绑定的域名下调用，公众号开发者需要先登录微信公众平台进入“公众号设置”的“功能设置”里填写“JS接口安全域名”。
+     * 2. 如果发现在 Android 不能分享自定义内容，请到官网下载最新的包覆盖安装，Android 自定义分享接口需升级至 6.0.2.58 版本及以上。
+     * 3. 常见问题及完整 JS-SDK 文档地址：http://mp.weixin.qq.com/wiki/7/aaa137b55fb2e0456bf8dd9148dd613f.html
+     *
+     * 开发中遇到问题详见文档“附录5-常见错误及解决办法”解决，如仍未能解决可通过以下渠道反馈：
+     * 邮箱地址：weixin-open@qq.com
+     * 邮件主题：【微信JS-SDK反馈】具体问题
+     * 邮件内容说明：用简明的语言描述问题所在，并交代清楚遇到该问题的场景，可附上截屏图片，微信团队会尽快处理你的反馈。
+     */
+    wx.config({
+        debug: false,
+        appId: "{$jssdk['appid']}",
+        timestamp: "{$jssdk['timestamp']}",
+        nonceStr: "{$jssdk['nonceStr']}",
+        signature: "{$jssdk['signature']}",
+        jsApiList: [
+            'checkJsApi',
+            'chooseImage',
+            'uploadImage'
+        ]
+    });
+
+    wx.ready(function (res) {
+        $("#js_take_pic").on("click", function () {
+            take_plate_pic();
+        });
+    });
+
+    wx.error(function (res) {
+        // alert(JSON.stringify(res));
+    });
+</script>
+<script>
+    function take_plate_pic() {
+        wx.chooseImage({
+            count: 1, // 默认9
+            sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
+            sourceType: ['camera'], // 调用相机拍照
+            // sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+            success: function (res) {
+                var localIds = res.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
+                wx.uploadImage({
+                    localId: localIds[0] + '',
+                    isShowProgressTips: 1,
+                    success: function (res) {
+                        upload_plate_pic(res.serverId);
+                    },
+                    fail: function (res) {
+                        alert("上传失败" + res.errMsg);
+                    }
+                });
+            },
+            cancel: function (res) {
+
+            },
+            fail: function (res) {
+                alert(JSON.stringify(res));
+            }
+        });
+    }
+
+    function upload_plate_pic(serverId) {
+        $.ajax({
+            url: website + "/api/Common/license_plate.html",
+            type: "POST",
+            async: true,
+            data: {
+                serverId: serverId,
+                url: ""
+            },
+            timeout: 5000,
+            dataType: "json",
+            beforeSend: function (xhr) {
+
+            },
+            success: function (data) {
+                var code = data.code;
+                var data = data.data;
+
+                if (parseInt(code) == 0) {
+                    var number = data.number;//车牌号
+                    $("#js_car_plate").val(data.number);
+                    getStoreByLicense(number);
+                } else {
+                    Toast("识别错误", 2000);
+                }
+
+            },
+            error: function (xhr, textStatus) {
+
+            },
+            complete: function () {
+
+            }
+        });
+    }
+</script>
+{/if}
+<script>
+    $("#goback").on("click", function () {
+        window.history.back();
+    });
+    mui.init();
+    mui('.mui-scroll-wrapper').scroll();
+    $(".mui-table-view-cell").on("click", function () {
+        $("#js_input_plate").blur();
+        if ($("#popover_type_maintain").hasClass("mui-active")) {
+            $("#popover_type_maintain").removeClass("mui-active");
+            $(".mui-backdrop").remove();
+
+            $("#js_type_maintain").text($(this).text());
+            $("#js_type_maintain").attr("data-type", $(this).attr("data-type"));
+
+        }
+    });
+
+    $("#js_goto_maintain").on("click", function () {
+        var type = $("#js_type_maintain").attr("data-type");
+        var id = $("#js_car_info").attr("data-id");
+        if ((type + "") !== "undefined") {
+            $.ajax({
+                url: website + "/api/operation_car/add_order_operation.html",
+                type: "GET",
+                async: true,
+                data: {
+                    type: type,
+                    id: id
+                },
+                timeout: 5000,
+                dataType: "json",
+                success: function (data_json) {
+                    if (parseInt(data_json.code) == 0) {
+                        window.location.href = "task_servicing.html?goods_id=" + id;
+                    } else {
+                        Toast(data_json.info, 2000);
+                    }
+                }
+            });
+        } else {
+            Toast("请先选择维护类型");
+        }
+    });
+
+
+    /**
+     * 根据车牌号获取门店信息(车辆所属门店的信息)
+     * @param license
+     */
+    function getStoreByLicense(license) {
+        $.ajax({
+            url: "http://www.youchedongli.cn/api/car/get_qrcode_car_oper.html",
+            type: "GET",
+            async: true,
+            data: {
+                licence_plate: license
+            },
+            timeout: 5000,
+            dataType: "json",
+            success: function (data_json) {
+                // Toast("获取数据成功！",2000);
+                if (parseInt(data_json.code) == 0) {
+
+                    $("#js_input_plate").blur();
+
+                    $("#js_car_info").show();
+
+                    var data = data_json.data;
+                    $("#js_car_info").attr("data-id", data.id);
+                    $("#js_car_name").text(data.cartype_name);
+                    $("#js_car_plate").text(data.licence_plate);
+                    $("#js_car_image").attr("src", "http://img.youchedongli.cn/public/" + data.series_img + "?x-oss-process=image/resize,w_275&rand=20180723");
+                    $("#js_car_renewal").text(data.driving_mileage_num + "公里");
+                    $("#js_car_voltage").text(data.voltage + "V");
+                    $("#js_car_status").text(data.car_device_str);
+                } else {
+                    Toast(data_json.info, 2000);
+                }
+            }
+        });
+    }
+
+
+    /**
+     * “车牌号”输入框输入监听
+     */
+    $("#js_input_plate").bind("input propertychange", function () {
+        $("#js_car_info").hide();
+        var plate = $("#js_input_plate").val();
+        if (isLicenseNo(plate)) {
+            getStoreByLicense(plate);
+        }
+    });
+
+
+    /**
+     * 七、八位车牌号认证
+     * @param str  车牌字符串
+     * @returns {*|boolean}  是否是合法车牌号
+     */
+    function isLicenseNo(str) {
+        //新能源车车牌号验证（8位）
+        var xreg = /^[京津沪渝冀豫云辽黑湘皖鲁新苏浙赣鄂桂甘晋蒙陕吉闽贵粤青藏川宁琼使领A-Z]{1}[A-Z]{1}(([0-9]{5}[DF]$)|([DF][A-HJ-NP-Z0-9][0-9]{4}$))/;
+        //常规车车车牌号验证（7位）
+        var creg = /^[京津沪渝冀豫云辽黑湘皖鲁新苏浙赣鄂桂甘晋蒙陕吉闽贵粤青藏川宁琼使领A-Z]{1}[A-Z]{1}[A-HJ-NP-Z0-9]{4}[A-HJ-NP-Z0-9挂学警港澳]{1}$/;
+        var len = str.length;
+        if (len === 7) {
+            return creg.test(str);
+        } else {
+            return xreg.test(str);
+        }
+    }
+
+
+</script>
+</body>
+{/block}

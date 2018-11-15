@@ -1,0 +1,710 @@
+{extend name="base" /}
+{block name="css"}
+<link rel="stylesheet" href="__STATIC__/mui/css/mui.min.css?rand={$css_rand}">
+<link rel="stylesheet" href="__STATIC__/mui/css/mui-icons-extra.css?rand={$css_rand}">
+<link rel="stylesheet" href="__STATIC__/mui/css/app-self.css?rand={$css_rand}">
+{/block}
+{block name="body"}
+<style>
+
+    .title {
+        margin: 20px 15px 10px;
+        color: #6d6d72;
+        font-size: 15px;
+    }
+
+    .oa-contact-cell.mui-table .mui-table-cell {
+        padding: 11px 0;
+        vertical-align: middle;
+    }
+
+    .oa-contact-cell {
+        position: relative;
+        margin: -11px 0;
+    }
+
+    .oa-contact-avatar {
+        width: 75px;
+    }
+
+    .oa-contact-avatar img {
+        border-radius: 50%;
+    }
+
+    .oa-contact-content {
+        width: 100%;
+    }
+
+    .oa-contact-name {
+        margin-right: 20px;
+    }
+
+    .oa-contact-name, oa-contact-position {
+        float: left;
+    }
+
+    .mui-control-content {
+        background-color: white;
+        height: 100%;
+    }
+
+    .mui-control-content .mui-loading {
+        margin-top: 50px;
+    }
+
+    .mui-table-view-cell {
+        padding: 5px 8px;
+    }
+
+    .mui-table-view-cell .mui-media-object {
+        margin-top: 3%;
+        margin-right: 12%
+    }
+
+    .mui-table-view .mui-media-object {
+        line-height: 50px;
+        max-width: 50px;
+        height: 50px;
+    }
+
+    html {
+        height: 100%;
+    }
+
+    .mui-slider-img-content {
+        position: absolute;
+        bottom: 10px;
+        left: 10px;
+        right: 10px;
+        color: white;
+        text-align: center;
+        line-height: 21px
+    }
+</style>
+<body style="height: 100%">
+<nav class="mui-bar mui-bar-tab">
+    <a class="mui-tab-item " href="#tabbar-with-taskcar">
+        <span class="mui-icon mui-icon-bars"></span>
+        <span class="mui-tab-label">任务车辆</span>
+    </a>
+    <a class="mui-tab-item" id="js_get_site" href="#tabbar-with-site">
+        <span class="mui-icon mui-icon-extra mui-icon-extra-rank mui-spin"></span>
+        <span class="mui-tab-label">站点情况</span>
+    </a>
+    <a class="mui-tab-item mui-active" href="#tabbar-with-task">
+        <span class="mui-icon mui-icon-spinner-cycle mui-spin"></span>
+        <span class="mui-tab-label">维护列表</span>
+    </a>
+    <a class="mui-tab-item" href="#tabbar-with-contact">
+        <span class="mui-icon mui-icon-contact"></span>
+        <span class="mui-tab-label">个人中心</span>
+    </a>
+</nav>
+<div class="mui-content" id="page_div" style="height: 100%">
+    <div id="tabbar-with-taskcar" class="mui-control-content" style="height: 100%">
+        <div class="mui-slider" style="height: 100%">
+            <div class="mui-slider-group" style="height: 100%">
+                <div class="mui-slider-item mui-content" style="overflow: scroll">
+                    <div style="padding: 10px 10px;">
+                        <div id="segmentedControl"
+                             class="mui-segmented-control">
+                            <a class="mui-control-item mui-active" data-item="1" href="#item1">
+                                补电
+                            </a>
+                            <a class="mui-control-item" data-item="2" href="#item2">
+                                低电压
+                            </a>
+                            <a class="mui-control-item " data-item="6" href="#item3">
+                                收费
+                            </a>
+                            <a class="mui-control-item" data-item="7" href="#item4">
+                                平台
+                            </a>
+                        </div>
+                    </div>
+                    <div>
+                        <div id="item1" class="mui-control-content mui-active">
+                            <ul class="mui-table-view" id="taskcar_div1">
+                                <li class="mui-table-view-cell mui-media task_car_item" style="display: none">
+                                    <div class="mui-media-object mui-pull-right">
+                                        <button type="button" class="mui-btn mui-btn-warning js-car-id" data-id="">
+                                            接受任务
+                                        </button>
+                                    </div>
+                                    <div class="mui-media-body">
+                                        <span style="font-size: 14px" class="js-car-cartype_name">奇瑞EQ</span>
+                                        <span style="font-size: 14px;margin-left: 10px"
+                                              class="js-car-licence_plate">(贵A133CX)</span>
+                                        <div>
+                                            <span class="mui-badge mui-badge-primary js-car-type_str">平台:正常上线</span>
+                                            <span class="mui-badge mui-badge-primary js-car-car_device_str">车机:掉线</span>
+                                            <span class="mui-badge mui-badge-warning js-car-driving_mileage">续航:100Km</span>
+                                            <span class="mui-badge mui-badge-success js-car-distance">距离:12km</span>
+                                            <span class="mui-badge mui-badge-success js-car-voltage">电压:12.5V</span>
+                                            <span class="mui-badge mui-badge-warning js-car-time">时间:3小时</span>
+                                        </div>
+                                        <p style="font-size: 14px" class="js-car-store_site_name">优车酷中曹司店</p>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <div id="item2" class="mui-control-content">
+                            <ul class="mui-table-view" id="taskcar_div2">
+
+                            </ul>
+                        </div>
+                        <div id="item3" class="mui-control-content">
+                            <ul class="mui-table-view" id="taskcar_div6">
+
+                            </ul>
+                        </div>
+                        <div id="item4" class="mui-control-content">
+                            <ul class="mui-table-view" id="taskcar_div7">
+
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="tabbar-with-site" class="mui-control-content" style="height: 100%">
+        <div class="mui-slider" style="height: 100%">
+            <div class="mui-slider-group" style="height: 100%;background: yellow">
+                <div class="mui-slider-item mui-control-content" style="overflow: scroll">
+                    <ul class="mui-table-view" id="js_sites_parent">
+                        <li class="mui-table-view-cell mui-media js-site-item"
+                            style="display: block;border-bottom: #aaaaaa solid 1px">
+                            <div class="mui-row">
+                                <div class="mui-col-sm-4 mui-col-xs-4">
+                                    <div class="mui-media-body">
+                                        <div class="js-site-name"
+                                             style="font-size: 14px;color: green;white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
+                                            店名店名店名店名店名店名店名店名
+                                        </div>
+                                        <p class="js-site-status" style="font-size: 14px;color: red">不符合要求</p>
+                                    </div>
+                                </div>
+                                <div class="mui-col-sm-4 mui-col-xs-4">
+                                    <div>
+                                        <span style="font-size: 14px">投放数：</span>
+                                        <span style="font-size: 14px" class="js-site-min-num">2</span>
+                                    </div>
+                                    <div>
+                                        <span style="font-size: 14px" class="">实际停放：</span>
+                                        <span style="font-size: 14px" class="js-site-actual-num">2</span>
+                                    </div>
+                                </div>
+                                <div class="mui-col-sm-4 mui-col-xs-4">
+                                    <div>
+                                        <span style="font-size: 14px" class="">小于120Km：</span>
+                                        <span style="font-size: 14px" class="js-site-less120-num">2</span>
+                                    </div>
+                                    <div>
+                                        <span style="font-size: 14px" class="">掉线数：</span>
+                                        <span style="font-size: 14px" class="js-site-offline-num">2</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="tabbar-with-task" class="mui-control-content mui-active"
+         style="height: 100%;overflow: scroll;margin-bottom: 50px">
+        <div class="mui-slider" style="height: 100%">
+            <div class="mui-slider-group" style="height: 100%">
+                <div class="mui-slider-item mui-control-content" style="overflow: scroll">
+                    <ul class="mui-table-view" id="taskdiv_now">
+                        <li class="mui-table-view-cell mui-media task_car_now_item" style="display: none">
+                            <div class="mui-media-object mui-pull-right">
+                                <button type="button" class="mui-btn mui-btn-success mui-btn-outlined js_go_task_btn"
+                                        style="padding: 3px 9px">立即维护
+                                </button>
+                                <button type="button" class="mui-btn mui-btn-danger mui-btn-outlined js_go_end_btn"
+                                        style="padding: 3px 9px;display: none">完成维护
+                                </button>
+                                <button type="button" class="mui-btn mui-btn-primary mui-btn-outlined js_car_navi"
+                                        style="padding: 3px 9px">导航取车
+                                </button>
+                            </div>
+                            <div class="mui-media-body">
+                                <span style="font-size: 14px" class="js-car-cartype_name">奇瑞EQ</span>
+                                <span style="font-size: 14px;margin-left: 10px"
+                                      class="js-car-licence_plate">(贵A133CX)</span>
+                                <div>
+                                    <span class="mui-badge mui-badge-primary js-car-car_device_str">车机:掉线</span>
+                                    <span class="mui-badge mui-badge-warning js-car-driving_mileage">续航:100Km</span>
+                                    <span class="mui-badge mui-badge-success js-car-distance">距离:12km</span>
+                                    <span class="mui-badge mui-badge-success js-car-voltage">电压:12.5V</span>
+                                    <span class="mui-badge mui-badge-warning js-car-time">时间:3小时</span>
+                                    <span class="mui-badge mui-badge-warning js-car-order_type_str">类型:补电+小保洁</span>
+                                </div>
+                                <p style="font-size: 14px" class="js-car-store_site_name">优车酷中曹司店</p>
+                                <p style="font-size: 14px" class="js-car-get_time">2018-08-23 10:10:00</p>
+                            </div>
+                        </li>
+                        <li class="mui-table-view-cell mui-media" id="task_list_tip" style="display:none">
+                            <div class="mui-media-body">
+                                暂无任务，请到任务车辆中接受任务
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="tabbar-with-contact" class="mui-control-content">
+        <div class="mui-page-content">
+            <div class="mui-scroll-wrapper" data-scroll="2">
+                <div class="mui-scroll"
+                     style="transform: translate3d(0px, 0px, 0px) translateZ(0px); transition-duration: 0ms;">
+                    <ul class="mui-table-view mui-table-view-chevron" style="margin-bottom: 20px;">
+                        <li class="mui-table-view-cell">
+                            <a href="">
+                                <img class="mui-media-object mui-pull-left head-img" id="head-img"
+                                     src="{$wechar_headimgurl}" style="margin-top: 0px">
+                                <div class="mui-media-body" style="padding-top: 5px">
+                                    {$operation_name}
+                                    <p class="mui-ellipsis">电话:{$operation_phone}</p>
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+                    <ul class="mui-table-view mui-table-view-chevron" style="margin-bottom: 10px">
+                        <li class="mui-table-view-cell" style="padding: 10px 0">
+                            <a href="{:url('mobile/task/order')}" style="padding-left: 25px"
+                               class="go_tourl mui-navigate-right">个人任务记录</a>
+                        </li>
+                        <li class="mui-table-view-cell" style="padding: 10px 0">
+                            <a href="{:url('mobile/task/task_getcar')}" style="padding-left: 25px"
+                               class="go_tourl mui-navigate-right">车辆操作</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="__STATIC__/mui/js/mui.min.js"></script>
+<script type="text/javascript" src="__STATIC__/mui/js/mui.previewimage.js?rand={$js_rand}"></script>
+<script type="text/javascript" src="__STATIC__/mui/js/mui.zoom.js?rand={$js_rand}"></script>
+{if condition="$is_wxBrowser eq 'yes'"}
+<script src="http://res.wx.qq.com/open/js/jweixin-1.4.0.js?rand={$js_rand}"></script>
+<script>
+    var is_up_end = true;
+    var pointx;
+    /*
+     * 注意：
+     * 1. 所有的JS接口只能在公众号绑定的域名下调用，公众号开发者需要先登录微信公众平台进入“公众号设置”的“功能设置”里填写“JS接口安全域名”。
+     * 2. 如果发现在 Android 不能分享自定义内容，请到官网下载最新的包覆盖安装，Android 自定义分享接口需升级至 6.0.2.58 版本及以上。
+     * 3. 常见问题及完整 JS-SDK 文档地址：http://mp.weixin.qq.com/wiki/7/aaa137b55fb2e0456bf8dd9148dd613f.html
+     *
+     * 开发中遇到问题详见文档“附录5-常见错误及解决办法”解决，如仍未能解决可通过以下渠道反馈：
+     * 邮箱地址：weixin-open@qq.com
+     * 邮件主题：【微信JS-SDK反馈】具体问题
+     * 邮件内容说明：用简明的语言描述问题所在，并交代清楚遇到该问题的场景，可附上截屏图片，微信团队会尽快处理你的反馈。
+     */
+    wx.config({
+        debug: false,
+        appId: "{$jssdk['appid']}",
+        timestamp: "{$jssdk['timestamp']}",
+        nonceStr: "{$jssdk['nonceStr']}",
+        signature: "{$jssdk['signature']}",
+        jsApiList: [
+            'checkJsApi',
+            'openLocation',
+            'chooseImage',
+            'uploadImage'
+        ]
+    });
+    wx.ready(function () {
+        var use_pic_img = $("#js_pic_parent").find("img");
+        use_pic_img.on("click", function () {
+            take_user_pic($(this).attr("id"), "task", "");
+            return false;
+        });
+        var use_pic_img1 = $("#js_pic_parent1").find("img");
+        use_pic_img1.on("click", function () {
+            take_user_pic($(this).attr("id"), "task", "");
+            return false;
+        });
+        wx.getLocation({
+            success: function (res) {
+                var latitude = res.latitude; //纬度
+                var longitude = res.longitude; //经度
+                localStorage.setItem("old_marker_self_lat", latitude);
+                localStorage.setItem("old_marker_self_lng", longitude);
+                pointx = wgs2bd(parseFloat(latitude), parseFloat(longitude));
+                get_my_task_car(pointx[1], pointx[0]);
+                get_site_list(pointx[1], pointx[0]);
+                setTimeout(function () {
+                    get_task_car(pointx[1], pointx[0], 1);
+                    get_task_car(pointx[1], pointx[0], 2);
+                    get_task_car(pointx[1], pointx[0], 6);
+                    get_task_car(pointx[1], pointx[0], 7);
+                }, 500);
+                // setTimeout(function () {
+                //     get_task_car(pointx[1], pointx[0], 2);
+                // }, 1000);
+                // setTimeout(function () {
+                //     get_task_car(pointx[1], pointx[0], 6);
+                // }, 1500);
+                // setTimeout(function () {
+                //     get_task_car(pointx[1], pointx[0], 7);
+                // }, 2000);
+            },
+            cancel: function (res) {
+                // alert('用户拒绝授权获取地理位置');
+            },
+            fail: function (res) {
+//                alert(JSON.stringify(res));
+            }
+        });
+    });
+    wx.error(function (res) {
+        //alert(res.errMsg);
+    });
+
+    function take_user_pic(viewId, path, field) {
+        if (!is_up_end) {
+            return;
+        }
+        wx.chooseImage({
+            count: 1, // 默认9
+            sizeType: ['compressed'], // 可以指定是原图还是压缩图，默认二者都有
+            sourceType: ['camera'], // 调用相机拍照
+            // sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+            success: function (res) {
+                var localIds = res.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
+                // $("#" + viewId).attr('src', localIds[0]);
+                is_up_end = false;
+                wx.uploadImage({
+                    localId: localIds[0] + '',
+                    isShowProgressTips: 1,
+                    success: function (res) {
+                        upload_use_car_pic(viewId, res.serverId, "jpg", path, field);
+                    },
+                    fail: function (res) {
+                        is_up_end = true;
+                        mui.alert("上传失败" + res.errMsg, '提示');
+                    }
+                });
+            },
+            cancel: function (res) {
+            },
+            fail: function (res) {
+            }
+        });
+    }
+
+    function upload_use_car_pic(viewId, localIds, type, path, field) {
+        $.ajax({
+            url: website + "/api/Dynupload/upload.html",
+            type: "POST",
+            async: true,
+            data: {
+                sid: localIds,
+                type: type,
+                path: path,
+                field: field
+            },
+            timeout: 5000,
+            dataType: "json",
+            success: function (data) {
+                is_up_end = true;
+                if (data.code == 0) {
+                    $("#" + viewId).attr('src', "http://img.youchedongli.cn" + data.url);
+                    $("#" + viewId).attr('data-picUrl', "http://img.youchedongli.cn" + data.url);
+                } else {
+                    Toast(data.info, 2000);
+                }
+            },
+            error: function (xhr, textStatus) {
+                is_up_end = true;
+            }
+        });
+    }
+</script>
+{/if}
+<script>
+    mui.init({
+        swipeBack: true//启用右滑关闭功能，
+    });
+    mui.previewImage();
+    var task_car_item = $("#taskcar_div1").find('.task_car_item').clone(true);
+    $("#taskcar_div1").find('.task_car_item').remove();
+    var task_car_now_item = $("#taskdiv_now").find('.task_car_now_item').clone(true);
+    $("#taskdiv_now").find('.task_car_now_item').remove();
+    /**
+     * 站点情况
+     */
+    var task_site_item = $("#tabbar-with-site").find('.js-site-item').clone(true);
+    $("#tabbar-with-site").find('.js-site-item').remove();
+
+    /***
+     * 获取车辆列表
+     */
+    function get_task_car(lng, lat, type) {
+        $.ajax({
+            url: website + "/api/operation_car/get_operation_car_list.html",
+            type: "GET",
+            data: {
+                sid: 153,
+                type: type,
+                lng: lng,
+                lat: lat
+            },
+            timeout: 15000,
+            dataType: "json",
+            success: function (data) {
+                var id = 'taskcar_div' + type;
+                $("#" + id).html("");
+                if (parseInt(data.code) === 0) {
+                    for (var i = 0; i < data.data.length; i++) {
+                        add_task_car(data.data[i], 'taskcar_div' + type);
+                    }
+                }
+            }, error: function () {
+
+            }
+        });
+    }
+
+    function get_my_task_car(lng, lat) {
+        $.ajax({
+            url: website + "/api/operation_car/get_operation_list.html",
+            type: "GET",
+            data: {
+                lng: lng,
+                lat: lat
+            },
+            timeout: 15000,
+            dataType: "json",
+            success: function (data) {
+                if (parseInt(data.code) === 0) {
+                    if (data.data.length > 0) {
+                        $("#taskdiv_now").html("");
+                    } else {
+                        $("#task_list_tip").show();
+                    }
+                    for (var i = 0; i < data.data.length; i++) {
+                        add_my_task_car(data.data[i], 'taskdiv_now');
+                    }
+                }
+            }, error: function () {
+
+            }
+        });
+    }
+
+    /***
+     * 获取任务列表
+     */
+    function add_task_car(data_josn, div_id) {
+        var item_temp = task_car_item.clone(true);
+        item_temp.show();
+        item_temp.find('.js-car-id').attr('data-id', data_josn.goods_id);
+        item_temp.find('.js-car-id').on('click', function () {
+            var car_id = $(this).attr('data-id');
+            var btnArray = ['否', '确认'];
+            mui.confirm('确定要接受任务吗？', '消息提醒', btnArray, function (e) {
+                if (e.index == 1) {
+                    take_task(car_id);
+                }
+            })
+        });
+        item_temp.find('.js-car-cartype_name').text(data_josn.cartype_name);
+        item_temp.find('.js-car-licence_plate').text("(" + data_josn.licence_plate + ")");
+        item_temp.find('.js-car-type_str').text("类型:" + data_josn.type_str);
+        item_temp.find('.js-car-car_str').text("平台:" + data_josn.car_status_str);
+        item_temp.find('.js-car-car_device_str').text("车机:" + data_josn.car_device_str);
+        item_temp.find('.js-car-driving_mileage').text("续航:" + data_josn.driving_mileage + 'km');
+        item_temp.find('.js-car-voltage').text("电压:" + data_josn.voltage + 'V');
+        item_temp.find('.js-car-distance').text("距离:" + data_josn.distance_per + "km");
+        item_temp.find('.js-car-time').text("时间:" + data_josn.time_str + "小时");
+        item_temp.find('.js-car-store_site_name').text(data_josn.store_site_name);
+        item_temp.appendTo($("#" + div_id));
+    }
+
+    function add_my_task_car(data_josn, div_id) {
+        var item_temp = task_car_now_item.clone(true);
+        item_temp.show();
+        item_temp.find('.js_go_task_btn').attr('data-order_id', data_josn.id);
+        item_temp.find('.js_go_task_btn').attr('data-id', data_josn.goods_id);
+        item_temp.find('.js_go_end_btn').attr('data-order_id', data_josn.id);
+        item_temp.find('.js_go_end_btn').attr('data-id', data_josn.goods_id);
+        if (parseInt(data_josn.order_status) === 10) {
+            item_temp.find('.js_go_task_btn').on('click', function () {
+                var goods_id = $(this).attr('data-id');
+                window.location.href = "task_servicing.html?goods_id=" + goods_id;
+            });
+        } else {
+            item_temp.find('.js_go_task_btn').hide();
+            item_temp.find(".js_go_end_btn").show();
+            item_temp.find(".js_go_end_btn").on('click', function () {
+                var goods_id = $(this).attr('data-id');
+                window.location.href = "task_end.html?goods_id=" + goods_id;
+            });
+        }
+        item_temp.find('.js-car-licence_plate').text("(" + data_josn.licence_plate + ")");
+        item_temp.find('.js-car-type_str').text("类型:" + data_josn.type_str);
+        item_temp.find('.js-car-car_str').text("平台:" + data_josn.car_status_str);
+        item_temp.find('.js-car-car_device_str').text("车机:" + data_josn.car_device_str);
+        item_temp.find('.js-car-driving_mileage').text("续航:" + data_josn.driving_mileage + 'km');
+        item_temp.find('.js-car-voltage').text("电压:" + data_josn.voltage + 'V');
+        item_temp.find('.js-car-distance').text("距离:" + data_josn.distance_per + "km");
+        item_temp.find('.js-car-time').text("时间:" + data_josn.time_str + "小时");
+        item_temp.find('.js-car-order_type_str').text("类型:" + data_josn.order_type_str);
+        item_temp.find('.js-car-store_site_name').text(data_josn.store_site_name);
+        item_temp.find(".js_car_navi").attr("data-lat", data_josn.location_latitude);
+        item_temp.find(".js_car_navi").attr("data-lng", data_josn.location_longitude);
+        item_temp.find(".js_car_navi").on("click", function () {
+            var navi_lat = $(this).attr("data-lat");
+            var navi_lng = $(this).attr("data-lng");
+            go_openLocation(parseFloat(navi_lat), parseFloat(navi_lng));
+        });
+        item_temp.appendTo($("#" + div_id));
+    }
+
+    /**
+     * 接受任务
+     */
+    function take_task(car_id) {
+        $.ajax({
+            url: website + "/api/operation_car/add_order_operation.html",
+            type: "GET",
+            async: true,
+            data: {
+                id: car_id
+            },
+            outTime: 5000,
+            dataType: "json",
+            success: function (data_temp) {
+                if (parseInt(data_temp.code) === 0) {
+                    var type = $("#segmentedControl .mui-active").attr("data-item");
+                    mui.alert('任务接受成功', '消息提示');
+                    wx.getLocation({
+                        success: function (res) {
+                            var latitude = res.latitude; //纬度
+                            var longitude = res.longitude; //经度
+                            localStorage.setItem("old_marker_self_lat", latitude);
+                            localStorage.setItem("old_marker_self_lng", longitude);
+                            pointx = wgs2bd(parseFloat(latitude), parseFloat(longitude));
+                            get_task_car(pointx[1], pointx[0], type);
+                            get_my_task_car(pointx[1], pointx[0]);
+                        },
+                        cancel: function (res) {
+                            // alert('用户拒绝授权获取地理位置');
+                        },
+                        fail: function (res) {
+//                alert(JSON.stringify(res));
+                        }
+                    });
+
+                } else {
+                    mui.alert(data_temp.info, '消息提示');
+                }
+            }
+        });
+    }
+
+    /**
+     * 调用第三方导航软件实现导航
+     * @param lat  目的地纬度
+     * @param lng  目的地经度
+     */
+    function go_openLocation(lat, lng) {
+        var ponitx = wgs2gcj(lat, lng);//将gps坐标转为百度地图坐标
+        wx.openLocation({
+            latitude: ponitx[0], // 纬度，浮点数，范围为90 ~ -90
+            longitude: ponitx[1], // 经度，浮点数，范围为180 ~ -180。
+            name: '车辆位置', // 位置名
+            address: '请按照导航去取车', // 地址详情说明
+            scale: 18, // 地图缩放级别,整形值,范围从1~28。默认为最大
+            infoUrl: '' // 在查看位置界面底部显示的超链接,可点击跳转
+        });
+    }
+
+    //导航
+    $("#js_car_navi").on("click", function () {
+        var navi_lat = $(this).attr("data-lat");
+        var navi_lng = $(this).attr("data-lng");
+        go_openLocation(parseFloat(navi_lat), parseFloat(navi_lng));
+    });
+
+    // $(".mui-bar-tab").find(".mui-tab-item").removeClass('mui-active');
+    // $("#page_div").find(".mui-control-content").removeClass('mui-active');
+    // $("#tabbar-with-site").addClass("mui-active");
+
+    $(".go_tourl").on('click', function () {
+        window.location.href = $(this).attr('href') + "";
+    });
+
+    //物理返回按钮
+    // pushHistory();//进栈
+    //物理返回键的点击事件监听
+    window.addEventListener("popstate", function (e) {
+        // alert("1");
+        if (document.querySelector(".mui-preview-in")) {
+            mui.previewImage().close();
+            // pushHistory();
+        } else {
+            window.history.back();
+        }
+    }, false);
+    // //将上一个页面进栈
+    // function pushHistory() {
+    //     var state = {
+    //         title: "title",
+    //         url: "#"
+    //     };
+    //     window.history.pushState(state, "title", "#");
+    // }
+    function get_site_list(lng, lat) {
+        $.ajax({
+            url: website + "/api/operation_car/get_store_condition_list.html",
+            type: "GET",
+            data: {
+                lng: lng,
+                lat: lat
+            },
+            timeout: 15000,
+            dataType: "json",
+            success: function (data) {
+                if (parseInt(data.code) === 0) {
+                    add_task_site_item(data.data);
+                }
+            }, error: function () {
+
+            }
+        });
+    }
+
+    function add_task_site_item(data_json) {
+        for (var i = 0; i < data_json.length; i++) {
+            var item_temp = task_site_item.clone(true);
+            item_temp.show();
+
+            item_temp.find(".js-site-name").text(data_json[i].store_name);
+            item_temp.find(".js-site-name").attr("data-site-id", data_json[i].id);
+            item_temp.find(".js-site-status").text(data_json[i].store_status_str);
+            item_temp.find(".js-site-status").attr("data-site-status", data_json[i].store_status);
+            item_temp.find(".js-site-min-num").text(data_json[i].car_num);
+            item_temp.find(".js-site-actual-num").text(data_json[i].park_car);
+            item_temp.find(".js-site-less120-num").text(data_json[i].mileage_car);
+            item_temp.find(".js-site-offline-num").text(data_json[i].online_car);
+
+            item_temp.on("click", function () {
+
+            });
+
+            item_temp.appendTo($("#js_sites_parent"));
+        }
+    }
+</script>
+</body>
+{/block}
+

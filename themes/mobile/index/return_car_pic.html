@@ -1,0 +1,293 @@
+{extend name="base" /}
+{block name="css"}
+<link rel="stylesheet" href="__STATIC__/mui/css/mui.min.css?rand={$css_rand}">
+<link rel="stylesheet" href="__STATIC__/mui/css/mui-icons-extra.css?rand={$css_rand}">
+<link rel="stylesheet" href="__STATIC__/mobile/css/return-car-pic-css.css?rand={$css_rand}">
+{/block}
+{block name="body"}
+<style>
+    .mui-bar {
+        background-color: #f3e856;
+    }
+</style>
+<body style="width: 100%;height: 100%;background: #EFEFF4;overflow: scroll;">
+<header class="mui-bar mui-bar-nav">
+    <span id="js_user_back" class="mui-icon mui-icon-arrowleft"></span>
+    <h1 class="mui-title">还车拍照</h1>
+</header>
+
+<div class="mui-content" style="background-color:#fff;">
+    <ul id="js_pic_parent" class="mui-table-view mui-grid-view js_car_pic_choose">
+        <li class="mui-table-view-cell mui-media mui-col-xs-6">
+            <img id="js_pic_inner" class="mui-media-object"
+                 src="http://img.youchedongli.cn/public/static/mobile/images/car_pic_inner.png?rand=2018"
+                 style="height: 100px">
+            <div class="mui-media-body">内部</div>
+        </li>
+        <li class="mui-table-view-cell mui-media mui-col-xs-6">
+            <img id="js_pic_left_front" class="mui-media-object"
+                 src="http://img.youchedongli.cn/public/static/mobile/images/car_pic_left_front.png?rand=2018"
+                 style="height: 100px">
+            <div class="mui-media-body">左前</div>
+        </li>
+        <li class="mui-table-view-cell mui-media mui-col-xs-6">
+            <img id="js_pic_right_front" class="mui-media-object"
+                 src="http://img.youchedongli.cn/public/static/mobile/images/car_pic_right_front.png?rand=2018"
+                 style="height: 100px">
+            <div class="mui-media-body">右前</div>
+        </li>
+        <li class="mui-table-view-cell mui-media mui-col-xs-6">
+            <img id="js_pic_back" class="mui-media-object"
+                 src="http://img.youchedongli.cn/public/static/mobile/images/car_pic_back.png?rand=2018"
+                 style="height: 100px">
+            <div class="mui-media-body">后方</div>
+        </li>
+        <li class="mui-table-view-cell mui-media mui-col-xs-6" id="js_invoice_parent" style="display: none">
+            <img id="js_pic_invoice" class="mui-media-object"
+                 src="http://img.youchedongli.cn/public/static/mobile/images/car_pic_invoice.png?rand=2018"
+                 style="height: 100px">
+            <div class="mui-media-body">发票</div>
+        </li>
+        <li id="js_park" class="mui-table-view-cell mui-media mui-col-xs-12" style="display: none">
+            <div style="color: rgb(204,102,1);font-size: 14px;text-align: left">
+                注：<span id="js_return_park_remark"></span>
+            </div>
+        </li>
+    </ul>
+    <div style="color: rgb(204,102,1);padding: 10px 10px 0 10px;font-size: 14px">
+        注：<span>当您结束用车时，请先检查车辆是否造成了新的刮痕、损伤等情况。如有，请您点击下方的“+”图进行拍照上传，以避免您在用车结束后可能产生的不必要的误解，感谢您的理解与配合。也可以通过该方式向我们反馈您对该车的意见和建议，比如卫生情况等等！</span>
+    </div>
+    <div id="car_pic_add_div"
+         style="height: auto;width: 100%;margin-top: 5px;margin-bottom: 80px">
+        <img class="car_pic_add" onclick="take_user_pic_remove($(this))"
+             src="../../.././public/static/mobile/images/car_pic_add.png"
+             style="display: none;margin: 5px;height: 100px;width: 100px">
+        <img class="car_pic_add_click" id="js_car_pic_add" onclick="take_user_pic_add('car_pic_add_div','order','')"
+             data-index="1" src="../../.././public/static/mobile/images/car_pic_add.png"
+             style="margin: 5px;height: 100px;width: 100px">
+    </div>
+
+    <input id="js_submit_use_car_pic" type="button" value="立即还车"
+           style="width: 100%;height: 50px;background: #f3e856;position: fixed;bottom: 0px">
+</div>
+{include file="login" /}
+{include file="loading" /}
+<script type="text/javascript" src="__STATIC__/mobile/js/jquery.min.js"></script>
+<script type="text/javascript" src="__STATIC__/mobile/js/public-js.js?rand={$js_rand}"></script>
+<script type="text/javascript" src="__STATIC__/mui/js/mui.min.js?rand={$js_rand}"></script>
+<script>
+    var is_up_end = true;
+</script>
+{if condition="$is_wxBrowser eq 'yes'"}
+<script type="text/javascript" src="__STATIC__/mobile/js/return-car-pic-js.js?rand={$js_rand}"></script>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.4.0.js?rand={$js_rand}"></script>
+<script>
+    /*
+     * 注意：
+     * 1. 所有的JS接口只能在公众号绑定的域名下调用，公众号开发者需要先登录微信公众平台进入“公众号设置”的“功能设置”里填写“JS接口安全域名”。
+     * 2. 如果发现在 Android 不能分享自定义内容，请到官网下载最新的包覆盖安装，Android 自定义分享接口需升级至 6.0.2.58 版本及以上。
+     * 3. 常见问题及完整 JS-SDK 文档地址：http://mp.weixin.qq.com/wiki/7/aaa137b55fb2e0456bf8dd9148dd613f.html
+     *
+     * 开发中遇到问题详见文档“附录5-常见错误及解决办法”解决，如仍未能解决可通过以下渠道反馈：
+     * 邮箱地址：weixin-open@qq.com
+     * 邮件主题：【微信JS-SDK反馈】具体问题
+     * 邮件内容说明：用简明的语言描述问题所在，并交代清楚遇到该问题的场景，可附上截屏图片，微信团队会尽快处理你的反馈。
+     */
+    wx.config({
+        debug: false,
+        appId: "{$jssdk['appid']}",
+        timestamp: "{$jssdk['timestamp']}",
+        nonceStr: "{$jssdk['nonceStr']}",
+        signature: "{$jssdk['signature']}",
+        jsApiList: [
+            'checkJsApi',
+            'chooseImage',
+            'uploadImage'
+        ]
+    });
+
+    wx.ready(function () {
+
+    });
+    wx.error(function (res) {
+        alert(res.errMsg);
+    });
+
+    $(function () {
+        var use_pic_img = $(".js_car_pic_choose").find("img");
+        use_pic_img.on("click", function () {
+            take_user_pic($(this).attr("id"), "order", "");
+            return false;
+        });
+    });
+
+
+    var img_node = $("#car_pic_add_div").find('.car_pic_add').clone(true);
+    $("#car_pic_add_div").find('.car_pic_add').remove();
+
+    function take_user_pic_add(viewId, path, field) {
+        if (!is_up_end) {
+            return;
+        }
+        wx.chooseImage({
+            count: 1, // 默认9
+            sizeType: ['compressed'], // 可以指定是原图还是压缩图，默认二者都有
+            sourceType: ['camera'], // 调用相机拍照
+            // sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+            success: function (res) {
+                var localIds = res.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
+                // $("#" + viewId).attr('src', localIds[0]);
+                is_up_end = false;
+                wx.uploadImage({
+                    localId: localIds[0] + '',
+                    isShowProgressTips: 1,
+                    success: function (res) {
+                        // serverIdarr[serverIdindex] = res.serverId;
+                        // get_img_url(res.serverId, serverIdindex);
+                        // serverIdindex++;
+                        upload_use_car_pic_add(viewId, res.serverId, "jpg", path, field);
+                    },
+                    fail: function (res) {
+                        is_up_end = true;
+                        alert("上传失败" + res.errMsg);
+                    }
+                });
+
+            },
+            cancel: function (res) {
+
+            },
+            fail: function (res) {
+                alert(JSON.stringify(res));
+            }
+        });
+    }
+
+    function take_user_pic(viewId, path, field) {
+        if (!is_up_end) {
+            return;
+        }
+        wx.chooseImage({
+            count: 1, // 默认9
+            sizeType: ['compressed'], // 可以指定是原图还是压缩图，默认二者都有
+            sourceType: ['camera'], // 调用相机拍照
+            // sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+            success: function (res) {
+                var localIds = res.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
+                //$("#" + viewId).attr('src', localIds[0]);
+                is_up_end = false;
+                wx.uploadImage({
+                    localId: localIds[0] + '',
+                    isShowProgressTips: 1,
+                    success: function (res) {
+                        upload_use_car_pic(viewId, res.serverId, "jpg", path, field);
+                    },
+                    fail: function (res) {
+                        is_up_end = true;
+                        alert("上传失败" + res.errMsg);
+                    }
+                });
+
+            },
+            cancel: function (res) {
+
+            },
+            fail: function (res) {
+                alert(JSON.stringify(res));
+            }
+        });
+    }
+
+    function upload_use_car_pic(viewId, localIds, type, path, field) {
+        $.ajax({
+            url: website + "/api/Dynupload/upload.html",
+            type: "POST",
+            async: true,
+            data: {
+                sid: localIds,
+                type: type,
+                path: path,
+                field: field
+            },
+            timeout: 5000,
+            dataType: "json",
+            beforeSend: function (xhr) {
+
+            },
+            success: function (data) {
+                is_up_end = true;
+                if (data.code == 0) {
+//                    alert("http://img.youchedongli.cn" + data.url+field);
+                    $("#" + viewId).attr('src', "http://img.youchedongli.cn" + data.url);
+                    $("#" + viewId).attr('data-picUrl', "http://img.youchedongli.cn" + data.url);
+                } else {
+                    Toast(data.info, 2000);
+                }
+            },
+            error: function (xhr, textStatus) {
+
+            },
+            complete: function () {
+
+            }
+        });
+    }
+
+    function upload_use_car_pic_add(viewId, localIds, type, path, field) {
+        $.ajax({
+            url: website + "/api/Dynupload/upload.html",
+            type: "POST",
+            async: true,
+            data: {
+                sid: localIds,
+                type: type,
+                path: path,
+                field: field
+            },
+            timeout: 5000,
+            dataType: "json",
+            beforeSend: function (xhr) {
+
+            },
+            success: function (data) {
+                is_up_end = true;
+                if (data.code == 0) {
+                    var temp_img_node = img_node.clone(true);
+                    temp_img_node.show();
+                    temp_img_node.attr('src', "http://img.youchedongli.cn" + data.url);
+                    temp_img_node.attr('data-picUrl', "http://img.youchedongli.cn" + data.url);
+                    temp_img_node.attr('onclick', "take_user_pic_remove($(this))");
+                    temp_img_node.prependTo($("#" + viewId));
+
+                    var pic_adds = $("#car_pic_add_div").find('.car_pic_add');
+                    if (pic_adds.length >= 5) {
+                        $("#js_car_pic_add").hide();
+                    }
+
+                } else {
+                    Toast(data.info, 2000);
+                }
+            },
+            error: function (xhr, textStatus) {
+
+            },
+            complete: function () {
+
+            }
+        });
+    }
+
+    function take_user_pic_remove(pic_id) {
+
+        mui.confirm('是否删除', '温馨提示', ["是", "否"], function (e) {
+            if (e.index == 0) {
+                pic_id.remove();
+                $("#js_car_pic_add").show();
+            }
+        });
+    }
+
+</script>
+{/if}
+</body>
+{/block}

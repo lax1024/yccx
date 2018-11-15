@@ -1,0 +1,273 @@
+{extend name="base" /}
+{block name="css"}
+<link rel="stylesheet" href="__STATIC__/mui/css/mui.min.css?rand={$css_rand}">
+<link rel="stylesheet" href="__STATIC__/mui/css/mui-icons-extra.css?rand={$css_rand}">
+<link rel="stylesheet" href="__STATIC__/mobile/css/user-center-css.css?rand={$css_rand}">
+<style>
+    ul {
+        font-size: 14px;
+        color: #8f8f94;
+    }
+
+    .mui-bar {
+        background-color: #f3e856;
+    }
+
+    .mui-btn-outlined {
+        font-size: 18px;
+    }
+
+    .user_cash_bg_div {
+        margin-top: 2%;
+        text-align: center;
+    }
+
+    .user_balance_info {
+        position: absolute;
+        left: 36%;
+        top: 21%;
+        text-align: center;
+    }
+
+    .user_balance_button {
+        font-size: 140%;
+        border-color: rgb(248, 219, 47);
+        color: rgb(255,150, 0) !important;
+    }
+
+    .user_recharge_button {
+        width: 88%;
+        border: none;
+        font-size: 95%;
+        color: rgb(78, 75, 52);
+        padding: 1% 0;
+        background-color: rgb(248, 219, 47);
+    }
+
+    .user_recharge_button_active {
+        color: white !important;
+        background-color: rgb(248, 219, 47);
+    }
+
+    .mui-btn-blue.mui-active:enabled, .mui-btn-blue:enabled:active, .mui-btn-primary.mui-active:enabled, .mui-btn-primary:enabled:active, input[type=submit].mui-active:enabled, input[type=submit]:enabled:active {
+        border: 1px solid rgb(248, 219, 47);
+        background-color: rgb(248, 219, 47);
+    }
+</style>
+{/block}
+{block name="body"}
+<body>
+<header class="mui-bar mui-bar-nav">
+    <span id="goto_back" class="mui-icon mui-icon-contact mui-icon-left-nav"></span>
+    <h1 class="mui-title">充值中心</h1>
+</header>
+<div class="mui-content">
+    <div class="mui-row" style="padding-top: 10px;">
+        <div class="user_cash_bg_div">
+            <img class="user_cash_bg" src="http://img.youchedongli.cn/public/static/mobile/images/user_cash_bg.png" style="width: 45%;">
+        </div>
+        <div class="user_balance_info">
+            <p style="margin-left: 20px;font-size: 95%;color: rgb(78,75,52)">当前余额</p>
+            <p style="margin-left: 20px;margin-top: 18px;font-size: 95%;color: rgb(78,75,52)">
+                {$customer_data['customer_balance']}元</p>
+        </div>
+        <div style="margin: 3% 7%">
+            <a href="user_balance_log.html" style="font-size:14px;color: rgb(114,105,85)">查看余额记录</a>
+            <span style="color: rgb(255,53,16);font-size:14px">（目前余额暂不支持提现，请谨慎充值）</span>
+            <a href="user_cash.html" style="font-size:14px;color: rgb(114,105,85)">点击缴纳押金</a>
+        </div>
+        <div class="mui-col-sm-4 mui-col-xs-4" style="text-align: center">
+            <button type="button" data-balance="10"
+                    class="mui-btn mui-btn-primary mui-btn-outlined js-pay-balance user_balance_button user_recharge_button_active">
+                &nbsp;10元&nbsp;
+            </button>
+        </div>
+        <div class="mui-col-sm-4 mui-col-xs-4" style="text-align: center">
+            <button type="button" data-balance="20"
+                    class="mui-btn mui-btn-primary mui-btn-outlined js-pay-balance user_balance_button">
+                &nbsp;20元&nbsp;
+            </button>
+        </div>
+        <div class="mui-col-sm-4 mui-col-xs-4" style="text-align: center">
+            <button type="button" data-balance="30"
+                    class="mui-btn mui-btn-primary mui-btn-outlined js-pay-balance user_balance_button">
+                &nbsp;30元&nbsp;
+            </button>
+        </div>
+    </div>
+    <div class="mui-row" style="padding-top: 5px;text-align: center">
+        <div class="mui-col-sm-4 mui-col-xs-4" style="text-align: center;">
+            <button type="button" data-balance="50"
+                    class="mui-btn mui-btn-primary mui-btn-outlined js-pay-balance user_balance_button">
+                &nbsp;50元&nbsp;
+            </button>
+        </div>
+        <div class="mui-col-sm-4 mui-col-xs-4" style="text-align: center">
+            <button type="button" data-balance="100"
+                    class="mui-btn mui-btn-primary mui-btn-outlined js-pay-balance user_balance_button">
+                100元
+            </button>
+        </div>
+        <div class="mui-col-sm-4 mui-col-xs-4" style="text-align: center">
+            <button type="button" data-balance="150"
+                    class="mui-btn mui-btn-primary mui-btn-outlined js-pay-balance user_balance_button">
+                150元
+            </button>
+        </div>
+    </div>
+    <div class="mui-row" style="padding-top: 5px;padding-bottom: 20px">
+        <div class="mui-col-sm-4 mui-col-xs-4" style="text-align: center">
+            <button type="button" data-balance="200"
+                    class="mui-btn mui-btn-primary mui-btn-outlined js-pay-balance user_balance_button">
+                200元
+            </button>
+        </div>
+        <div class="mui-col-sm-4 mui-col-xs-4" style="text-align: center">
+            <button type="button" data-balance="300"
+                    class="mui-btn mui-btn-primary mui-btn-outlined js-pay-balance user_balance_button">
+                300元
+            </button>
+        </div>
+        <div class="mui-col-sm-4 mui-col-xs-4" style="text-align: center">
+            <button type="button" data-balance="500"
+                    class="mui-btn mui-btn-primary mui-btn-outlined js-pay-balance user_balance_button">
+                500元
+            </button>
+        </div>
+    </div>
+    <div style="margin: 10px 20px">
+        <p style="font-size:14px;color: rgb(114,105,85)">*充值提示:</p>
+    </div>
+    <div class="mui-col-sm-4 mui-col-xs-4"
+         style="text-align: center;width: 100%;  position: absolute; bottom:5%;">
+        <button style="font-size: 20px;padding: 8px 0" type="button"  class="mui-btn  mui-btn-yellow  user_recharge_button js-pay-submit">充值</button>
+    </div>
+
+</div>
+<script src="__STATIC__/mui/js/mui.min.js?rand={$css_rand}"></script>
+<script type="text/javascript" src="__STATIC__/mobile/js/jquery.min.js?rand={$css_rand}"></script>
+<script type="text/javascript" src="__STATIC__/mobile/js/public-js.js?rand={$js_rand}"></script>
+<script type="text/javascript" src="__STATIC__/mobile/js/user-balance-js.js?rand={$js_rand}"></script>
+<script>
+    var is_data = false;
+    var pay_sn = '';
+    var orders_data = null;
+    var loadend = false;
+    var balance = 10;
+    $(function () {
+        $(".js-pay-balance").on('click', function () {
+            balance = $(this).attr('data-balance');
+            $(".user_balance_button").removeClass('user_recharge_button_active');
+            $(this).addClass('user_recharge_button_active');
+        });
+        $(".js-pay-submit").on('click', function () {
+            var pays = "weixin";
+            get_balance_info(pays, balance);
+            return false;
+        });
+
+        function get_balance_info(pays, balance) {
+            if (pays == 'weixin') {
+                weixinpay(balance, '');
+            } else if (pays == 'alipay') {
+                mui.alert('支付宝支付正在对接中，敬请期待', '提示');
+            } else if (pays == 'unionpay') {
+                mui.alert('银联支付正在对接中，敬请期待', '提示');
+            }
+        }
+
+        //微信支付订单
+        function weixinpay(price, pay_snx) {
+            $.ajax({
+                url: "{:url('/api/Pay/wxbalanceJSAPI')}",
+                type: "post",
+                data: {
+                    price: price,
+                    pay_sn: pay_snx,
+                    myrand: new Date().getTime()
+                },
+                dataType: "json",
+                success: function (data) {
+                    if (data.code == 0) {
+                        is_data = true;
+                        pay_sn = data.pay_sn;
+                        orders_data = data.data;
+                        callpay(data.data);
+                    } else {
+                        Toast(data.info, 2000);
+                    }
+                    loadend = true;
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    Toast(textStatus, 2000);
+                },
+                complete: function (XMLHttpRequest, textStatus) {
+                    // 调用本次AJAX请求时传递的options参数
+                }
+            });
+        }
+
+        //调用微信JS api 支付
+        function jsApiCall(strjs) {
+            WeixinJSBridge.invoke(
+                'getBrandWCPayRequest',
+                {
+                    "appId": strjs.appId,     //公众号名称，由商户传入
+                    "timeStamp": strjs.timeStamp,         //时间戳，自1970年以来的秒数
+                    "nonceStr": strjs.nonceStr, //随机串
+                    "package": strjs.package,
+                    "signType": strjs.signType,         //微信签名方式：
+                    "paySign": strjs.paySign //微信签名
+                },
+                function (res) {
+                    if (res.err_msg == "get_brand_wcpay_request:ok") {
+                        callbackvarpay();
+                        setTimeout(function () {
+                            window.location.href = "{:url('mobile/index/user_center')}";
+                        }, 1000);
+                    } else if (res.err_msg == 'get_brand_wcpay_request:cancel') {
+                        mui.alert('取消支付', '提示');
+                    } else if (res.err_msg == 'get_brand_wcpay_request:fail') {
+                        mui.alert('支付失败', '提示');
+                    }
+                }
+            );
+        }
+
+        //回调查询验证订单
+        function callbackvarpay() {
+            $.ajax({
+                url: "{:url('index/Notify/query_weixin_balance')}",
+                type: "get",
+                data: {
+                    pay_sn: pay_sn
+                },
+                dataType: "json",
+                success: function (data) {
+
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                },
+                complete: function (XMLHttpRequest, textStatus) {
+                    // 调用本次AJAX请求时传递的options参数
+                }
+            });
+        }
+
+        function callpay(strjs) {
+            if (typeof WeixinJSBridge == "undefined") {
+                if (document.addEventListener) {
+                    document.addEventListener('WeixinJSBridgeReady', jsApiCall(strjs), false);
+                } else if (document.attachEvent) {
+                    document.attachEvent('WeixinJSBridgeReady', jsApiCall(strjs));
+                    document.attachEvent('onWeixinJSBridgeReady', jsApiCall(strjs));
+                }
+            } else {
+                jsApiCall(strjs);
+            }
+        }
+    })
+</script>
+{include file="login" /}
+</body>
+{/block}

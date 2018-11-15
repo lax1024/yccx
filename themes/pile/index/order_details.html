@@ -1,0 +1,125 @@
+{extend name="base" /}
+{block name="css"}
+<link rel="stylesheet" href="__STATIC__/mui/css/mui.css?rand={$css_rand}" type="text/css">
+<link rel="stylesheet" href="__STATIC__/mui/css/mui-icons-extra.css?rand={$css_rand}" type="text/css">
+<link rel="stylesheet" href="__STATIC__/pile/css/order-details.css?rand={$css_rand}" type="text/css">
+{/block}
+{block name="body"}
+<style>
+    .mui-table-view .mui-media-object{
+        line-height: 25px;
+        max-width: 25px;
+        height: 25px;
+    }
+</style>
+<body>
+<header id="header" class="mui-bar mui-bar-nav" style="background: rgb(252, 204, 49);color: white">
+    <span class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></span>
+    <h1 class="mui-title" style="color: white">订单详情</h1>
+</header>
+<div class="body-details-top">
+    <div class="mui-content" style="background: rgba(0,0,0,0);margin-top: 25px">
+        <div class="mui-row">
+            <div class="mui-col-sm-1 mui-col-xs-1" style="text-align: left;color: white">
+            </div>
+            <div class="mui-col-sm-5 mui-col-xs-5" style="text-align: left;color: white">
+                订单已完成
+            </div>
+            <div class="mui-col-sm-6 mui-col-xs-6" style="text-align: right;padding-right: 15px;color: white">
+                优车酷中曹司店
+            </div>
+        </div>
+        <div class="mui-row" style="margin-top: 10px;font-size: 14px">
+            <div class="mui-col-sm-1 mui-col-xs-1" style="color: white">
+            </div>
+            <div class="mui-col-sm-11 mui-col-xs-11" style="color: white">
+                订单号：<span>201806031912421015937</span>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="body-details-thank">
+    <div>
+        <img style="height: 100%;width: 100%"
+             src="http://img.youchedongli.cn/public/static/mobile/images/logo_pile_charge.png?rand=20180622">
+    </div>
+    <p>感谢您使用优车酷充电，欢迎您再次光临！</p>
+</div>
+<div class="body-details-content">
+    <div class="popup-map-marker">
+        <div class="content-popup-title">
+            <div class="content-popup-title-left">
+                <div class="title-left-name">
+                    <span>优车酷中曹司店</span>
+                </div>
+                <div class="title-left-address">
+                    <span>详细地址：<span>花溪区花溪大道103号，阳光优车酷</span></span>
+                </div>
+            </div>
+        </div>
+        <div class="content-popup-body">
+            <div class="body-left">
+                <div class="mui-row">
+                    <span style="background: rgb(35, 171, 55);">有空闲</span>
+                    <span style="background: rgb(0,161,233);">支持排队</span>
+                    <span style="background: rgb(255,218,47);">对外开放</span>
+                </div>
+                <div class="mui-row">
+                    <span>电桩数量</span>
+                    <span style="margin-left: 5px">2个直流/7个交流</span>
+                </div>
+                <div class="mui-row">
+                    <span style="">资费范围</span>
+                    <span style="margin-left: 5px">1.30元/度</span>
+                </div>
+                <div class="mui-row">
+                    <span style="">停&nbsp;&nbsp;车&nbsp;&nbsp;场</span>
+                    <span style="margin-left: 5px">5.00元/小时</span>
+                </div>
+            </div>
+            <div class="body-right">
+                <div class="body-right-top">
+                    <img src="http://img.youchedongli.cn/public/static/mobile/images/entrance_and_exit.png">
+                </div>
+            </div>
+        </div>
+        <div class="content-popup-bottom">
+            <span>注：停车场不适合车型(公交车、大型物流车)</span>
+        </div>
+    </div>
+</div>
+<div class="body-details-items">
+    <div class="body-details-title">
+        <span style="font-size: 18px;">订单详情</span>
+    </div>
+    <ul class="mui-table-view" style="color: rgb(0,153,255);">
+        <li class="mui-table-view-cell mui-media">
+            <img class="mui-media-object mui-pull-left"
+                 src="http://img.youchedongli.cn/public/static/mobile/images/details_pile_total_time.png">
+            <div class="mui-media-body" style="font-size: 14px">
+                扫码充电时间
+                <p class='mui-ellipsis' style="color: rgb(0,153,255);font-size: 12px">2018/08/04 17:40 -- 2018/08/05/12:00</p>
+            </div>
+        </li>
+        <li class="mui-table-view-cell mui-media">
+            <img class="mui-media-object mui-pull-left"
+                 src="http://img.youchedongli.cn/public/static/mobile/images/details_pile_amount_ele.png">
+            <div class="mui-media-body" style="line-height: 25px;font-size: 14px">
+                充电量：<span>13.50(度)</span>
+            </div>
+        </li>
+        <li class="mui-table-view-cell mui-media">
+            <img class="mui-media-object mui-pull-left"
+                 src="http://img.youchedongli.cn/public/static/mobile/images/details_pile_total_price.png">
+            <div class="mui-media-body" style="line-height: 25px;font-size: 14px">
+                总金额：<span>25.68元</span>
+            </div>
+        </li>
+    </ul>
+</div>
+{include file="login" /}
+{include file="user_message" /}
+{include file="loading" /}
+</body>
+{/block}
+

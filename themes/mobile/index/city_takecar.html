@@ -1,0 +1,144 @@
+{extend name="base" /}
+{block name="css"}
+<link rel="stylesheet" type="text/css" href="__STATIC__/mobile/css/city-takecar-css1.css?rand={$css_rand}">
+<link rel="stylesheet" type="text/css" href="__STATIC__/mobile/css/city-takecar-css2.css?rand={$css_rand}">
+<link rel="stylesheet" type="text/css" href="__STATIC__/mobile/css/city-takecar-css3.css?rand={$css_rand}">
+{/block}
+{block name="body"}
+<body style="background-color: rgb(236, 236, 236);display: block; overflow: hidden;" onselectstart="return false">
+<div id="page-view-area">
+    <article class="areaWrap" id="areabox">
+        <div id="divCityContent" style="opacity: 1;">
+            <div class="headSys bgW">
+                <p class="iph" style="display: none"></p>
+                <p class="headCap size16">
+                    <em id="goback" class="opaBtn size14">取消</em>
+                    <span id="area-title">取车城市</span>
+                    <em class="opaBtn size14"></em>
+                </p>
+            </div>
+            <div class="inputWrap bgW">
+                <p class="inputStr color9 size14" id="inputArea" style="display: none;">
+                    <input id="cityKeyword2" class="cit color9 search_input abs_size nofastclick" to="h"
+                           placeholder="可输入城市搜索" maxlength="40">
+                    <span class="line"></span>
+                    <em class="isdIco searIco size16"></em>
+                    <input id="areaKeyword" type="text" placeholder="搜索地址 / 酒店名 / 交叉路口"
+                           class="main color9 size14 abs_size nofastclick" maxlength="40">
+                </p>
+                <p class="inputStrCity color9 size14" id="inputCity" style="opacity: 1;">
+                    <input id="cityKeyword1" class="cit color9 search_input abs_size nofastclick" to="h"
+                           placeholder="可输入城市名 / 城市首字搜索" maxlength="40">
+                </p>
+                <div class="city-main">
+                    <div class="sub-list" id="searchList">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="areaCon main scrollCss" style="top: 90px; margin-top: 0px;">
+            <div id="scrollList">
+                <div id="mainList">
+                    <dl class="sortMod size14">
+                        <div class="city-hot">
+                            <div class="title" id="hot">热门城市</div>
+                            <div class="list">
+                                <span class="js-city-item" data-id="43">三亚</span>
+                                <span class="js-city-item" data-id="2">上海</span>
+                                <span class="js-city-item" data-id="32">广州</span>
+                                <span class="js-city-item" data-id="1">北京</span>
+                                <span class="js-city-item" data-id="42">海口</span>
+                                <span class="js-city-item" data-id="34">昆明</span>
+                                <span class="js-city-item" data-id="28">成都</span>
+                                <span class="js-city-item" data-id="30">深圳</span>
+                                <span class="js-city-item" data-id="4">重庆</span>
+                                <span class="js-city-item" data-id="10">西安</span>
+                                <span class="js-city-item" data-id="17">杭州</span>
+                                <span class="js-city-item" data-id="25">厦门</span>
+                                <span class="js-city-item" data-id="477">武汉</span>
+                                <span class="js-city-item" data-id="37">丽江</span>
+                                <span class="js-city-item" data-id="206">长沙</span>
+                                <span class="js-city-item" data-id="12">南京</span>
+                                <span class="js-city-item" data-id="5">哈尔滨</span>
+                                <span class="js-city-item current" data-id="38">贵阳</span>
+                                <span class="js-city-item" data-id="559">郑州</span>
+                                <span class="js-city-item" data-id="3">天津</span>
+                                <span class="js-city-item" data-id="7">青岛</span>
+                            </div>
+                        </div>
+                        <!--<div class="city-main" id="city-main">-->
+                            <!--<div class="sel-city">-->
+                                <!--<ul id="city-key">-->
+                                    <!--<li data-value="热门"><a href="#hot">热门</a></li>-->
+
+                                <!--</ul>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                        <div class="city-main" id="city-main">
+                            <div class="sel-city">
+                                <ul id="city-key">
+                                    <li data-value="热门"><a href="#hot">热门</a></li>
+
+                                    <li data-value="A"> <a href="#A">A</a></li><li data-value="B"> <a href="#B">B</a></li><li data-value="C"> <a href="#C">C</a></li><li data-value="D"> <a href="#D">D</a></li><li data-value="E"> <a href="#E">E</a></li><li data-value="F"> <a href="#F">F</a></li><li data-value="G"> <a href="#G">G</a></li><li data-value="H"> <a href="#H">H</a></li><li data-value="J"> <a href="#J">J</a></li><li data-value="K"> <a href="#K">K</a></li><li data-value="L"> <a href="#L">L</a></li><li data-value="M"> <a href="#M">M</a></li><li data-value="N"> <a href="#N">N</a></li><li data-value="O"> <a href="#O">O</a></li><li data-value="P"> <a href="#P">P</a></li><li data-value="Q"> <a href="#Q">Q</a></li><li data-value="R"> <a href="#R">R</a></li><li data-value="S"> <a href="#S">S</a></li><li data-value="T"> <a href="#T">T</a></li><li data-value="W"> <a href="#W">W</a></li><li data-value="X"> <a href="#X">X</a></li><li data-value="Y"> <a href="#Y">Y</a></li><li data-value="Z"> <a href="#Z">Z</a></li></ul>
+                            </div>
+                            <div class="index" id="A">A</div>
+                            <div class="sub-list">
+                                <div class="js-city-item" data-id="484647">阿拉善盟</div><div class="js-city-item" data-id="455742">鞍山</div><div class="js-city-item" data-id="87753">安庆</div><div class="js-city-item" data-id="249675">安阳</div><div class="js-city-item" data-id="702109">阿坝州</div><div class="js-city-item" data-id="158292">安顺</div><div class="js-city-item" data-id="722694">阿里</div><div class="js-city-item" data-id="640315">安康</div><div class="js-city-item" data-id="728067">阿克苏</div><div class="js-city-item" data-id="737663">阿勒泰</div></div><div class="index" id="B">B</div>
+                            <div class="sub-list">
+                                <div class="js-city-item" data-id="74874">北京</div><div class="js-city-item" data-id="208054">保定</div><div class="js-city-item" data-id="470335">包头</div><div class="js-city-item" data-id="479482">巴彦淖尔</div><div class="js-city-item" data-id="458067">本溪</div><div class="js-city-item" data-id="398841">白山</div><div class="js-city-item" data-id="401038">白城</div><div class="js-city-item" data-id="84117">蚌埠</div><div class="js-city-item" data-id="570636">滨州</div><div class="js-city-item" data-id="141755">北海</div><div class="js-city-item" data-id="146522">百色</div><div class="js-city-item" data-id="696157">巴中</div><div class="js-city-item" data-id="165461">毕节</div><div class="js-city-item" data-id="743265">保山</div><div class="js-city-item" data-id="618522">宝鸡</div><div class="js-city-item" data-id="57384">白银</div><div class="js-city-item" data-id="726556">博尔塔拉蒙古自治州</div><div class="js-city-item" data-id="727104">巴音郭楞蒙古自治州</div></div><div class="index" id="C">C</div>
+                            <div class="sub-list">
+                                <div class="js-city-item" data-id="219677">承德</div><div class="js-city-item" data-id="222616">沧州</div><div class="js-city-item" data-id="587546">长治</div><div class="js-city-item" data-id="471644">赤峰</div><div class="js-city-item" data-id="465783">朝阳</div><div class="js-city-item" data-id="391144">长春</div><div class="js-city-item" data-id="409936">常州</div><div class="js-city-item" data-id="91164">滁州</div><div class="js-city-item" data-id="99394">巢湖</div><div class="js-city-item" data-id="105719">池州</div><div class="js-city-item" data-id="339657">长沙</div><div class="js-city-item" data-id="361534">常德</div><div class="js-city-item" data-id="371667">郴州</div><div class="js-city-item" data-id="131531">潮州</div><div class="js-city-item" data-id="152035">崇左</div><div class="js-city-item" data-id="754686">重庆</div><div class="js-city-item" data-id="650699">成都</div><div class="js-city-item" data-id="748416">楚雄州</div><div class="js-city-item" data-id="717141">昌都</div><div class="js-city-item" data-id="725030">昌吉州</div></div><div class="index" id="D">D</div>
+                            <div class="sub-list">
+                                <div class="js-city-item" data-id="584021">大同</div><div class="js-city-item" data-id="454017">大连</div><div class="js-city-item" data-id="458658">丹东</div><div class="js-city-item" data-id="299119">大庆</div><div class="js-city-item" data-id="307447">大兴安岭</div><div class="js-city-item" data-id="511483">东营</div><div class="js-city-item" data-id="555512">德州</div><div class="js-city-item" data-id="130588">东莞</div><div class="js-city-item" data-id="659022">德阳</div><div class="js-city-item" data-id="691410">达州</div><div class="js-city-item" data-id="752477">大理州</div><div class="js-city-item" data-id="753733">德宏州</div><div class="js-city-item" data-id="754465">迪庆州</div><div class="js-city-item" data-id="67206">定西</div></div><div class="index" id="E">E</div>
+                            <div class="sub-list">
+                                <div class="js-city-item" data-id="476707">鄂尔多斯</div><div class="js-city-item" data-id="319186">鄂州</div><div class="js-city-item" data-id="334770">恩施州</div></div><div class="index" id="F">F</div>
+                            <div class="sub-list">
+                                <div class="js-city-item" data-id="457000">抚顺</div><div class="js-city-item" data-id="462003">阜新</div><div class="js-city-item" data-id="93856">阜阳</div><div class="js-city-item" data-id="3">福州</div><div class="js-city-item" data-id="445939">抚州</div><div class="js-city-item" data-id="114247">佛山</div><div class="js-city-item" data-id="142227">防城港</div></div><div class="index" id="G">G</div>
+                            <div class="sub-list">
+                                <div class="js-city-item" data-id="435938">赣州</div><div class="js-city-item" data-id="107713">广州</div><div class="js-city-item" data-id="138674">桂林</div><div class="js-city-item" data-id="143725">贵港</div><div class="js-city-item" data-id="665565">广元</div><div class="js-city-item" data-id="688272">广安</div><div class="js-city-item" data-id="703762">甘孜藏族自治州</div><div class="js-city-item" data-id="152965">贵阳</div><div class="js-city-item" data-id="74067">甘南州</div><div class="js-city-item" data-id="492141">果洛州</div><div class="js-city-item" data-id="486564">固原</div></div><div class="index" id="H">H</div>
+                            <div class="sub-list">
+                                <div class="js-city-item" data-id="196500">邯郸</div><div class="js-city-item" data-id="232454">衡水</div><div class="js-city-item" data-id="468974">呼和浩特</div><div class="js-city-item" data-id="477692">呼伦贝尔</div><div class="js-city-item" data-id="467520">葫芦岛</div><div class="js-city-item" data-id="291427">哈尔滨</div><div class="js-city-item" data-id="297701">鹤岗</div><div class="js-city-item" data-id="304374">黑河</div><div class="js-city-item" data-id="417852">淮安</div><div class="js-city-item" data-id="18048">杭州</div><div class="js-city-item" data-id="33214">湖州</div><div class="js-city-item" data-id="81715">合肥</div><div class="js-city-item" data-id="85357">淮南</div><div class="js-city-item" data-id="86640">淮北</div><div class="js-city-item" data-id="89828">黄山</div><div class="js-city-item" data-id="576185">菏泽</div><div class="js-city-item" data-id="253298">鹤壁</div><div class="js-city-item" data-id="311356">黄石</div><div class="js-city-item" data-id="327798">黄冈</div><div class="js-city-item" data-id="345952">衡阳</div><div class="js-city-item" data-id="380758">怀化</div><div class="js-city-item" data-id="122170">惠州</div><div class="js-city-item" data-id="126854">河源</div><div class="js-city-item" data-id="148546">贺州</div><div class="js-city-item" data-id="149378">河池</div><div class="js-city-item" data-id="175821">海口</div><div class="js-city-item" data-id="749624">红河州</div><div class="js-city-item" data-id="631214">汉中</div><div class="js-city-item" data-id="489297">海东</div><div class="js-city-item" data-id="491034">海北州</div><div class="js-city-item" data-id="491321">黄南州</div><div class="js-city-item" data-id="491626">海南州</div><div class="js-city-item" data-id="492709">海西州</div><div class="js-city-item" data-id="724652">哈密</div><div class="js-city-item" data-id="732988">和田</div></div><div class="index" id="J">J</div>
+                            <div class="sub-list">
+                                <div class="js-city-item" data-id="591287">晋城</div><div class="js-city-item" data-id="595591">晋中</div><div class="js-city-item" data-id="459625">锦州</div><div class="js-city-item" data-id="393450">吉林</div><div class="js-city-item" data-id="296807">鸡西</div><div class="js-city-item" data-id="300907">佳木斯</div><div class="js-city-item" data-id="31894">嘉兴</div><div class="js-city-item" data-id="38035">金华</div><div class="js-city-item" data-id="430763">景德镇</div><div class="js-city-item" data-id="432398">九江</div><div class="js-city-item" data-id="440045">吉安</div><div class="js-city-item" data-id="493131">济南</div><div class="js-city-item" data-id="530139">济宁</div><div class="js-city-item" data-id="258171">焦作</div><div class="js-city-item" data-id="319597">荆门</div><div class="js-city-item" data-id="324609">荆州</div><div class="js-city-item" data-id="115077">江门</div><div class="js-city-item" data-id="132632">揭阳</div><div class="js-city-item" data-id="57113">嘉峪关</div><div class="js-city-item" data-id="57188">金昌</div><div class="js-city-item" data-id="65157">酒泉</div></div><div class="index" id="K">K</div>
+                            <div class="sub-list">
+                                <div class="js-city-item" data-id="240649">开封</div><div class="js-city-item" data-id="739033">昆明</div><div class="js-city-item" data-id="724220">克拉玛依</div><div class="js-city-item" data-id="729754">克州</div><div class="js-city-item" data-id="730130">喀什</div></div><div class="index" id="L">L</div>
+                            <div class="sub-list">
+                                <div class="js-city-item" data-id="228914">廊坊</div><div class="js-city-item" data-id="607277">临汾</div><div class="js-city-item" data-id="610589">吕梁</div><div class="js-city-item" data-id="462997">辽阳</div><div class="js-city-item" data-id="396899">辽源</div><div class="js-city-item" data-id="416015">连云港</div><div class="js-city-item" data-id="52064">丽水</div><div class="js-city-item" data-id="100497">六安</div><div class="js-city-item" data-id="13562">龙岩</div><div class="js-city-item" data-id="546757">莱芜</div><div class="js-city-item" data-id="547853">临沂</div><div class="js-city-item" data-id="564076">聊城</div><div class="js-city-item" data-id="243298">洛阳</div><div class="js-city-item" data-id="385214">娄底</div><div class="js-city-item" data-id="137369">柳州</div><div class="js-city-item" data-id="151173">来宾</div><div class="js-city-item" data-id="673404">乐山</div><div class="js-city-item" data-id="706605">凉山州</div><div class="js-city-item" data-id="154692">六盘水</div><div class="js-city-item" data-id="745693">丽江</div><div class="js-city-item" data-id="747377">临沧</div><div class="js-city-item" data-id="716799">拉萨</div><div class="js-city-item" data-id="722882">林芝</div><div class="js-city-item" data-id="55846">兰州</div><div class="js-city-item" data-id="69209">陇南</div><div class="js-city-item" data-id="72730">临夏州</div></div><div class="index" id="M">M</div>
+                            <div class="sub-list">
+                                <div class="js-city-item" data-id="302887">牡丹江</div><div class="js-city-item" data-id="86235">马鞍山</div><div class="js-city-item" data-id="118472">茂名</div><div class="js-city-item" data-id="123530">梅州</div><div class="js-city-item" data-id="661421">绵阳</div><div class="js-city-item" data-id="682226">眉山</div></div><div class="index" id="N">N</div>
+                            <div class="sub-list">
+                                <div class="js-city-item" data-id="403890">南京</div><div class="js-city-item" data-id="413570">南通</div><div class="js-city-item" data-id="22636">宁波</div><div class="js-city-item" data-id="11533">南平</div><div class="js-city-item" data-id="15608">宁德　</div><div class="js-city-item" data-id="428837">南昌</div><div class="js-city-item" data-id="269442">南阳</div><div class="js-city-item" data-id="135426">南宁</div><div class="js-city-item" data-id="670954">内江</div><div class="js-city-item" data-id="676108">南充</div><div class="js-city-item" data-id="754163">怒江州</div><div class="js-city-item" data-id="721282">那曲</div></div><div class="index" id="O">O</div>
+                            <div class="sub-list">
+                            </div><div class="index" id="P">P</div>
+                            <div class="sub-list">
+                                <div class="js-city-item" data-id="463726">盘锦</div><div class="js-city-item" data-id="3631">莆田</div><div class="js-city-item" data-id="431560">萍乡</div><div class="js-city-item" data-id="246751">平顶山</div><div class="js-city-item" data-id="656346">攀枝花</div><div class="js-city-item" data-id="63447">平凉</div></div><div class="index" id="Q">Q</div>
+                            <div class="sub-list">
+                                <div class="js-city-item" data-id="193972">秦皇岛</div><div class="js-city-item" data-id="294766">齐齐哈尔</div><div class="js-city-item" data-id="302482">七台河</div><div class="js-city-item" data-id="6728">泉州</div><div class="js-city-item" data-id="498417">青岛</div><div class="js-city-item" data-id="129281">清远</div><div class="js-city-item" data-id="142618">钦州</div><div class="js-city-item" data-id="163200">黔西南州</div><div class="js-city-item" data-id="169815">黔东南苗族侗族自治州</div><div class="js-city-item" data-id="173413">黔南布依族苗族自治州</div><div class="js-city-item" data-id="740775">曲靖</div><div class="js-city-item" data-id="65773">庆阳</div></div><div class="index" id="R">R</div>
+                            <div class="sub-list">
+                                <div class="js-city-item" data-id="543697">日照</div><div class="js-city-item" data-id="719300">日喀则</div></div><div class="index" id="S">S</div>
+                            <div class="sub-list">
+                                <div class="js-city-item" data-id="182755">石家庄</div><div class="js-city-item" data-id="593715">朔州</div><div class="js-city-item" data-id="451187">沈阳</div><div class="js-city-item" data-id="395385">四平</div><div class="js-city-item" data-id="399649">松原</div><div class="js-city-item" data-id="298208">双鸭山</div><div class="js-city-item" data-id="305535">绥化</div><div class="js-city-item" data-id="645122">上海</div><div class="js-city-item" data-id="411435">苏州</div><div class="js-city-item" data-id="427235">宿迁</div><div class="js-city-item" data-id="34575">绍兴</div><div class="js-city-item" data-id="96503">宿州</div><div class="js-city-item" data-id="4668">三明</div><div class="js-city-item" data-id="448209">上饶</div><div class="js-city-item" data-id="267887">三门峡</div><div class="js-city-item" data-id="274594">商丘</div><div class="js-city-item" data-id="312328">十堰</div><div class="js-city-item" data-id="333702">随州</div><div class="js-city-item" data-id="337430">省直辖行政单位</div><div class="js-city-item" data-id="351593">邵阳</div><div class="js-city-item" data-id="110501">韶关</div><div class="js-city-item current" data-id="112083">深圳</div><div class="js-city-item" data-id="113125">汕头</div><div class="js-city-item" data-id="125908">汕尾</div><div class="js-city-item" data-id="176381">三亚</div><div class="js-city-item" data-id="176773">省属虚拟</div><div class="js-city-item" data-id="668542">遂宁</div><div class="js-city-item" data-id="746214">思茅</div><div class="js-city-item" data-id="718610">山南</div><div class="js-city-item" data-id="643090">商洛</div><div class="js-city-item" data-id="485503">石嘴山</div><div class="js-city-item" data-id="738443">省直辖行政单位</div></div><div class="index" id="T">T</div>
+                            <div class="sub-list">
+                                <div class="js-city-item" data-id="711070">天津</div><div class="js-city-item" data-id="187965">唐山</div><div class="js-city-item" data-id="582415">太原</div><div class="js-city-item" data-id="474093">通辽</div><div class="js-city-item" data-id="464280">铁岭</div><div class="js-city-item" data-id="397547">通化</div><div class="js-city-item" data-id="425168">泰州</div><div class="js-city-item" data-id="46652">台州</div><div class="js-city-item" data-id="87460">铜陵</div><div class="js-city-item" data-id="536887">泰安</div><div class="js-city-item" data-id="160324">铜仁</div><div class="js-city-item" data-id="617876">铜川</div><div class="js-city-item" data-id="58262">天水</div><div class="js-city-item" data-id="724388">吐鲁番</div><div class="js-city-item" data-id="735987">塔城</div></div><div class="index" id="W">W</div>
+                            <div class="sub-list">
+                                <div class="js-city-item" data-id="471458">乌海</div><div class="js-city-item" data-id="480605">乌兰察布</div><div class="js-city-item" data-id="405615">无锡</div><div class="js-city-item" data-id="25884">温州</div><div class="js-city-item" data-id="83410">芜湖</div><div class="js-city-item" data-id="520298">潍坊</div><div class="js-city-item" data-id="540733">威海</div><div class="js-city-item" data-id="307716">武汉</div><div class="js-city-item" data-id="140700">梧州</div><div class="js-city-item" data-id="751071">文山州</div><div class="js-city-item" data-id="623918">渭南</div><div class="js-city-item" data-id="61085">武威</div><div class="js-city-item" data-id="485884">吴忠</div><div class="js-city-item" data-id="723477">乌鲁木齐</div></div><div class="index" id="X">X</div>
+                            <div class="sub-list">
+                                <div class="js-city-item" data-id="80872">县</div><div class="js-city-item" data-id="715034">县</div><div class="js-city-item" data-id="202444">邢台</div><div class="js-city-item" data-id="602106">忻州</div><div class="js-city-item" data-id="482281">兴安盟</div><div class="js-city-item" data-id="483469">锡林郭勒盟</div><div class="js-city-item" data-id="650331">县</div><div class="js-city-item" data-id="407074">徐州</div><div class="js-city-item" data-id="106680">宣城</div><div class="js-city-item" data-id="3076">厦门</div><div class="js-city-item" data-id="434871">新余</div><div class="js-city-item" data-id="254296">新乡</div><div class="js-city-item" data-id="264000">许昌</div><div class="js-city-item" data-id="279630">信阳</div><div class="js-city-item" data-id="316350">襄樊</div><div class="js-city-item" data-id="321323">孝感</div><div class="js-city-item" data-id="332446">咸宁</div><div class="js-city-item" data-id="343985">湘潭</div><div class="js-city-item" data-id="388832">湘西土家族苗族自治州</div><div class="js-city-item" data-id="752142">西双版纳州</div><div class="js-city-item" data-id="613965">西安</div><div class="js-city-item" data-id="620668">咸阳</div><div class="js-city-item" data-id="488120">西宁</div></div><div class="index" id="Y">Y</div>
+                            <div class="sub-list">
+                                <div class="js-city-item" data-id="586426">阳泉</div><div class="js-city-item" data-id="598639">运城</div><div class="js-city-item" data-id="461146">营口</div><div class="js-city-item" data-id="402247">延边朝鲜族自治州</div><div class="js-city-item" data-id="299997">伊春</div><div class="js-city-item" data-id="419692">盐城</div><div class="js-city-item" data-id="422449">扬州</div><div class="js-city-item" data-id="435382">鹰潭</div><div class="js-city-item" data-id="443122">宜春</div><div class="js-city-item" data-id="513384">烟台</div><div class="js-city-item" data-id="314530">宜昌</div><div class="js-city-item" data-id="357788">岳阳</div><div class="js-city-item" data-id="367799">益阳</div><div class="js-city-item" data-id="375137">永州</div><div class="js-city-item" data-id="128373">阳江</div><div class="js-city-item" data-id="134374">云浮</div><div class="js-city-item" data-id="144949">玉林</div><div class="js-city-item" data-id="684831">宜宾</div><div class="js-city-item" data-id="694865">雅安</div><div class="js-city-item" data-id="742502">玉溪</div><div class="js-city-item" data-id="627544">延安</div><div class="js-city-item" data-id="634429">榆林</div><div class="js-city-item" data-id="492383">玉树州</div><div class="js-city-item" data-id="484916">银川</div><div class="js-city-item" data-id="734603">伊犁州</div></div><div class="index" id="Z">Z</div>
+                            <div class="sub-list">
+                                <div class="js-city-item" data-id="214981">张家口</div><div class="js-city-item" data-id="424112">镇江</div><div class="js-city-item" data-id="43349">衢州</div><div class="js-city-item" data-id="46108">舟山</div><div class="js-city-item" data-id="103717">亳州</div><div class="js-city-item" data-id="9403">漳州</div><div class="js-city-item" data-id="505283">淄博</div><div class="js-city-item" data-id="508941">枣庄</div><div class="js-city-item" data-id="237642">郑州</div><div class="js-city-item" data-id="260814">濮阳</div><div class="js-city-item" data-id="266517">漯河</div><div class="js-city-item" data-id="283179">周口</div><div class="js-city-item" data-id="288419">驻马店</div><div class="js-city-item" data-id="341672">株洲</div><div class="js-city-item" data-id="366030">张家界</div><div class="js-city-item" data-id="112797">珠海</div><div class="js-city-item" data-id="116502">湛江</div><div class="js-city-item" data-id="120491">肇庆</div><div class="js-city-item" data-id="131230">中山</div><div class="js-city-item" data-id="654512">自贡</div><div class="js-city-item" data-id="656896">泸州</div><div class="js-city-item" data-id="698940">资阳</div><div class="js-city-item" data-id="156033">遵义</div><div class="js-city-item" data-id="744263">昭通</div><div class="js-city-item" data-id="62415">张掖</div><div class="js-city-item" data-id="487595">中卫</div></div></div>
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </article>
+</div>
+{include file="login" /}
+{include file="loading" /}
+<script type="text/javascript" src="__STATIC__/mobile/js/jquery.min.js"></script>
+<script type="text/javascript" src="__STATIC__/mobile/js/public-js.js?rand={$js_rand}"></script>
+<script type="text/javascript" src="__STATIC__/mobile/js/city-takecar-js.js?rand={$js_rand}"></script>
+</body>
+{/block}

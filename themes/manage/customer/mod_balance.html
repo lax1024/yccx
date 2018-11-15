@@ -1,0 +1,83 @@
+{extend name="base" /}
+{block name="body"}
+<div class="layui-body">
+    <!--tab标签-->
+    <div class="layui-tab layui-tab-brief">
+        <ul class="layui-tab-title">
+            <li class=""><a href="{:url('manage/customer/index')}">用户管理</a></li>
+            <li class="layui-this">用户余额变动</li>
+        </ul>
+        <div class="layui-tab-content">
+            <fieldset class="layui-elem-field layui-field-title">
+                <legend>用户余额信息</legend>
+            </fieldset>
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">用户id:</label>
+                    <div class="layui-input-inline">
+                        <div class="layui-form-mid ">{$customer_data['id']}</div>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">用户姓名:</label>
+                    <div class="layui-input-inline" style="width: 230px">
+                        <div class="layui-form-mid ">{$customer_data['customer_name']}</div>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">用户电话:</label>
+                    <div class="layui-input-inline">
+                        <div class="layui-form-mid ">{$customer_data['mobile_phone']}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">微信昵称:</label>
+                    <div class="layui-input-inline">
+                        <div class="layui-form-mid ">{$customer_data['wechar_nickname']}</div>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">现有余额:</label>
+                    <div class="layui-input-inline" style="width: 230px">
+                        <div class="layui-form-mid ">{$customer_data['customer_balance']}</div>
+                    </div>
+                </div>
+                <div class="layui-inline">
+
+                </div>
+            </div>
+            <div class="layui-tab-item layui-show">
+                <form class="layui-form form-container" action="{:url('manage/customer/mod_balance_save')}"
+                      method="get">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">变动金额</label>
+                        <div class="layui-input-block">
+                            <input type="number" name="balance" value="" required lay-verify="required"
+                                   placeholder="变动余额" class="layui-input">
+                            <input type="text" style="display: none" name="id" value="{$customer_data['id']}">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">增/减情况</label>
+                        <div class="layui-input-block">
+                            <input type="radio" name="mod" value="add" title="增加" checked="checked">
+                            <input type="radio" name="mod" value="sub" title="减少">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <div class="layui-input-block">
+                            <button class="layui-btn" lay-submit lay-filter="*">确定</button>
+                            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}
+{block name="js"}
+<script type="text/javascript" src="__JS__/picker.js"></script>
+{/block}

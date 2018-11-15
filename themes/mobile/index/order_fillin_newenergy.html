@@ -1,0 +1,557 @@
+{extend name="base" /}
+{block name="css"}
+<link rel="stylesheet" type="text/css" href="__STATIC__/mobile/css/order-fillin-newenergy-css1.css?rand={$css_rand}">
+<link rel="stylesheet" type="text/css" href="__STATIC__/mobile/css/order-fillin-newenergy-css2.css?rand={$css_rand}">
+<link rel="stylesheet" type="text/css" href="__STATIC__/mobile/css/index-css5.css?rand={$css_rand}">
+<link rel="stylesheet" type="text/css" href="__STATIC__/mobile/css/index-css5.css?rand={$css_rand}">
+<link rel="stylesheet" type="text/css" href="__STATIC__/mui/css/mui.min.css?rand={$css_rand}">
+<link rel="stylesheet" type="text/css" href="__STATIC__/mui/css/mui-icons-extra.css?rand={$css_rand}">
+<link rel="stylesheet" type="text/css" href="__STATIC__/mui/css/app-self.css?rand={$css_rand}">
+<link rel="stylesheet" type="text/css" href="__STATIC__/mobile/css/user-center-css.css?rand={$css_rand}">
+{/block}
+{block name="body"}
+<style>
+    .mui-bar {
+        background-color: #f3e856;
+    }
+
+    .pickInfo {
+        padding: 2px 12px;
+    }
+
+    .fmCap {
+        height: 40px;
+    }
+
+    .fmForm > .inner {
+        display: block;
+        padding: 6px 6px 6px 0;
+    }
+
+    .color9 {
+        color: #666;
+    }
+
+    .size15 {
+        font-size: 16px;
+    }
+
+    .user_protocol_no {
+        border-radius: 100%;
+        border: 1px solid #EEE;
+    }
+
+    .user_protocol_yes {
+        color: #0AAB6F;
+        border-radius: 100%;
+        border: 1px solid #0AAB6F;
+    }
+
+    .vehSam {
+        padding: 5px 10px;
+        border-radius: 2px 0 0 2px;
+        background-color: rgba(250, 200, 86, 0.9);
+        position: absolute;
+        bottom: 10px;
+        right: 10px;
+        color: #333;
+    }
+
+</style>
+<body style="background-color: rgb(240, 242, 244); color: rgb(34, 34, 34); display: block;"
+      onselectstart="return false">
+<header class="mui-bar mui-bar-nav">
+    <span onclick="goback()" class="mui-icon mui-icon-contact mui-icon-left-nav"></span>
+    <h1 class="mui-title">订单填写</h1>
+</header>
+<div class="op-content-info flexCo" style="margin-top: 47px;margin-bottom: 20px">
+    <div class="fillCon flexMa">
+        <div class="vehImgMod" style="display: none">
+            <img src="">
+            <p class="vehDesc colorF">
+                <span class="medi size16">
+                    大众朗逸
+                </span>
+            </p>
+            <span class="vehSam colorC size7" style="background: #f3e856EE;border-radius: 3px">车型样式</span>
+        </div>
+
+        <div class="mui-content" id="js_last_pic" style="background-color:#fff;display: none">
+            <h4 style="padding-left: 10px;color: #999999;padding-top: 10px">上一个客户还车时拍的照片</h4>
+            <ul class="mui-table-view mui-grid-view js_car_pic_choose">
+                <li class="mui-table-view-cell mui-media mui-col-xs-4">
+                    <img id="js_last_pic_inner" class="mui-media-object"
+                         src="http://img.youchedongli.cn/public/static/mobile/images/car_pic_inner.png?rand=2018"
+                         style="height: 60px">
+                    <div class="mui-media-body">内部</div>
+                </li>
+                <li class="mui-table-view-cell mui-media mui-col-xs-4">
+                    <img id="js_last_pic_left_front" class="mui-media-object"
+                         src="http://img.youchedongli.cn/public/static/mobile/images/car_pic_left_front.png?rand=2018"
+                         style="height: 60px">
+                    <div class="mui-media-body">左前</div>
+                </li>
+                <li class="mui-table-view-cell mui-media mui-col-xs-4">
+                    <img id="js_last_pic_right_front" class="mui-media-object"
+                         src="http://img.youchedongli.cn/public/static/mobile/images/car_pic_right_front.png?rand=2018"
+                         style="height: 60px">
+                    <div class="mui-media-body">右前</div>
+                </li>
+                <li class="mui-table-view-cell mui-media mui-col-xs-4">
+                    <img id="js_last_pic_back" class="mui-media-object"
+                         src="http://img.youchedongli.cn/public/static/mobile/images/car_pic_back.png?rand=2018"
+                         style="height: 60px">
+                    <div class="mui-media-body">后方</div>
+                </li>
+                <li class="mui-table-view-cell mui-media mui-col-xs-4">
+                    <div id="js_invoice" style="display: block">
+                        <img id="js_last_pic_invoice" class="mui-media-object"
+                             src="http://img.youchedongli.cn/public/static/mobile/images/car_pic_invoice.png?rand=2018"
+                             style="height: 60px">
+                        <div class="mui-media-body">发票信息</div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <div class="fillMod size15">
+            <p class="fmCap color9 size18" line="hairB bgEc">驾驶员信息</p>
+            <div class="fmForm" id="contactlist">
+                <div class="inner sin" line="hairB bgEc">
+                    <span class="formFie color9">驾驶员：</span>
+                    <span id="uname" class="color9"></span>
+                </div>
+            </div>
+            <div class="fmForm">
+                <div class="inner sin" line="hairB bgEc">
+                    <span class="formFie color9 mg15" data-type="1">
+                        <span>身份证：</span>
+                        <span id="cardnumber" class="color9"></span>
+                    </span>
+                </div>
+            </div>
+            <div class="fmForm">
+                <div class="inner sin" line="hairB bgEc">
+                    <span class="formFie color9 mg15" data-type="1">
+                        <span class="formFie color9">联系手机：</span>
+                        <span id="iponenumber" class="color9"></span>
+                    </span>
+                </div>
+            </div>
+            <br/>
+        </div>
+        <div class="fillMod size15" style="height: 140px;">
+            <div style="height: 50%;width: 100%;border: #cccccc solid 1px;">
+                <div class="return_car_place">
+                    <div>
+                        车牌号: <span class="js_car_plate" style="color: red;font-size: 129%;"></span>
+                        <span class="js_car_navi mui-icon mui-icon-navigate"
+                              style="padding-left: 10px;color: rgb(1,181,227);font-size: 20px"></span>
+                    </div>
+                    <div class="js_return_car_name"
+                         style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;"></div>
+                    <div class="js_return_car_address"
+                         style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;"></div>
+                </div>
+
+                <div class="return_car_place_img" id="js_return_car_place_img">
+                    <img class="js_store_img" data-preview-src='' data-preview-group='return_car_place'
+                         src="http://img.youchedongli.cn/public/static/mobile/images/img_return_car_no.png">
+                </div>
+            </div>
+
+            <div class="bottom-menu-item1">
+                <div class="menu-bottom-timer-label">该车将为您保留</div>
+                <div id="js_order_wait_timer" class="menu-bottom-timer"></div>
+            </div>
+            <div id="js_find_car_by_id" class="bottom-menu-item2">
+                <img src="http://img.youchedongli.cn/public/static/mobile/images/fillin_newenergy_findcar.png">
+            </div>
+            <div id="js_reserve_cancel" class="bottom-menu-item2">
+                <img src="http://img.youchedongli.cn/public/static/mobile/images/fillin_newenergy_cancel.png">
+            </div>
+            <div class="bottom-menu-item2">
+                <img class="menu-bottom-price-label"
+                     src="http://img.youchedongli.cn/public/static/mobile/images/fillin_newenergy_price.png">
+                <div id="js-total-price" class="menu-bottom-price"></div>
+                <div id="js-km-price" class="menu-bottom-price"></div>
+            </div>
+        </div>
+        <div class="fillMod size15" style="background: rgb(239,239,244)">
+            <p class="fmCap color9 size16" line="hairB bgEc" style="background: #fff">拍照取车
+                <span style="color: red;font-size: 85%">（请检查轮胎，若气压不足请勿使用）</span></p>
+            <div class="mui-content" id="js_pic_parent" style="text-align: center">
+                <div class="mui-row">
+                    <div class="mui-col-sm-6 mui-col-xs-6">
+                        <img id="js_pic_left_front" data-field="left_front" data-picUrl=""
+                             style="width: 90%;height: 100px;margin: 3px 5%;display: block;"
+                             src="http://img.youchedongli.cn/public/static/mobile/images/car_pic_left_front.png?x-oss-process=image/resize,h_280">
+                        <div class="mui-media-body">左前</div>
+                    </div>
+                    <div class="mui-col-sm-6 mui-col-xs-6">
+                        <img id="js_pic_right_front" data-field="right_front" data-picUrl=""
+                             style="width: 90%;height: 100px;margin: 3px 5%;display: block;"
+                             src="http://img.youchedongli.cn/public/static/mobile/images/car_pic_right_front.png?x-oss-process=image/resize,h_280">
+                        <div class="mui-media-body">右前</div>
+                    </div>
+                </div>
+                <div class="mui-row">
+                    <div class="mui-col-sm-6 mui-col-xs-6">
+                        <img id="js_pic_left_back" data-field="car_back" data-picUrl=""
+                             style="width: 90%;height: 100px;margin: 3px 5%;display: block;"
+                             src="http://img.youchedongli.cn/public/static/mobile/images/car_pic_back.png?x-oss-process=image/resize,h_280">
+                        <div class="mui-media-body">后方</div>
+                    </div>
+                    <div class="mui-col-sm-6 mui-col-xs-6" style="margin-top: 5px">
+                        <p class="fmCap color9 size16" line="hairB bgEc" style="background: #fff;text-align: center">
+                            请核对车牌号</p>
+                        <p class="fmCap color9 size16" line="hairB bgEc" style="background: #fff;text-align: center">
+                            <span class="js_car_plate" style="color: red;font-size: 100%;"></span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="fillMod size15" style="background: rgb(239,239,244)">
+            <p class="fmCap color9 size18" line="hairB bgEc" style="background: #fff">其他信息(可选项)</p>
+            <div id="car_pic_add_div" style="height: auto;width: 100%;">
+                <img class="car_pic_add" onclick="take_user_pic_remove($(this))"
+                     src="http://img.youchedongli.cn/public/static/mobile/images/car_pic_add.png"
+                     style="display: none;margin: 5px;height: 100px;width: 100px">
+                <img class="car_pic_add_click" id="js_car_pic_add"
+                     onclick="take_user_pic_add('car_pic_add_div','order','')" data-index="1"
+                     src="../../.././public/static/mobile/images/car_pic_add.png"
+                     style="margin: 5px;height: 100px;width: 100px">
+            </div>
+            <div style="color: #f00;padding: 0 10px 10px 10px;font-size: 14px">
+                注：当您用车之前，请先检查车辆是否有刮痕、损伤等情况。如有，请您点击上图的“+”图进行拍照上传，以避免您在用车结束后可能产生的不必要的误解，感谢您的理解与配合。
+            </div>
+        </div>
+        <div class="fillMod size15" style="background: rgb(239,239,244)" id="js_remark">
+            <p class="fmCap color9 size18" line="hairB bgEc" style="background: #fff">票据信息(可选项)</p>
+            <div class="mui-content" style="text-align: center">
+                <div class="mui-row">
+                    <div class="mui-col-sm-6 mui-col-xs-6">
+                        <img id="js_pic_invoice" data-field="left_front" data-picUrl=""
+                             style="width: 90%;height: 100px;margin: 3px 5%;display: block;"
+                             src="http://img.youchedongli.cn/public/static/mobile/images/car_pic_invoice.png?x-oss-process=image/resize,h_280">
+                    </div>
+                </div>
+            </div>
+            <div style="color: #f00;padding: 0 10px 10px 10px;font-size: 14px" id="js_take_park_remark">
+                注：该站点为收费站点，请您在缴纳停车费时，点击“票据信息”图片，将收费凭证和发票拍照一起上传，工作人员在核实后，会将该费用退还给您，感谢您的配合。
+            </div>
+        </div>
+        <div class="fillMod introCol" style="padding: 10px 10px 10px 15px;margin-top: 10px">
+            <div class="mui-row">
+                <div class="mui-col-sm-12 mui-col-xs-12">
+                    <span id="user_protocol" class="mui-icon mui-icon-checkmarkempty user_protocol_no"></span>
+                    <a style="text-decoration:none;" href="javascript:void(0)"
+                       id="openPopover">《优车出行服务协议》
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="gopay"
+         style="height: 45px;width: 100%;position: fixed;bottom: 0;background: #ffdb30;text-align: center;line-height: 45px;font-size: 20px">
+        立即用车
+    </div>
+</div>
+<div class="hysdk-ucapi-dialog" style="display: none" id="order_examine_model">
+    <div class="container" style="background:transparent">
+        <div class="ucapi-content">
+            <div class="item login-hd" style="background: #ff9e3d">用车审核</div>
+            <div class="item login-bd">
+                <div class="login-tel">
+                    <span id="js_examine_timer_wait">正在审核中</span>
+                    <span id="js_examine_timer" style="color: #ff0000">(2秒)</span>
+                </div>
+                <div class="login-tel">
+                    <span>预计审核用时：20秒</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="popover" class="mui-backdrop" style="display: none">
+    <header class="mui-bar mui-bar-nav">
+        <span id="goto_back" class="mui-icon mui-icon-contact mui-icon-left-nav"></span>
+        <h1 class="mui-title">优车出行服务协议</h1>
+    </header>
+    <div class="mui-content"
+         style="margin-top: 47px;padding: 0 5px;background-color: white;color: #333;width: 100%;height: 100%;overflow: scroll">
+        {$article['content']}
+        {$article1['content']}
+        <hr/>
+        <div style="text-align: right">更新时间:{$article['publish_time']}</div>
+    </div>
+</div>
+{include file="user_message" /}
+{include file="login" /}
+{include file="loading" /}
+
+<script type="text/javascript" src="__STATIC__/mobile/js/jquery.min.js"></script>
+<script type="text/javascript" src="__STATIC__/mobile/js/public-js.js?rand={$js_rand}"></script>
+<script type="text/javascript" src="__STATIC__/mobile/js/gps-transform-js.js?rand={$js_rand}"></script>
+
+<script type="text/javascript" src="__STATIC__/mui/js/mui.min.js?rand={$css_rand}"></script>
+<script type="text/javascript" src="__STATIC__/mui/js/mui.js?rand={$js_rand}"></script>
+<script type="text/javascript" src="__STATIC__/mui/js/mui.zoom.js?rand={$js_rand}"></script>
+<script type="text/javascript" src="__STATIC__/mui/js/mui.previewimage.js?rand={$js_rand}"></script>
+
+<script>
+    mui.previewImage();
+</script>
+
+<script>
+    var is_up_end = true;
+
+    function goback() {
+        window.history.back();
+    }
+
+    $(function () {
+        $("#goto_back").on('click', function () {
+            $("#popover").fadeOut(300);
+        });
+        $("#openPopover").on('click', function () {
+            $("#popover").fadeIn(250);
+        });
+    });
+    //获得slider插件对象
+    var gallery = mui('.mui-slider');
+    gallery.slider({
+        interval: 1000//自动轮播周期，若为0则不自动播放，默认为0；
+    });
+
+</script>
+{if condition="$is_wxBrowser eq 'yes'"}
+<script src="http://res.wx.qq.com/open/js/jweixin-1.4.0.js?rand={$js_rand}"></script>
+<script>
+    /*
+     * 注意：
+     * 1. 所有的JS接口只能在公众号绑定的域名下调用，公众号开发者需要先登录微信公众平台进入“公众号设置”的“功能设置”里填写“JS接口安全域名”。
+     * 2. 如果发现在 Android 不能分享自定义内容，请到官网下载最新的包覆盖安装，Android 自定义分享接口需升级至 6.0.2.58 版本及以上。
+     * 3. 常见问题及完整 JS-SDK 文档地址：http://mp.weixin.qq.com/wiki/7/aaa137b55fb2e0456bf8dd9148dd613f.html
+     *
+     * 开发中遇到问题详见文档“附录5-常见错误及解决办法”解决，如仍未能解决可通过以下渠道反馈：
+     * 邮箱地址：weixin-open@qq.com
+     * 邮件主题：【微信JS-SDK反馈】具体问题
+     * 邮件内容说明：用简明的语言描述问题所在，并交代清楚遇到该问题的场景，可附上截屏图片，微信团队会尽快处理你的反馈。
+     */
+    wx.config({
+        debug: false,
+        appId: "{$jssdk['appid']}",
+        timestamp: "{$jssdk['timestamp']}",
+        nonceStr: "{$jssdk['nonceStr']}",
+        signature: "{$jssdk['signature']}",
+        jsApiList: [
+            'checkJsApi',
+            'chooseImage',
+            'uploadImage',
+            'openLocation',
+            'getLocation'
+        ]
+    });
+
+    wx.ready(function () {
+        var use_pic_img = $("#js_pic_parent").find("img");
+        use_pic_img.on("click", function () {
+            take_user_pic($(this).attr("id"), "order", "");
+            return false;
+        });
+        $("#js_pic_invoice").on("click", function () {
+            take_user_pic($(this).attr("id"), "order", "");
+            return false;
+        });
+    });
+    wx.error(function (res) {
+        //alert(res.errMsg);
+        mui.alert("微信JSSDK权限获取失败", "错误提示", "确定", function () {
+            window.history.back();
+        });
+    });
+
+
+    /**
+     * 调用第三方导航软件实现导航
+     * @param lat  目的地纬度
+     * @param lng  目的地经度
+     */
+    function go_openLocation(lat, lng) {
+        var ponitx = wgs2gcj(lat, lng);//将gps坐标转为百度地图坐标
+        wx.openLocation({
+            latitude: ponitx[0], // 纬度，浮点数，范围为90 ~ -90
+            longitude: ponitx[1], // 经度，浮点数，范围为180 ~ -180。
+            name: '车辆地址', // 位置名
+            address: '请按照导航去取车', // 地址详情说明
+            scale: 18, // 地图缩放级别,整形值,范围从1~28。默认为最大
+            infoUrl: '' // 在查看位置界面底部显示的超链接,可点击跳转
+        });
+    }
+
+    function take_user_pic(viewId, path, field) {
+        if (!is_up_end) {
+            return;
+        }
+        wx.chooseImage({
+            count: 1, // 默认9
+            sizeType: ['compressed'], // 可以指定是原图还是压缩图，默认二者都有
+            sourceType: ['camera'], // 调用相机拍照
+            // sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+            success: function (res) {
+                var localIds = res.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
+                is_up_end = false;
+                //$("#" + viewId).attr('src', localIds[0]);
+                wx.uploadImage({
+                    localId: localIds[0] + '',
+                    isShowProgressTips: 1,
+                    success: function (res) {
+                        upload_use_car_pic(viewId, res.serverId, "jpg", path, field);
+                    },
+                    fail: function (res) {
+                        is_up_end = true;
+                        mui.alert("上传失败" + res.errMsg, '提示');
+                    }
+                });
+
+            },
+            cancel: function (res) {
+
+            },
+            fail: function (res) {
+
+            }
+        });
+    }
+
+    function upload_use_car_pic(viewId, localIds, type, path, field) {
+        $.ajax({
+            url: website + "/api/Dynupload/upload.html",
+            type: "POST",
+            async: true,
+            data: {
+                sid: localIds,
+                type: type,
+                path: path,
+                field: field
+            },
+            timeout: 5000,
+            dataType: "json",
+            success: function (data) {
+                is_up_end = true;
+                if (data.code == 0) {
+                    $("#" + viewId).attr('src', "http://img.youchedongli.cn" + data.url);
+                    $("#" + viewId).attr('data-picUrl', "http://img.youchedongli.cn" + data.url);
+                } else {
+                    Toast(data.info, 2000);
+                }
+            }
+        });
+    }
+
+    /****************************加号***************************************/
+    var img_node = $("#car_pic_add_div").find('.car_pic_add').clone(true);
+    $("#car_pic_add_div").find('.car_pic_add').remove();
+
+    //加号的点击事件
+    function take_user_pic_add(viewId, path, field) {
+        if (!is_up_end) {
+            return;
+        }
+        wx.chooseImage({
+            count: 1, // 默认9
+            sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
+            sourceType: ['camera'], // 调用相机拍照
+            // sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+            success: function (res) {
+                var localIds = res.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
+                // $("#" + viewId).attr('src', localIds[0]);
+                is_up_end = false;
+                wx.uploadImage({
+                    localId: localIds[0] + '',
+                    isShowProgressTips: 1,
+                    success: function (res) {
+                        // serverIdarr[serverIdindex] = res.serverId;
+                        // get_img_url(res.serverId, serverIdindex);
+                        // serverIdindex++;
+                        upload_use_car_pic_add(viewId, res.serverId, "jpg", path, field);
+                    },
+                    fail: function (res) {
+                        is_up_end = true;
+                        alert("上传失败" + res.errMsg);
+                    }
+                });
+
+            },
+            cancel: function (res) {
+
+            },
+            fail: function (res) {
+                alert(JSON.stringify(res));
+            }
+        });
+    }
+
+    //上传加号点击所拍的图片
+    function upload_use_car_pic_add(viewId, localIds, type, path, field) {
+        $.ajax({
+            url: website + "/api/Dynupload/upload.html",
+            type: "POST",
+            async: true,
+            data: {
+                sid: localIds,
+                type: type,
+                path: path,
+                field: field
+            },
+            timeout: 5000,
+            dataType: "json",
+            beforeSend: function (xhr) {
+
+            },
+            success: function (data) {
+                is_up_end = true;
+                if (data.code == 0) {
+                    var temp_img_node = img_node.clone(true);
+                    temp_img_node.show();
+                    temp_img_node.attr('src', "http://img.youchedongli.cn" + data.url);
+                    temp_img_node.attr('data-picUrl', "http://img.youchedongli.cn" + data.url);
+                    temp_img_node.attr('onclick', "take_user_pic_remove($(this))");
+                    temp_img_node.prependTo($("#" + viewId));
+                } else {
+                    Toast(data.info, 2000);
+                }
+            },
+            error: function (xhr, textStatus) {
+
+            },
+            complete: function () {
+
+            }
+        });
+    }
+
+    //加号拍照后所拍图片的点击事件(点击删除)
+    function take_user_pic_remove(pic_id) {
+        mui.confirm('是否删除', '温馨提示', ["是", "否"], function (e) {
+            if (e.index == 0) {
+                pic_id.remove();
+                $("#js_car_pic_add").show();
+            }
+        });
+    }
+
+</script>
+<script type="text/javascript" src="__STATIC__/mobile/js/order-fillIn-newenergy-js.js?rand={$js_rand}"></script>
+{/if}
+<script>
+    //导航
+    $(".js_car_navi").on("click", function () {
+        var navi_lat = $(".js_car_plate").attr("data-navi-lat");
+        var navi_lng = $(".js_car_plate").attr("data-navi-lng");
+        go_openLocation(parseFloat(navi_lat), parseFloat(navi_lng));
+    });
+</script>
+</body>
+{/block}

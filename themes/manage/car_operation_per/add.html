@@ -1,0 +1,79 @@
+{extend name="base" /}
+{block name="body"}
+<div class="layui-body">
+    <!--tab标签-->
+    <div class="layui-tab layui-tab-brief">
+        <ul class="layui-tab-title">
+            <li class=""><a href="{:url('manage/CarOperationPer/index')}">运营人员管理</a></li>
+            <li class="layui-this">添加运营人员</li>
+        </ul>
+        <div class="layui-tab-content">
+            <div class="layui-tab-item layui-show">
+                <form class="layui-form form-container" action="{:url('manage/CarOperationPer/save')}" method="post">
+                    <div id="p2"></div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">姓名</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="name" value="" required
+                                   lay-verify="required" placeholder="请输入姓名" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">电话</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="phone" value="" required
+                                   lay-verify="required" placeholder="请输电话" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">所属店铺</label>
+                            <div class="layui-input-inline">
+                                <select name="store_key_id" lay-verify="required">
+                                    {foreach name="store_key_list" item="vo"}
+                                    <option value="{$vo.id}">{$vo.store_name}</option>
+                                    {/foreach}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">店铺区域</label>
+                            <div class="layui-input-block">
+                                <input type="checkbox" name="store_area_ids[1]" title="花溪区">
+                                <input type="checkbox" name="store_area_ids[2]" title="云岩区">
+                                <input type="checkbox" name="store_area_ids[3]" title="白云区">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">级别</label>
+                            <div class="layui-input-block">
+                                <input type="radio" name="grade" value="0" title="普通运维" checked="checked">
+                                <input type="radio" name="grade" value="1" title="管理人员">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">状态</label>
+                            <div class="layui-input-block">
+                                <input type="radio" name="status" value="0" title="开启" checked="checked">
+                                <input type="radio" name="status" value="1" title="关闭">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <div class="layui-input-block">
+                            <button class="layui-btn" lay-submit lay-filter="*">保存</button>
+                            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
+    <title>优车出行{$article['title']}</title>
+    <link rel="stylesheet" href="__STATIC__/mui/css/mui.min.css?rand={$css_rand}">
+    <link rel="stylesheet" href="__STATIC__/mui/css/mui-icons-extra.css?rand={$css_rand}">
+    <link rel="stylesheet" href="__STATIC__/mobile/css/user-center-css.css?rand={$css_rand}">
+    <style>
+        ul {
+            font-size: 14px;
+            color: #8f8f94;
+        }
+
+        .mui-bar {
+            background-color: #f3e856;
+        }
+
+        .mui-btn-outlined {
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+<header class="mui-bar mui-bar-nav">
+    <span id="goto_back" class="mui-icon mui-icon-contact mui-icon-left-nav"></span>
+    <h1 class="mui-title">优车出行{$article['title']}</h1>
+</header>
+<div class="mui-content" style="margin-top: 47px;padding: 0 5px;background-color: white;color: #333">
+    {$article['content']}
+    {$article1['content']}
+    <hr/>
+    <div style="text-align: right">更新时间:{$article['publish_time']}</div>
+</div>
+<script src="__STATIC__/mui/js/mui.min.js?rand={$css_rand}"></script>
+<script type="text/javascript" src="__STATIC__/mobile/js/jquery.min.js?rand={$css_rand}"></script>
+<script>
+    $("#goto_back").on('click', function () {
+        window.history.back();
+    });
+</script>
+</body>
+</html>

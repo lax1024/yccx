@@ -1,0 +1,88 @@
+{extend name="base" /}
+{block name="body"}
+<div class="layui-body">
+    <!--tab标签-->
+    <div class="layui-tab layui-tab-brief">
+        <ul class="layui-tab-title">
+            <li class=""><a href="{:url('manage/customer/index')}">用户管理</a></li>
+            <li class="layui-this">推广列表</li>
+        </ul>
+        <div class="layui-tab-content">
+            <div class="layui-tab-item layui-show">
+
+                <form class="layui-form layui-form-pane" action="{:url('manage/customer/index')}" method="get">
+                    <input hidden name="id" value="{$id}">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">关键词</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="keyword" value="{$keyword}" placeholder="请输入关键词"
+                                   class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <button class="layui-btn">搜索</button>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">用户状态</label>
+                        <div class="layui-inline">
+                            <select name="status" lay-filter="statusselect">
+                                <option value="-1">未选择</option>
+                                {foreach name="status_list" item="vo" key="kv"}
+                                <option value="{$kv}" {php} echo $kv==$status?"selected":"";{/php}>{$vo}</option>
+                                {/foreach}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">id：</label>
+                        <label class="layui-form-label">{$customer_data['id']}</label>
+
+                        <label class="layui-form-label">姓名：</label>
+                        <label class="layui-form-label">{$customer_data['customer_name']}</label>
+                    </div>
+                </form>
+                <hr>
+                <table class="layui-table">
+                    <thead>
+                    <tr>
+                        <th style="width: 30px;">ID</th>
+                        <th>手机号码</th>
+                        <th>昵称</th>
+                        <th>真实姓名</th>
+                        <th>身份证号码</th>
+                        <th>性别</th>
+                        <th>客户类型</th>
+                        <th>客户状态</th>
+                        <th>注册时间</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {foreach name="customer_list" item="vo"}
+                    <tr>
+                        <td>{$vo.id}</td>
+                        <td>{$vo.mobile_phone}</td>
+                        <td>{$vo.customer_nickname}</td>
+                        <td>{$vo.customer_name}</td>
+                        <td>{$vo.id_number}</td>
+                        <td>{php}echo $vo['customer_sex']==1 ? '男' : '女';{/php}</td>
+                        <td>{$vo.customer_type}</td>
+                        <td>{$vo.customer_status_str}</td>
+                        <td>{$vo.create_time}</td>
+                    </tr>
+                    {/foreach}
+                    </tbody>
+                </table>
+                <!--分页-->
+                {$customer_list->render()}
+            </div>
+        </div>
+    </div>
+</div>
+{/block}
+{block name="script"}
+<script>
+    form.on('select(statusselect)', function (data) {
+        $(".layui-form-pane").submit();
+    });
+</script>
+{/block}

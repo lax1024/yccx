@@ -1,0 +1,135 @@
+
+.u-book-fee {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 15;
+    background: #666666;
+    color: #f3e856;
+    font-size: 16px;
+    padding: 10px;
+    line-height: 2;
+    padding: 30px;
+    box-sizing: border-box
+}
+
+.fee-box {
+    height: 95%;
+    margin-bottom: 5px;
+    overflow-y: auto
+}
+
+.u-book-fee .header {
+    font-size: 20px;
+    line-height: 2.5
+}
+
+.u-book-fee .fee-content {
+    font-size: 15px;
+    padding: 13px 0;
+    border-bottom: 1px solid #666;
+    height: auto
+}
+
+.u-book-fee .fee-content:after {
+    background-color: #fff
+}
+
+.u-book-fee li {
+    padding: 5px 0
+}
+
+.u-book-fee .fee-right {
+    text-align: right
+}
+
+.u-book-fee .orange {
+    color: #ff9913
+}
+
+.u-book-fee .price-decoration {
+    color: #fff;
+    text-decoration: line-through;
+    margin-right: 5px
+}
+
+.u-book-fee .reduceprice {
+    border: 1px solid #ff9913;
+    padding: 2px;
+    border-radius: 2px;
+    color: #ff9913;
+    height: 15px;
+    line-height: 15px
+}
+
+.u-book-fee .footer {
+    text-align: right;
+    font-size: 20px
+}
+
+.u-book-fee li {
+    -webkit-box-pack: justify;
+    -ms-flex-pack: justify;
+    justify-content: space-between
+}
+
+.limit-table, .u-book-fee li {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center
+}
+
+.limit-table {
+    flex-wrap: wrap;
+    -webkit-box-pack: start;
+    -ms-flex-pack: start;
+    justify-content: flex-start;
+    border-left: 1px solid rgba(0, 0, 0, .12)
+}
+
+.colWidth {
+    width: 20%;
+    box-sizing: border-box;
+    -webkit-box-flex: 0;
+    -ms-flex: none;
+    flex: none;
+    position: relative !important;
+    border-bottom: 1px solid rgba(0, 0, 0, .12)
+}
+
+.fmCap-right {
+    position: absolute;
+    right: 5px;
+    top: 20px;
+    color: #999
+}
+
+.fee-desc, .fmCap-right {
+    font-size: 14px
+}
+
+.tipmessage {
+    padding-bottom: 25px;
+    height: 100%
+}
+
+.mask {
+    z-index: 1000;
+    position: fixed;
+    top: 0;
+    color: #fff;
+    font-size: 15px;
+    word-break: break-all;
+    height: 100%;
+    width: 100%;
+    overflow: hidden
+}

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>绘制点</title>
+    <script src="http://libs.baidu.com/jquery/1.9.0/jquery.js"></script>
+    <script type="text/javascript" src="__STATIC__/pile/js/tools/gps-transform.js?rand={$js_rand}"></script>
+    <link rel="stylesheet" href="__STATIC__/pile/css/config.css?rand={$css_rand}" type="text/css">
+</head>
+<body style="height: 100%; margin: 0">
+<div id="container" style="height: 100%"></div>
+<script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/echarts.min.js"></script>
+<script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts-gl/echarts-gl.min.js"></script>
+<script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts-stat/ecStat.min.js"></script>
+<script type="text/javascript"
+        src="http://echarts.baidu.com/gallery/vendors/echarts/extension/dataTool.min.js"></script>
+<script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/map/js/china.js"></script>
+<script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/map/js/world.js"></script>
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=84chcOlNtuGKpKkIfp0oprKRveLSXEnj"></script>
+<script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/extension/bmap.min.js"></script>
+<script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/simplex.js"></script>
+<script type="text/javascript">
+    var dom = document.getElementById("container");
+    var myChart = echarts.init(dom);
+    var app = {};
+    option = null;
+    app.title = '热力图与百度地图扩展';
+    var data_map = {$data};
+    var list = Array();
+
+    data_handler(data_map);
+    function data_handler(data) {
+        for (var i = 0; i < data.length; i++) {
+            var json;
+            var pointsx = Array();
+            for (var j = 0; j < data[i].length; j++) {
+                var point_temp = wgs2bd(parseFloat(data[i][j].latitude), parseFloat(data[i][j].longitude));
+                json = {
+                    "coord": [
+                        point_temp[1],
+                        point_temp[0]
+                    ],
+                    "elevation": 0
+                };
+                pointsx.push(json);
+            }
+            // console.log(pointsx);
+            list.push(pointsx);
+            // console.log(list);
+        }
+        var points = [].concat.apply([],
+            list.map(function (track) {
+            return track.map(function (seg) {
+                return seg.coord.concat([1]);
+            });
+        }));
+        myChart.setOption(option = {
+            animation: false,
+            bmap: {
+                center: [106.665562, 26.430122],
+                zoom: 14,
+                roam: true
+            },
+            visualMap: {
+                show: false,
+                top: 'top',
+                min: 0,
+                max: 5,
+                seriesIndex: 0,
+                calculable: true,
+                inRange: {
+                    color: ['blue', 'blue', 'green', 'yellow', 'red']
+                }
+            },
+            series: [{
+                type: 'heatmap',
+                coordinateSystem: 'bmap',
+                data: points,
+                pointSize: 5,
+                blurSize: 6
+            }]
+        });
+        setTimeout(function () {
+            if (!app.inNode) {
+                // 添加百度地图插件
+                var bmap = myChart.getModel().getComponent('bmap').getBMap();
+                bmap.addControl(new BMap.NavigationControl());
+                bmap.addControl(new BMap.ScaleControl());//比例尺(左下角)
+                bmap.addControl(new BMap.OverviewMapControl());//地图缩放
+            }
+        }, 500);
+        if (option && typeof option === "object") {
+            myChart.setOption(option, true);
+        }
+    }
+</script>
+</body>
+</html>

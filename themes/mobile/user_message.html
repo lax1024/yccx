@@ -1,0 +1,25 @@
+{if condition="$customer_status eq 0 and $mobile_phone neq ''"}
+<link rel="stylesheet" href="__STATIC__/mobile/css/index-css5.css?rand={$css_rand}" type="text/css">
+<div class="hysdk-ucapi-dialog" style="display: block;font-size: 16px" id="user_message_modal">
+    <div class="container" style="background:transparent">
+        <div class="ucapi-content">
+            <div class="item login-hd" style="background: #f3e856">用户信息提示
+                <span style="float: right;color: #0b0b0b;font-weight: bold;font-size: 26px" id="modal_cancel">×</span>
+            </div>
+            <div class="item login-bd">
+                <div class="login-tel">
+                    <span id="js_examine_timer_wait">您尚未完成实名制</span>
+                </div>
+                <div class="login-tel">
+                    <a href="{:url('mobile/index/add_user_info')}"><span>立即完善</span></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $("#modal_cancel").on("click", function () {
+        $("#user_message_modal").hide();
+    });
+</script>
+{/if}

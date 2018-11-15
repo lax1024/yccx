@@ -1,0 +1,195 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no"/>
+    <style type="text/css">
+        body, html {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            font-family: "微软雅黑";
+        }
+
+        #allmap {
+            width: 100%;
+            height: 500px;
+            overflow: hidden;
+        }
+
+        #result {
+            width: 100%;
+            font-size: 12px;
+        }
+
+        dl, dt, dd, ul, li {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        p {
+            font-size: 12px;
+        }
+
+        dt {
+            font-size: 14px;
+            font-family: "微软雅黑";
+            font-weight: bold;
+            border-bottom: 1px dotted #000;
+            padding: 5px 0 5px 5px;
+            margin: 5px 0;
+        }
+
+        dd {
+            padding: 5px 0 0 5px;
+        }
+
+        li {
+            line-height: 28px;
+        }
+    </style>
+    <script src="__JS__/jquery.min.js"></script>
+    <script src="__JS__/layui/lay/dest/layui.all.js"></script>
+    <script type="text/javascript"
+            src="http://api.map.baidu.com/api?v=2.0&ak=DplTpLn9EpGEIwimAKUNscH6YWGAyoH3"></script>
+    <!--加载鼠标绘制工具-->
+    <script type="text/javascript"
+            src="http://api.map.baidu.com/library/DrawingManager/1.4/src/DrawingManager_min.js"></script>
+    <script type="text/javascript" src="http://developer.baidu.com/map/jsdemo/demo/convertor.js"></script>
+    <link rel="stylesheet" href="http://api.map.baidu.com/library/DrawingManager/1.4/src/DrawingManager_min.css"/>
+    <title>获取坐标点</title>
+</head>
+<body>
+<div id="allmap" style="overflow:hidden;zoom:1;position:relative;">
+    <div id="map" style="height:100%;-webkit-transition: all 0.5s ease-in-out;transition: all 0.5s ease-in-out;"></div>
+</div>
+<script type="text/javascript">
+    var str = "{$keyword}";
+    var lng = "{$lng}";
+    var lat = "{$lat}";
+    var poi;
+    var geolocation;
+    // 百度地图API功能
+    var map = new BMap.Map('map');
+    if (lng != "" && lat != "") {
+        poi = new BMap.Point(parseFloat(lng), parseFloat(lat));
+    } else {
+        poi = new BMap.Point(106.7091771, 26.6299031);
+        geolocation = new BMap.Geolocation();
+        geolocation.getCurrentPosition(function (r) {
+            if (this.getStatus() == BMAP_STATUS_SUCCESS) {
+                map.panTo(r.point);
+            }
+            else {
+                alert('failed' + this.getStatus());
+            }
+        }, {enableHighAccuracy: true});
+        if (str != "") {
+            var local = new BMap.LocalSearch(map, {
+                renderOptions: {map: map}
+            });
+            local.search(str);
+        }
+    }
+    var marker2;
+    $(window.parent.document).contents().find(".layui-layer-btn0").hide();
+    translateCallback = function (point) {
+        //创建小狐狸
+        var myIcon = new BMap.Icon("http://www.youchedongli.cn/public/static/mobile/images/marker_car_store.png?x-oss-process=image/resize,h_100", new BMap.Size(50, 50), {imageSize: new BMap.Size(50, 50)});
+        marker2 = new BMap.Marker(point, {icon: myIcon});  // 创建标注
+        map.addOverlay(marker2);              // 将标注添加到地图中
+    };
+    translateCallbacks = function (point) {
+        var x2 = point.lng;
+        var y2 = point.lat;
+        var lng_x = 2 * x1 - x2;
+        var lat_y = 2 * y1 - y2;
+        lng_x = (lng_x + "").substr(0, 12);
+        lat_y = (lat_y + "").substr(0, 11);
+        localStorage.setItem('lng', lng_x);
+        localStorage.setItem('lat', lat_y);
+        // show_pickup_ok();
+        $(window.parent.document).contents().find(".layui-layer-btn0").show();
+        // alert("获取成功");
+    };
+    map.centerAndZoom(poi, 12);
+    map.enableScrollWheelZoom();
+    if (lng != "" && lat != "") {
+        //坐标转换完之后的回调函数
+        setTimeout(function () {
+            var gpsPoint = new BMap.Point(lng, lat);
+            BMap.Convertor.translate(gpsPoint, 0, translateCallback);     //真实经纬度转成百度坐标
+        }, 2000);
+    }
+    var overlays = [];
+    var x1;
+    var y1;
+    var overlaycomplete = function (e) {
+        clearAll();
+        $(window.parent.document).contents().find(".layui-layer-btn0").hide();
+        // show_pickup_click();
+        if (lng != "" && lat != "") {
+            setTimeout(function () {
+                var gpsPoint = new BMap.Point(lng, lat);
+                BMap.Convertor.translate(gpsPoint, 0, translateCallback);     //真实经纬度转成百度坐标
+            }, 2000);
+        }
+        var poi = new BMap.Point(e.overlay.point.lng, e.overlay.point.lat);
+        x1 = e.overlay.point.lng;
+        y1 = e.overlay.point.lat;
+        setTimeout(function () {
+            var pointArr = [];
+            pointArr.push(poi);
+            var gpsPoint = new BMap.Point(x1, y1);
+            BMap.Convertor.translate(gpsPoint, 0, translateCallbacks);     //真实经纬度转成百度坐标
+        }, 2000);
+        overlays.push(e.overlay);
+    };
+    var styleOptions = {
+        strokeColor: "red",    //边线颜色。
+        fillColor: "red",      //填充颜色。当参数为空时，圆形将没有填充效果。
+        strokeWeight: 3,       //边线的宽度，以像素为单位。
+        strokeOpacity: 0.8,	   //边线透明度，取值范围0 - 1。
+        fillOpacity: 0.6,      //填充的透明度，取值范围0 - 1。
+        strokeStyle: 'solid' //边线的样式，solid或dashed。
+    };
+    //实例化鼠标绘制工具
+    var drawingManager = new BMapLib.DrawingManager(map, {
+        isOpen: false, //是否开启绘制模式
+        enableDrawingTool: true, //是否显示工具栏
+        drawingToolOptions: {
+            anchor: BMAP_ANCHOR_TOP_RIGHT, //位置
+            offset: new BMap.Size(20, 20), //偏离值
+            drawingModes: [BMAP_DRAWING_MARKER], //设置只显示画矩形、圆的模式
+            drawingTypes: [
+                BMAP_DRAWING_MARKER,//点的样式
+                BMAP_DRAWING_CIRCLE,//圆的样式
+                BMAP_DRAWING_POLYLINE,//线的样式
+                BMAP_DRAWING_POLYGON,//多边形的样式
+                BMAP_DRAWING_RECTANGLE //矩形的样式
+            ]
+        },
+        circleOptions: styleOptions, //圆的样式
+        polylineOptions: styleOptions, //线的样式
+        polygonOptions: styleOptions, //多边形的样式
+        rectangleOptions: styleOptions //矩形的样式
+    });
+    //添加鼠标绘制工具监听事件，用于获取绘制结果
+    drawingManager.addEventListener('overlaycomplete', overlaycomplete);
+
+    function clearAll() {
+        for (var i = 0; i < overlays.length; i++) {
+            map.removeOverlay(overlays[i]);
+        }
+        overlays.length = 0
+    }
+
+    $(function () {
+        setInterval(function () {
+            $("#allmap").css("height", $(document.body).height());
+        }, 2000);
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,146 @@
+{extend name="base" /}
+{block name="body"}
+<div class="layui-body">
+    <!--tab标签-->
+    <div class="layui-tab layui-tab-brief">
+        <ul class="layui-tab-title">
+            <li class="layui-this">新能源车辆管理</li>
+            <li class=""><a href="{:url('seller/electrocar/add')}">添加新能源车辆</a></li>
+        </ul>
+        <div class="layui-tab-content">
+            <div class="layui-tab-item layui-show">
+                <form class="layui-form layui-form-pane" action="{:url('seller/electrocar/index')}" method="get">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">关键词</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="keyword" value="{$keyword}" placeholder="请输入关键词"
+                                   class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <button class="layui-btn">搜索</button>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">车辆状态</label>
+                        <div class="layui-inline">
+                            <select name="car_status" lay-filter="statusselect">
+                                <option value="0">未选择</option>
+                                {foreach name="car_status_list" item="vo" key="kv"}
+                                <option value="{$kv}" {php} echo $kv==$car_status?"selected":"";{/php}>{$vo}</option>
+                                {/foreach}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">门店</label>
+                        <div class="layui-inline">
+                            <select name="store_id" lay-verify="required" lay-search lay-filter="statusselect1">
+                                <option value="0">未选择</option>
+                                {foreach name="store_site_list" item="vo"}
+                                {if condition="$store_id==$vo.id"}
+                                <option value="{$vo.id}" selected>{neq name="vo.level" value="1"}|{php} for($i=1;$i<$vo['level'];$i++){echo'--';}{/php}{/neq}{$vo.store_name}</option>
+                                {else/}
+                                <option value="{$vo.id}">{neq name="vo.level" value="1" }|{php} for($i=1;$i<$vo['level'];$i++){ echo '--';}{/php}{/neq}{$vo.store_name}</option>
+                                {/if}
+                                {/foreach}
+                            </select>
+                        </div>
+                    </div>
+                </form>
+                <div style="display: none">
+                    <div class="layui-inline" id="store_site_list">
+                        <div class="layui-input-block" style="margin-left: 0px">
+                            <select id="store_site_id" class="layui-input">
+                                {foreach name="store_site_list" item="vo"}
+                                <option value="{$vo.id}">{neq name="vo.level" value="1"}|{php}for($i=1;$i<$vo['level'];$i++){echo '----';}{/php}{/neq}{$vo.store_name}</option>
+                                {/foreach}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <table class="layui-table">
+                    <thead>
+                    <tr>
+                        <th>操作</th>
+                        <th>店铺名称</th>
+                        <th>所在门店</th>
+                        <th>车型名称</th>
+                        <th>车牌号</th>
+                        <th>每小时</th>
+                        <th>每公里</th>
+                        <th>车辆状态</th>
+                        <th>车辆颜色</th>
+                        <th>续航里程</th>
+                        <th>电压</th>
+                        <th>车机编号</th>
+                        <th>租赁次数</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {foreach name="carcommon_list" item="vo"}
+                    <tr>
+                        <td>
+                            <a href="{:url('seller/electrocar/edit',['id'=>$vo['id']])}"
+                               class="layui-btn layui-btn-normal layui-btn-mini">编辑审核</a>
+                            <a href="{:url('seller/electrocar/dispatch',['id'=>$vo['id']])}"
+                               data-sid="{$vo['store_site_id']}"
+                               class="layui-btn layui-btn-normal layui-btn-mini ajax-dispatch">调度</a>
+                            {if condition="$vo['car_status']!=3"}
+                            <a href="{:url('seller/electrocar/lock',['id'=>$vo['id']])}"
+                               class="layui-btn layui-btn-danger layui-btn-mini ajax-common">下线</a>
+                            {/if}
+                            {if condition="$vo['car_status']!=4"}
+                            <a href="{:url('seller/electrocar/del_lock',['id'=>$vo['id']])}"
+                               class="layui-btn layui-btn-danger layui-btn-mini ajax-common">上线</a>
+                            {/if}
+                            <a href="javascript:open_car_record('{$vo.id}','{$vo.device_number}','','','{$vo.licence_plate}')"
+                               class="layui-btn layui-btn-danger layui-btn-mini">查看记录</a>
+                            <a href="{:url('seller/electrocar/delete',['id'=>$vo['id']])}"
+                               class="layui-btn layui-btn-danger layui-btn-mini ajax-common">删除</a>
+                            <a href="{:url('seller/CarDevice/openDoor',['device_number'=>$vo['device_number']])}"
+                               class="layui-btn layui-btn-normal layui-btn-mini ajax-common">开门</a>
+                            <a href="{:url('seller/CarDevice/closeDoor',['device_number'=>$vo['device_number']])}"
+                               class="layui-btn layui-btn-normal layui-btn-mini ajax-common">关门</a>
+                            <a href="{:url('seller/CarDevice/powerSupply',['device_number'=>$vo['device_number']])}"
+                               class="layui-btn layui-btn-normal layui-btn-mini ajax-common">供电</a>
+                            <a href="{:url('seller/CarDevice/powerFailure',['device_number'=>$vo['device_number']])}"
+                               class="layui-btn layui-btn-normal layui-btn-mini ajax-common">断电</a>
+                            <a href="{:url('seller/CarDevice/startOrder',['device_number'=>$vo['device_number']])}"
+                               class="layui-btn layui-btn-normal layui-btn-mini ajax-common">下单</a>
+                            <a href="{:url('seller/CarDevice/clearOrder',['device_number'=>$vo['device_number']])}"
+                               class="layui-btn layui-btn-normal layui-btn-mini ajax-common">还车</a>
+                        </td>
+                        <td>{$vo.store_key_name}</td>
+                        <td>{$vo.store_site_name}</td>
+                        <td>{$vo.cartype_name}</td>
+                        <td>{$vo.licence_plate}</td>
+                        <td>{$vo.day_price}</td>
+                        <td>{$vo.km_price}</td>
+                        <td>{$vo.car_status_str}/({$vo.car_device_str})</td>
+                        <td>{$vo.car_color_str}</td>
+                        <td>{$vo.driving_mileage}(km)</td>
+                        <td>{$vo.voltage}(V)</td>
+                        <td>{$vo.device_number}</td>
+                        <td>{$vo.rent_count}</td>
+                    </tr>
+                    {/foreach}
+                    </tbody>
+                </table>
+                <!--分页-->
+                {$carcommon_list->render()}
+            </div>
+        </div>
+    </div>
+</div>
+{/block}
+{block name="script"}
+<script>
+    form.on('select(statusselect)', function (data) {
+        $(".layui-form-pane").submit();
+    });
+    form.on('select(statusselect1)', function (data) {
+        $(".layui-form-pane").submit();
+    });
+</script>
+{/block}

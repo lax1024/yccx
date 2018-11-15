@@ -1,0 +1,107 @@
+.swiper-container2 {
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+    overflow: hidden;
+    z-index: 1
+}
+
+.swiper-container-vertical > .swiper-wrapper2 {
+    -webkit-box-orient: vertical;
+    -ms-flex-direction: column;
+    flex-direction: column
+}
+
+.swiper-wrapper2 {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    transition-property: transform;
+    box-sizing: content-box
+}
+
+.swiper-container-android .swiper-slide, .swiper-wrapper2 {
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0)
+}
+
+.swiper-container-multirow > .swiper-wrapper2 {
+    -webkit-box-lines: multiple;
+    -moz-box-lines: multiple;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap
+}
+
+.swiper-container-free-mode > .swiper-wrapper2 {
+    transition-timing-function: ease-out;
+    margin: 0 auto
+}
+
+.swiper-pagination2 {
+    position: absolute;
+    right: 10px;
+    bottom: 40px;
+    transition: .3s;
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    z-index: 10
+}
+
+.swiper-pagination2.swiper-pagination-hidden {
+    opacity: 0
+}
+
+.swiper-pagination-bullet2 {
+    width: 8px;
+    height: 8px;
+    display: inline-block;
+    border-radius: 100%;
+    background: #000;
+    opacity: .2;
+    margin-left: 5px
+}
+
+button.swiper-pagination-bullet2 {
+    border: none;
+    margin: 0;
+    padding: 0;
+    box-shadow: none;
+    -moz-appearance: none;
+    -ms-appearance: none;
+    -webkit-appearance: none;
+    appearance: none
+}
+
+.swiper-pagination-clickable .swiper-pagination-bullet2 {
+    cursor: pointer
+}
+
+.swiper-pagination-white .swiper-pagination-bullet2 {
+    background: #fff
+}
+
+.swiper-pagination-bullet2-active {
+    opacity: 1;
+    background: #fff
+}
+
+.swiper-pagination-white .swiper-pagination-bullet2-active {
+    background: #fff
+}
+
+.swiper-pagination-black .swiper-pagination-bullet2-active {
+    background: #000
+}
+
+.swiper-slide {
+    -webkit-flex-shrink: 0;
+    -ms-flex: 0 0 auto;
+    flex-shrink: 0;
+    width: 100%;
+    height: 100%;
+    position: relative
+}

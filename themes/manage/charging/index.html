@@ -1,0 +1,100 @@
+{extend name="base" /}
+{block name="body"}
+<div class="layui-body">
+    <!--tab标签-->
+    <div class="layui-tab layui-tab-brief">
+        <ul class="layui-tab-title">
+            <li class="layui-this">充电桩设备管理</li>
+            <li class=""><a href="{:url('manage/Charging/add')}">添加充电桩设备</a></li>
+        </ul>
+        <div class="layui-tab-content">
+            <div class="layui-tab-item layui-show">
+                <form class="layui-form layui-form-pane" action="{:url('manage/Charging/index')}" method="get">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">关键词</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="keyword" value="{$keyword}" placeholder="请输入关键词"
+                                   class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <button class="layui-btn">搜索</button>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">状态</label>
+                        <div class="layui-inline">
+                            <select name="charging_status" lay-filter="statusselect">
+                                <option value="0">未选择</option>
+                                {foreach name="car_status_list" item="vo" key="kv"}
+                                <option value="{$kv}" {php} echo $kv==$charging_status?"selected":"";{/php}>{$vo}
+                                </option>
+                                {/foreach}
+                            </select>
+                        </div>
+                    </div>
+                </form>
+                <hr>
+                <table class="layui-table">
+                    <thead>
+                    <tr>
+                        <th style="width: 30px;">ID</th>
+                        <th>名称</th>
+                        <th>编号</th>
+                        <th>枪号</th>
+                        <th>类型</th>
+                        <th>状态</th>
+                        <th>每小时/单价</th>
+                        <th>每度电/单价</th>
+                        <th>归属店铺</th>
+                        <th>总店</th>
+                        <th>修改时间</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {foreach name="charging_list" item="vo"}
+                    <tr>
+                        <td>{$vo.id}</td>
+                        <td>{$vo.name}</td>
+                        <td>{$vo.device_number}</td>
+                        <td>{$vo.device_gun}</td>
+                        <td>{$vo.charging_type_str}</td>
+                        <td>{$vo.charging_status_str}</td>
+                        <td>{$vo.hour_price}(元)</td>
+                        <td>{$vo.quantity_price}(元)</td>
+                        <td>{$vo.store_name}({$vo.store_id})</td>
+                        <td>{$vo.store_key_name}({$vo.store_key_id})</td>
+                        <td>{$vo.update_time}</td>
+                        <td>
+                            <a href="{:url('manage/Charging/edit',['id'=>$vo['id']])}"
+                               class="layui-btn layui-btn-normal layui-btn-mini">编辑审核</a>
+                            <a href="{:url('manage/Charging/creat_qrcode',['device_number'=>$vo['device_number']])}"
+                               class="layui-btn layui-btn-normal layui-btn-mini ajax-common">生成二维码</a>
+                            {if condition="$vo['charging_status']!=3"}
+                            <a href="{:url('manage/Charging/lock',['id'=>$vo['id']])}"
+                               class="layui-btn layui-btn-danger layui-btn-mini ajax-common">下线</a>
+                            {/if}
+                            {if condition="$vo['charging_status']!=4"}
+                            <a href="{:url('manage/Charging/del_lock',['id'=>$vo['id']])}"
+                               class="layui-btn layui-btn-danger layui-btn-mini ajax-common">上线</a>
+                            {/if}
+                        </td>
+                    </tr>
+                    {/foreach}
+                    </tbody>
+                </table>
+                <!--分页-->
+                {$charging_list->render()}
+            </div>
+        </div>
+    </div>
+</div>
+{/block}
+
+{block name="script"}
+<script>
+    form.on('select(statusselect)', function (data) {
+        $(".layui-form-pane").submit();
+    });
+</script>
+{/block}

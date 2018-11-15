@@ -1,0 +1,24 @@
+{extend name="base" /}
+{block name="css"}
+<link rel="stylesheet" href="__STATIC__/mui/css/mui.css?rand={$css_rand}" type="text/css">
+<link rel="stylesheet" href="__STATIC__/mui/css/mui-icons-extra.css?rand={$css_rand}" type="text/css">
+{/block}
+{block name="body"}
+<body>
+<header id="header" class="mui-bar mui-bar-nav" style="background: rgb(252, 204, 49);color: white">
+    <span id="js_goback" class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></span>
+    <h1 class="mui-title" style="color: white">充电桩建议</h1>
+</header>
+<textarea id="js_input_point_info" rows="15" placeholder="亲，您对充电桩或者充电点有什么好的建议吗？"
+          style="font-size: 15px;margin-top: 50px"></textarea>
+<div style="width: 100%;height: 40px;position: fixed;bottom: 0;left: 0;font-size: 16px;background-color: #f3e856;text-align: center;line-height: 40px">
+    提交建议
+</div>
+{include file="login" /}
+{include file="user_message" /}
+{include file="loading" /}
+
+<script type="text/javascript" src="__STATIC__/pile/js/pile-advise.js?rand={$js_rand}"></script>
+</body>
+{/block}
+

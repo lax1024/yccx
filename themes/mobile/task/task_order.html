@@ -1,0 +1,107 @@
+{extend name="base" /}
+{block name="css"}
+<link rel="stylesheet" href="__STATIC__/mui/css/mui.min.css?rand={$css_rand}">
+<link rel="stylesheet" href="__STATIC__/mui/css/mui-icons-extra.css?rand={$css_rand}">
+<link rel="stylesheet" href="__STATIC__/mui/css/app-self.css?rand={$css_rand}">
+{/block}
+{block name="body"}
+<style>
+    html {
+        height: 100%;
+    }
+</style>
+<body style="height: 100%">
+<div class="mui-navbar">
+    <div class="mui-navbar-inner mui-bar mui-bar-nav mui-navbar-center">
+        <a href="{:url('mobile/task/index')}"
+           class="mui-left mui-action-back mui-btn  mui-btn-link mui-btn-nav mui-pull-left">
+            <span class="mui-icon mui-icon-left-nav"></span>
+        </a>
+        <h1 class="mui-center mui-title">已完成任务列表</h1>
+    </div>
+</div>
+<div class="mui-pages">
+    <div class="mui-slider" style="height: 100%;margin-top: 40px">
+        <div class="mui-slider-group" style="height: 100%">
+            <div class="mui-slider-item mui-control-content" style="overflow: scroll">
+                <ul class="mui-table-view" id="order_div">
+                    <li class="mui-table-view-cell mui-media js-order-item" style="display: none">
+                        <div class="mui-media-body">
+                            <span style="font-size: 14px" class="js-car-cartype_name">奇瑞EQ</span>
+                            <span style="font-size: 14px;margin-left: 10px"
+                                  class="js-car-licence_plate">(贵A133CX)</span>
+                            <div>
+                                <span class="mui-badge mui-badge-primary">任务类型:<span
+                                        class="js-car-order_type_str">补电小保洁</span></span>
+                                <span class="mui-badge mui-badge-primary">任务时长:<span
+                                        class="js-car-all_time_str">6小时</span></span>
+                                <span class="mui-badge mui-badge-warning">行驶里程:<span
+                                        class="js-car-all_mileage">100Km</span></span>
+                            </div>
+                            <p style="font-size: 14px">完成时间:<span
+                                    class="js-car-return_time_str">2018-11-12 10:10:11</span></p>
+                        </div>
+                    </li>
+                </ul>
+                <div id="more_order_list" style="text-align: center;width: 100%;padding: 5px 0">加载更多</div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="__STATIC__/mui/js/mui.min.js"></script>
+<script>
+    mui.init({
+        swipeBack: true//启用右滑关闭功能，
+    });
+    /**
+     * 站点情况
+     */
+    var order_item = $("#order_div").find('.js-order-item').clone(true);
+    $("#order_div").find('.js-order-item').remove();
+    page = 0;
+    get_site_list();
+    $("#more_order_list").on('click', function () {
+        get_site_list();
+    });
+
+    function get_site_list() {
+        $.ajax({
+            url: website + "/api/operation_car/get_order_operation_end.html",
+            type: "GET",
+            data: {
+                page: page
+            },
+            timeout: 15000,
+            dataType: "json",
+            success: function (data) {
+                if (parseInt(data.code) === 0) {
+                    page++;
+                    var json_data = data.data;
+                    for (var i = 0; i < json_data.length; i++) {
+                        add_task_site_item(json_data[i]);
+                    }
+                } else {
+                    $("#more_order_list").hide();
+                    mui.alert('数据加载完毕', '消息提示');
+                }
+            }, error: function () {
+
+            }
+        });
+    }
+
+    function add_task_site_item(data_json) {
+        var item_temp = order_item.clone(true);
+        item_temp.show();
+        item_temp.find(".js-car-cartype_name").text(data_json.goods_name);
+        item_temp.find(".js-car-licence_plate").text(data_json.licence_plate);
+        item_temp.find(".js-car-order_type_str").text(data_json.order_type_str);
+        item_temp.find(".js-car-all_time_str").text(data_json.all_time_str + "(小时)");
+        item_temp.find(".js-car-all_mileage").text(data_json.all_mileage + "(km)");
+        item_temp.find(".js-car-return_time_str").text(data_json.return_time_str);
+        item_temp.appendTo($("#order_div"));
+    }
+</script>
+</body>
+{/block}
+

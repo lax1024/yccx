@@ -1,0 +1,137 @@
+{extend name="base" /}
+{block name="css"}
+<link rel="stylesheet" href="__STATIC__/mui/css/mui.min.css?rand={$css_rand}">
+<link rel="stylesheet" href="__STATIC__/mui/css/mui-icons-extra.css?rand={$css_rand}">
+<link type="text/css" rel="stylesheet" href="__STATIC__/mobile/css/search-css1.css?rand={$css_rand}"/>
+<link type="text/css" rel="stylesheet" href="__STATIC__/mobile/css/search-css2.css?rand={$css_rand}"/>
+<link type="text/css" rel="stylesheet" href="__STATIC__/mobile/css/search-css3.css?rand={$css_rand}"/>
+<link type="text/css" rel="stylesheet" href="__STATIC__/mobile/css/search-css4.css?rand={$css_rand}"/>
+
+{/block}
+{block name="body"}
+<body class="page" style="background-color: rgb(243, 243, 243); color: rgb(51, 51, 51); display: block; overflow: auto;"
+      onselectstart="return false">
+<header class="mui-bar mui-bar-nav" style="background: #ffd31c">
+    <span id="goback" style="color: white" class="mui-icon mui-icon-back"></span>
+    <h1 class="mui-title" style="color: white">车辆列表</h1>
+</header>
+<div class="listWrap">
+    <p id="sortTabList" class="sorTab sort-tab" line="hairT bgEc" style="margin-top: 45px">
+        <span class="colorVi" id="distance">
+            距离近
+            <em class="isdIco"></em>
+            远
+            <em class="sign isdIco"></em>
+        </span>
+        <span line="hairL bgEc" id="day_price" class="">
+            价格低
+            <em class="isdIco"></em>
+            高
+            <em class="sign isdIco hide"></em>
+        </span>
+        <span line="hairL bgEc" id="synthesis" class="">
+           <em class=""></em>
+            综合排序
+            <em class="sign isdIco hide"></em>
+        </span>
+    </p>
+    <div class="main-wrapper" style="overflow-y: scroll;">
+        <div line="hairT bgD">
+            <p class="tipCreditStr" style="display:none;">
+                <dl class="main vehiclelist-wrapper" style="height: 488px;" id="vehiclelist">
+                    <dd class="vehCard" style="display: none" id="240" data-series_id="2737" data-cartype_id="7125"
+                        data-store_site_id="">
+                        <div class="vehBase" line="hairT bgEc" style="background-color: #fdfdfd;">
+                            <div class="vehLeft">
+                                <img class="js-series_img"
+                                     src="http://img.youchedongli.cn/public/car_show_image/A/奥迪/Audi Sport/奥迪RS 6.jpg?x-oss-process=image/resize,m_lfit,h_100,w_100"/>
+                            </div>
+                            <div class="inner">
+                                <div class="main">
+            <p class="bri">
+                <span class="js-series_name size12">北汽</span>
+                <span class="js-licence_plate size12">()</span>
+                <!--<span class="size14">-</span>-->
+                <!--<span class="js-store_site_name size10"></span>-->
+            </p>
+            <!--<p class="mark">-->
+                <!--<span class="markLab gray size10">车况佳</span>-->
+                <!--<span class="markLab gray size10">24h营业</span>-->
+                <!--<span class="markLab gray size10">新能源汽车</span>-->
+            <!--</p>-->
+            <p class="mark" style="max-width: 95%;overflow: hidden;white-space: nowrap;text-overflow: ellipsis">
+                <span class="gray size10">门店名：</span>
+                <span class="js-store_site_name gray size10"></span>
+            </p>
+            <p class="pri size11">
+                <span class="colorGre">续航:<em class="js-driving_mileage">180</em>km</span>
+                <span class="tp mgt3 ">&nbsp;&nbsp;距离:<em class="js-distance">2.6</em>km&nbsp;&nbsp;</span>
+                <span class="aver colorOr" style="position: absolute;top: 20px;right: 20px"><em
+                        class="size18 js-day_price">5</em>元/时</span>
+                <span class="aver colorOr" style="position: absolute;top: 40px;right: 20px">+<em
+                        class="size18 js-km_price">1</em>元/km</span>
+            </p>
+        </div>
+    </div>
+</div>
+{include file="login" /}
+{include file="loading" /}
+<script type="text/javascript" src="__STATIC__/mobile/js/jquery.min.js"></script>
+<script type="text/javascript" src="__STATIC__/mobile/js/public-js.js?rand={$js_rand}"></script>
+<script type="text/javascript" src="__STATIC__/mobile/js/carsearch-newenergy-js.js?rand={$js_rand}"></script>
+{if condition="$is_wxBrowser eq 'yes'"}
+<script src="http://res.wx.qq.com/open/js/jweixin-1.4.0.js?rand={$js_rand}"></script>
+<script>
+    /*
+     * 注意：
+     * 1. 所有的JS接口只能在公众号绑定的域名下调用，公众号开发者需要先登录微信公众平台进入“公众号设置”的“功能设置”里填写“JS接口安全域名”。
+     * 2. 如果发现在 Android 不能分享自定义内容，请到官网下载最新的包覆盖安装，Android 自定义分享接口需升级至 6.0.2.58 版本及以上。
+     * 3. 常见问题及完整 JS-SDK 文档地址：http://mp.weixin.qq.com/wiki/7/aaa137b55fb2e0456bf8dd9148dd613f.html
+     *
+     * 开发中遇到问题详见文档“附录5-常见错误及解决办法”解决，如仍未能解决可通过以下渠道反馈：
+     * 邮箱地址：weixin-open@qq.com
+     * 邮件主题：【微信JS-SDK反馈】具体问题
+     * 邮件内容说明：用简明的语言描述问题所在，并交代清楚遇到该问题的场景，可附上截屏图片，微信团队会尽快处理你的反馈。
+     */
+    wx.config({
+        debug: false,
+        appId: "{$jssdk['appid']}",
+        timestamp: "{$jssdk['timestamp']}",
+        nonceStr: "{$jssdk['nonceStr']}",
+        signature: "{$jssdk['signature']}",
+        jsApiList: [
+            'checkJsApi',
+            'getLocation'
+        ]
+    });
+
+    wx.ready(function (res) {
+        weixinLocation();
+    });
+
+    wx.error(function (res) {
+//        alert(JSON.stringify(res));
+    });
+
+    function weixinLocation() {
+        wx.getLocation({
+            success: function (res) {
+                is_up_location = true;
+                var latitude = res.latitude; //纬度
+                var longitude = res.longitude; //经度
+                localStorage.setItem("slng", longitude);
+                localStorage.setItem("slat", latitude);
+                getCarList("distance");
+            },
+            cancel: function (res) {
+                alert('用户拒绝授权获取地理位置');
+            },
+            fail: function (res) {
+//                alert(JSON.stringify(res));
+            }
+        });
+    }
+</script>
+{/if}
+</body>
+{/block}

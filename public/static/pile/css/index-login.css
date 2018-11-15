@@ -1,0 +1,161 @@
+html, body, div, input, button {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    outline: 0;
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    font-family: -apple-system, BlinkMacSystemFont, Helvetica Neue, Helvetica, STHeiTi, sans-serif;
+    font-weight: normal;
+    -webkit-tap-highlight-color: transparent;
+}
+.hysdk-ucapi-dialog {
+    font-size: 14px;
+    height: 100%;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, .2);
+    z-index: 9999;
+    display: none;
+}
+
+.hysdk-ucapi-dialog .container {
+    width: 90%;
+    height: 100%;
+    margin: auto;
+    display: table;
+}
+
+.ucapi-content {
+    max-width: 90%;
+    min-width: 280px;
+    margin: auto;
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    border-radius: 6px;
+    z-index: 1000;
+}
+
+.ucapi-content.hack {
+    position: static;
+    top: auto;
+    left: auto;
+    -webkit-transform: translate(0, 0);
+    transform: translate(0, 0);
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.hysdk-ucapi-dialog input {
+    outline: 0;
+    -webkit-appearance: none;
+    /*-webkit-box-shadow: 0;*/
+    line-height: normal;
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.hysdk-ucapi-dialog .login-hd {
+    height: 44px;
+    line-height: 44px;
+    padding: 0 20px;
+    background-color: #00bcd4;
+    border-bottom: 1px solid #d9d9d9;
+    border-radius: 6px 6px 0 0;
+    font-size: 16px;
+    color: #fff;
+}
+
+.hysdk-ucapi-dialog .login-bd {
+    padding: 20px 25px;
+    background-color: #eeeeee;
+}
+
+.hysdk-ucapi-dialog .login-bd > div {
+    margin-bottom: 15px;
+    height: 30px;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    text-align: center;
+}
+
+.hysdk-ucapi-dialog .item input {
+    height: 30px;
+    padding: 0 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.hysdk-ucapi-dialog .login-tel input {
+    width: 100%;
+}
+
+.hysdk-ucapi-dialog .login-code input {
+    width: 50%;
+    float: left;
+}
+
+.hysdk-ucapi-dialog .get-code {
+    width: 42%;
+    margin-left: 8%;
+    height: 30px;
+    line-height: 30px;
+    padding: 0;
+    float: left;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: #fff;
+    color: #00bcd4;
+    font-size: 14px;
+    outline: 0;
+}
+
+.hysdk-ucapi-dialog .ucapi-content .login-captcha {
+    display: none;
+}
+
+.hysdk-ucapi-dialog .login-captcha input {
+    width: 50%;
+    float: left;
+}
+
+.hysdk-ucapi-dialog .login-captcha .captcha-img {
+    width: 42%;
+    height: 30px;
+    margin-left: 8%;
+    float: left;
+    display: block;
+    border-radius: 4px;
+}
+
+.hysdk-ucapi-dialog .ucapi-content .err-tip {
+    padding-left: 10px;
+    display: none;
+    color: #f00;
+    text-align: left;
+}
+
+.hysdk-ucapi-dialog .login-op button {
+    width: 40%;
+    height: 30px;
+    line-height: 30px;
+    padding: 0;
+    border-radius: 4px;
+    color: #000000;
+    font-size: 14px;
+    outline: 0;
+}
+
+.hysdk-ucapi-dialog .login-op .login-btn {
+    background-color: #0aad6f;
+    color: #fff;
+}

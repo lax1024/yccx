@@ -1,0 +1,305 @@
+{extend name="base" /}
+{block name="body"}
+<div class="layui-body">
+    <!--tab标签-->
+    <div class="layui-tab layui-tab-brief">
+        <ul class="layui-tab-title">
+            <li class="layui-this">订单管理</li>
+            <li class=""><a href="{:url('seller/order/view')}">运营情况</a></li>
+        </ul>
+        <div class="layui-tab-content">
+            <div class="layui-tab-item layui-show">
+                <form id="form_order" class="layui-form layui-form-pane" action="{:url('seller/order/index')}"
+                      method="get">
+                    <div class="layui-inline">
+                        <div class="layui-inline">
+                            <div class="layui-input-inline" style="width: 200px">
+                                <div class="layui-form-mid ">订单统计：</div>
+                                <div class="layui-form-mid ">{$order_amount}元</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <div class="layui-inline">
+                            <div class="layui-input-inline" style="width: 200px">
+                                <div class="layui-form-mid">退款统计：</div>
+                                <div class="layui-form-mid">{$refund_amount}元</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <div class="layui-inline">
+                            <div class="layui-input-inline" style="width: 200px">
+                                <div class="layui-form-mid ">合计统计：</div>
+                                <div class="layui-form-mid ">{$order_amount-$refund_amount}元</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <a id="out_excel" class="layui-btn">导出excel数据</a>
+                        <a id="out_excel_a" class="layui-btn layui-btn-danger" download="订单统计.xls" style="display: none">保存数据数据</a>
+                    </div>
+                    <hr/>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">支付类型</label>
+                        <div class="layui-input-inline">
+                            <select name="payment_code" lay-filter="statusselect">
+                                <option value="0">未选择</option>
+                                {foreach name="payment_code_list" item="vo" key="kv"}
+                                <option value="{$kv}" {php} echo $kv==$payment_code?"selected":"";{/php}>{$vo}</option>
+                                {/foreach}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">起始时间</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="start_time" value="{$start_time}"
+                                   placeholder="起始时间"
+                                   class="layui-input datetime">
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">结束时间</label>
+                        <div class="layui-inline">
+                            <input type="text" name="end_time" value="{$end_time}"
+                                   placeholder="结束时间"
+                                   class="layui-input datetime">
+                        </div>
+                    </div>
+                    <hr/>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">关键词</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="keyword" value="{$keyword}" placeholder="请输入关键词"
+                                   class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <button class="layui-btn">搜索</button>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">订单状态</label>
+                        <div class="layui-inline">
+                            <select name="order_status" lay-filter="statusselect">
+                                <option value="-1">未选择</option>
+                                {if condition="$order_status==80"}
+                                <option value="80" selected>提前还车申请</option>
+                                {else/}
+                                <option value="80">提前还车申请</option>
+                                {/if}
+                                {foreach name="order_status_list" item="vo" key="kv"}
+                                <option value="{$kv}" {php} echo $kv==$order_status?"selected":"";{/php}>{$vo}</option>
+                                {/foreach}
+                                {if condition="$order_status==90"}
+                                <option value="90" selected>申请退款</option>
+                                {else/}
+                                <option value="90">申请退款</option>
+                                {/if}
+                                {if condition="$order_status==100"}
+                                <option value="100" selected>退款完成</option>
+                                {else/}
+                                <option value="100">退款完成</option>
+                                {/if}
+                            </select>
+                        </div>
+                    </div>
+                </form>
+                <hr>
+                <table class="layui-table">
+                    <thead>
+                    <tr>
+                        <th style="width: 3%">ID</th>
+                        <th style="width: 10%">订单号/支付单号</th>
+                        <th>客户id</th>
+                        <th>客户姓名</th>
+                        <th>客户电话</th>
+                        <th>车牌号</th>
+                        <th>订单总费用</th>
+                        <th>其他费用</th>
+                        <th>付款方式</th>
+                        <th>订单状态</th>
+                        <th>是否评论</th>
+                        <th>付款时间</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {foreach name="order_list" item="vo"}
+                    <tr>
+                        <td>{$vo.id}</td>
+                        <td>订单号:{$vo.order_sn} <br/> 支付号:{$vo.pay_sn}</td>
+                        <td>{$vo.customer_id}</td>
+                        <td>{$vo.customer_name}</td>
+                        <td>{$vo.customer_phone}</td>
+                        <td>{$vo.goods_licence_plate}</td>
+                        <td>{$vo.order_amount}</td>
+                        <td>{$vo.rests_cost}</td>
+                        <td>{$vo.payment_code_str}</td>
+                        <td>{$vo.order_status_str}</td>
+                        <td>{php}echo $vo['evaluation_status']==0 ? '未评论' : '已评论';{/php}</td>
+                        <td>{$vo.payment_time_str}</td>
+                        <td>
+                            <a href="{:url('seller/order/edit',['id'=>$vo['id']])}"
+                               class="layui-btn layui-btn-normal layui-btn-mini">编辑查看</a>
+                            {if condition="$vo['payment_code']!=''"}
+                            {if condition="$vo['is_refund']==0&&$vo['order_status']==50"}
+                            <a href="{:url('seller/order/update_refund',['pay_sn'=>$vo['pay_sn']])}"
+                               class="layui-btn layui-btn-normal layui-btn-mini ajax-refund">申请退款</a>
+                            {/if}
+                            {if condition="$vo['is_refund']==1&&$vo['order_status']==50"}
+                            <a href="{:url('seller/order/refund',['pay_sn'=>$vo['pay_sn']])}"
+                               class="layui-btn layui-btn-danger layui-btn-mini ajax-common">确认退款</a>
+                            {/if}
+                            {/if}
+                            {if condition="$vo['order_status'] egt 30"}
+                            <a href="{:url('seller/car_regulations/add',['order_id'=>$vo['id']])}"
+                               class="layui-btn layui-btn-danger layui-btn-mini">添加违章信息</a>
+                            {/if}
+                        </td>
+                    </tr>
+                    {/foreach}
+                    </tbody>
+                </table>
+                <!--分页-->
+                {$order_list->render()}
+            </div>
+        </div>
+        <div style="display: none">
+            <table id="out_excl">
+                <tr>
+                    {foreach name="out_field_list" item="vo"}
+                    <th rowspan="1">{$vo}</th>
+                    {/foreach}
+                </tr>
+                <tr class="order_data_item">
+                    <td>1</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+{/block}
+{block name="script"}
+<script>
+    /**
+     * 通用备注更改
+     */
+    $('.ajax-refund').on('click', function () {
+        var _href = $(this).attr('href');
+        layer.open({
+            shade: false,
+            content: "<input id='ajax-refund' placeholder='请输入退款金额' class='layui-input'>",
+            btn: ['确定', '取消'],
+            yes: function (index) {
+                var refund_amount = $("#ajax-refund").val();
+                $.ajax({
+                    url: _href,
+                    type: "POST",
+                    data: {
+                        refund_amount: refund_amount
+                    },
+                    dataType: 'json',
+                    success: function (info) {
+                        if (info.code === 1) {
+                            setTimeout(function () {
+                                location.href = info.url;
+                            }, 1000);
+                        }
+                        layer.msg(info.msg);
+                    }
+                });
+                layer.close(index);
+            }
+        });
+
+        return false;
+    });
+    form.on('select(statusselect)', function (data) {
+        $(".layui-form-pane").submit();
+    });
+    /**
+     * 通用日期时间选择
+     */
+    $('.datetime').on('click', function () {
+        laydate({
+            elem: this,
+            istime: true,
+            format: 'YYYY-MM-DD hh:mm:ss'
+        })
+    });
+    var order_data_item = $(".order_data_item").clone(true);
+    $(".order_data_item").remove();
+    var page = 1;
+    $("#out_excel").on('click', function () {
+        layer.open({
+            shade: false,
+            content: '确定要导出数据吗？',
+            btn: ['确定', '取消'],
+            yes: function (index) {
+                layer.close(index);
+                layer.load(1);
+                get_data_excel(page);
+            }
+        });
+    });
+
+    function get_data_excel(page) {
+        var _href = "{:url('seller/order/index')}";
+        var data = $("#form_order").serializeArray();
+        var data_json = new Object();
+        for (var i = 0; i < data.length; i++) {
+            data_json[data[i].name] = data[i].value;
+        }
+        data_json["page"] = page;
+        data_json["limit"] = 100;
+        data_json["is_excl"] = 1;
+        $.ajax({
+            url: _href,
+            type: "get",
+            data: data_json,
+            success: function (info) {
+                if (info.code === 0) {
+                    var data = info.data;
+                    for (var i = 0; i < data.length; i++) {
+                        add_order_item(data[i]);
+                    }
+                    page++;
+                    get_data_excel(page);
+                } else {
+                    // 使用outerHTML属性获取整个table元素的HTML代码（包括<table>标签），然后包装成一个完整的HTML文档，设置charset为urf-8以防止中文乱码
+                    var html = "<html><head><meta charset='utf-8' /></head><body>" + document.getElementById("out_excl").outerHTML + "</body></html>";
+                    // 实例化一个Blob对象，其构造函数的第一个参数是包含文件内容的数组，第二个参数是包含文件类型属性的对象
+                    console.log(document.getElementById("out_excl").outerHTML);
+                    var blob = new Blob([html], {type: "application/vnd.ms-excel"});
+                    // // 利用URL.createObjectURL()方法为a元素生成blob URL
+                    // a.href = URL.createObjectURL(blob);
+                    // // 设置文件名
+                    // a.download = "学生成绩表.xls";
+                    $("#out_excel").hide();
+                    layer.closeAll();
+                    $("#out_excel_a").attr("href", URL.createObjectURL(blob));
+                    $("#out_excel_a").show();
+                }
+            }
+        });
+    }
+
+    function add_order_item(json_data) {
+        var node_temp = order_data_item.clone();
+        var htmlx = $("<td>'" + json_data.order_sn + "</td>" +
+            "<td>" + json_data.pay_sn + "</td><td>" + json_data.goods_type + "</td>" +
+            "<td>" + json_data.order_status + "</td><td>" + json_data.channel_uid + "</td>" +
+            "<td>" + json_data.store_name + "</td><td>" + json_data.goods_licence_plate + "</td>" +
+            "<td>" + json_data.customer_name + "</td><td>" + json_data.customer_phone + "</td>" +
+            "<td>" + json_data.acquire_time + "</td><td>" + json_data.return_time + "</td>" +
+            "<td>" + json_data.reality_return_time + "</td><td>" + json_data.acquire_store_name + "</td>" +
+            "<td>" + json_data.return_store_name + "</td><td>" + json_data.all_mileage + "</td>" +
+            "<td>" + json_data.user_time + "</td><td>" + json_data.order_amount + "</td>" +
+            "<td>" + json_data.pd_amount + "</td><td>" + json_data.coupon_amount+ "</td>" +
+            "<td>" + json_data.pay_amount + "</td><td>" + json_data.refund_amount + "</td>");
+        node_temp.html(htmlx);
+        node_temp.appendTo($("#out_excl"));
+    }
+</script>
+{/block}

@@ -1,0 +1,108 @@
+/** 评价主体 */
+.comment-content {
+    height: 70%;
+    width: 100%;
+    position: fixed;
+    top: 45px;
+    background: white;
+}
+
+/** 订单完成图标 */
+.comment-order-finished{
+    height: 50px;width: 50px;position: absolute;left: 70%;
+}
+
+/** 充电桩店铺详情 */
+.content-store-detail{
+    width:100%;height: 30px;margin-bottom: 20px;font-size: 16px;
+}
+
+/** 店铺管理图标(店名前的图标)*/
+.content-store-manange{
+    width: 20px;height: 20px;line-height: 20px;margin-top: 5px;float: left;margin-right: 10px;
+}
+/** 店铺管理图标的图片*/
+.content-store-manange img{
+    width: 100%;height: 100%;
+}
+/** 评价主体(五星的选择，标签) */
+.comment-body{
+    width: 90%;margin-left: 5%;margin-top: 10px;
+}
+/** 评价的标题 */
+.body-title{
+    height: 30px;width: 65%;float: left;text-align: left;font-size: 16px;
+}
+/** 评价的标题右边的提示 */
+.body-title-tips{
+    height: 30px;width: 35%;float: left;text-align: right;font-size: 14px;color: #999999;
+}
+/** 五星父容器 */
+.body-starts-list{
+    height: auto;width: 100%;
+}
+/** 五星图片的父div */
+.body-starts-list div{
+    height: auto;width: 20%;float: left;text-align: center;
+}
+/** 五星图标 */
+.body-starts-list img{
+    width: 50%;
+}
+/** 提交评价 */
+.comment-submit{
+    height: 45px;width: 100%;background: #ffd31c;line-height: 45px;text-align: center;position: absolute;bottom: 5px;
+}
+
+/** 订单详情的子div(价钱和电量) */
+.comment-order-details div{
+    width: 50%;float: left;margin-top: 10px
+}
+
+/** 14px字体 */
+.font14{
+    font-size: 14px;
+}
+/** 订单详情的logo图标(重写mui样式) */
+.mui-table-view .mui-media-object.mui-pull-left {
+    max-width: 60px;
+}
+
+/** 评价标签的父容器 */
+.comment-tag-div {
+    width: 100%;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+/** 评价标签的父div */
+.comment-tag-div div {
+    width: 33.3%;
+    margin-top: 10px;
+    float: left;
+}
+/** 评价标签span */
+.comment_tag {
+    background-color: rgb(204, 204, 204);
+    color: #333333;
+    font-size: 14px;
+    border-radius: 5px;
+    padding: 5px 10px;
+    margin-bottom: 10px;
+}
+/** 评价标签的选中状态 */
+.comment_select {
+    background-color: rgb(248, 219, 47);
+}
+/** 评价标签的未选中状态 */
+.comment_unselect {
+    background-color: rgb(204, 204, 204);
+}
+
+/** 语音评价的按钮 */
+.comment-btn-flag{
+    float: left;margin-right: 10px;background: rgb(204, 204, 204);color: black;border: none;
+}
+/** 语音播放的按钮 */
+.comment-btn-play{
+    float: left;background: rgb(204, 204, 204);color: black;border: none;display: none;
+}
