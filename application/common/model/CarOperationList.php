@@ -64,6 +64,16 @@ class CarOperationList extends Model
                     $this->endOperationList($data['goods_id']);
                     $data['status'] = 1;
                     $data['status_str'] = "已处理";
+                } else {
+                    $car_data_model = new CarCommon();
+                    $car_data = $car_data_model->getCarCommonField($data['goods_id'], 'car_status');
+                    if (empty($car_data['code'])) {
+                        if (intval($car_data['data']['car_status']) === CarStatus::$CarStatusInuse['code']) {
+                            $this->where(['goods_id' => $data['goods_id']])->order('id DESC')->limit(1)->delete();
+                            $data['status'] = 1;
+                            $data['status_str'] = "已处理";
+                        }
+                    }
                 }
             }
             if (intval($data['type']) == 1) {
@@ -80,7 +90,6 @@ class CarOperationList extends Model
                 }
             } else if (intval($data['type']) == 6) {
                 $store_model = new Store();
-
                 $car_data_model = new CarCommon();
                 $car_data = $car_data_model->getCarCommonField($data['goods_id'], 'store_site_id');
                 $store_site_id = 0;

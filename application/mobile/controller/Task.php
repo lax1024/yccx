@@ -5,7 +5,7 @@ namespace app\mobile\controller;
 use app\common\controller\OperationBase;
 use app\common\model\CarOperationPer;
 use app\common\model\OrderOperation;
-use app\common\model\Slide as SlideModel;
+use app\common\model\Store as StoreModel;
 use definition\CarStatus;
 use definition\OrderOperationType;
 use think\Request;
@@ -55,7 +55,11 @@ class Task extends OperationBase
                     Session::set('operation_phone', $operation_per_data['phone']);
                     Session::set('operation_name', $operation_per_data['name']);
                     Session::set('store_key_id', $operation_per_data['store_key_id']);
+                    Session::set('store_area_ids', json_encode($operation_per_data['store_area_ids']));
                     Session::set('store_key_name', $operation_per_data['store_key_name']);
+                    $store_model = new StoreModel();
+                    $store_ids = $store_model->getStoreAreasIdList($operation_per_data['store_area_ids']);
+                    Session::set('store_ids', json_encode($store_ids));
                     $operation_info['wechar_headimgurl'] = Session::get('wechar_headimgurl');
                     $this->assign($operation_info);
                 } else {

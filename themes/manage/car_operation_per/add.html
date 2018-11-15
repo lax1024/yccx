@@ -29,7 +29,8 @@
                         <div class="layui-form-item">
                             <label class="layui-form-label">所属店铺</label>
                             <div class="layui-input-inline">
-                                <select name="store_key_id" lay-verify="required">
+                                <select name="store_key_id" id="store_key_id" lay-verify="required"
+                                        lay-filter="statusselect">
                                     {foreach name="store_key_list" item="vo"}
                                     <option value="{$vo.id}">{$vo.store_name}</option>
                                     {/foreach}
@@ -40,10 +41,8 @@
                     <div class="layui-form-item">
                         <div class="layui-form-item">
                             <label class="layui-form-label">店铺区域</label>
-                            <div class="layui-input-block">
+                            <div class="layui-input-block" id="id_area">
                                 <input type="checkbox" name="store_area_ids[1]" title="花溪区">
-                                <input type="checkbox" name="store_area_ids[2]" title="云岩区">
-                                <input type="checkbox" name="store_area_ids[3]" title="白云区">
                             </div>
                         </div>
                     </div>
@@ -76,4 +75,40 @@
         </div>
     </div>
 </div>
+{/block}
+{block name="js"}
+<script>
+    var area_item = $("#id_area").find('input').clone(true);
+    $("#id_area").html("");
+    get_josn($("#store_key_id").val());
+    form.on('select(statusselect)', function (data) {
+        var pid = data.value;
+        get_josn(pid);
+    });
+
+    function get_josn(pid) {
+        $.ajax({
+            url: "{:url('api/Store/get_store_area_list')}",
+            type: "get",
+            data: {
+                pid: pid,
+                type: 2
+            },
+            dataType: 'json',
+            success: function (info) {
+                if (parseInt(info.code) === 0) {
+                    $("#id_area").html("");
+                    for (var i = 0; i < info.data.length; i++) {
+                        var area_item_temp = area_item.clone(true);
+                        area_item_temp.attr('name', 'store_area_ids[' + i + ']');
+                        area_item_temp.attr('title', info.data[i].store_name);
+                        area_item_temp.attr('value', info.data[i].id);
+                        area_item_temp.appendTo($("#id_area"));
+                    }
+                    form.render('checkbox');
+                }
+            }
+        });
+    }
+</script>
 {/block}

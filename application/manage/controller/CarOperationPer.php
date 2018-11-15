@@ -47,7 +47,7 @@ class CarOperationPer extends AdminBase
     public function add()
     {
         $store_model = new StoreModel();
-        $store_key_list = $store_model->getSiteList(['store_pid'=>0,'store_type'=>StoreType::$StoreTypeElectrocar['code']]);
+        $store_key_list = $store_model->getSiteList(['store_pid' => 0, 'store_type' => StoreType::$StoreTypeElectrocar['code']]);
         return $this->fetch('add', ['store_key_list' => $store_key_list]);
     }
 
@@ -62,18 +62,19 @@ class CarOperationPer extends AdminBase
 //             * phone 管理人员电话
 //             * grade 管理人员等级
 //             * status 管理人员状态
+//             * store_area_ids 区域店铺
 //             * store_key_id 归属店铺
 //             * store_key_name
             $store_model = new StoreModel();
-            $store_data = $store_model->getStoreField($data['store_key_id'],'store_name');
-            $store_store_pid
+            $store_data = $store_model->getStoreField($data['store_key_id'], 'store_name');
             $in_operation_per_data = array(
                 'name' => $data['name'],
                 'phone' => $data['phone'],
                 'grade' => $data['grade'],
                 'status' => $data['status'],
+                'store_area_ids' => $data['store_area_ids'],
                 'store_key_id' => $data['store_key_id'],
-                'store_key_name' => $store_data['store_name'],
+                'store_key_name' => $store_data['store_name']
             );
             $out_data = $this->car_operation_per_model->addOperationPer($in_operation_per_data);
             if ($out_data['code'] == 0) {
@@ -93,7 +94,9 @@ class CarOperationPer extends AdminBase
     {
         $car_operation_per_data = $this->car_operation_per_model->getOperationPer($id);
         if ($car_operation_per_data['code'] == 0) {
-            return $this->fetch('edit', ['car_operation_per_data' => $car_operation_per_data['data']]);
+            $store_model = new StoreModel();
+            $store_key_list = $store_model->getSiteList(['store_pid' => 0, 'store_type' => StoreType::$StoreTypeElectrocar['code']]);
+            return $this->fetch('edit', ['car_operation_per_data' => $car_operation_per_data['data'], 'store_key_list' => $store_key_list]);
         } else {
             $this->error($car_operation_per_data['info']);
         }
@@ -114,14 +117,17 @@ class CarOperationPer extends AdminBase
 //             * status 管理人员状态
 //             * store_key_id 归属店铺
 //             * store_key_name
+            $store_model = new StoreModel();
+            $store_data = $store_model->getStoreField($data['store_key_id'], 'store_name');
             $update_operation_per_data = array(
                 'id' => $id,
                 'name' => $data['name'],
                 'phone' => $data['phone'],
                 'grade' => $data['grade'],
                 'status' => $data['status'],
-                'store_key_id' => 153,
-                'store_key_name' => "优车出行"
+                'store_area_ids' => $data['store_area_ids'],
+                'store_key_id' => $data['store_key_id'],
+                'store_key_name' => $store_data['store_name']
             );
             $out_data = $this->car_operation_per_model->updateOperationPer($update_operation_per_data);
             if ($out_data['code'] == 0) {
@@ -144,5 +150,4 @@ class CarOperationPer extends AdminBase
         }
         $this->success('删除失败');
     }
-
 }

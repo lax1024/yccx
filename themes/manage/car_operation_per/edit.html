@@ -28,6 +28,34 @@
                     </div>
                     <div class="layui-form-item">
                         <div class="layui-form-item">
+                            <label class="layui-form-label">所属店铺</label>
+                            <div class="layui-input-inline">
+                                <select name="store_key_id" id="store_key_id" lay-verify="required"
+                                        lay-filter="statusselect">
+                                    {foreach name="store_key_list" item="vo"}
+                                    {if condition="$vo.id==$car_operation_per_data.store_key_id"}
+                                    <option value="{$vo.id}" selected>{$vo.store_name}</option>
+                                    {else/}
+                                    <option value="{$vo.id}">{$vo.store_name}</option>
+                                    {/if}
+                                    {/foreach}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">店铺区域</label>
+                            <div class="layui-input-block" id="id_area_temp" style="display: none">
+                                <input type="checkbox" value="" name="store_area_ids[1]" title="花溪区">
+                            </div>
+                            <div class="layui-input-block" id="id_area">
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <div class="layui-form-item">
                             <label class="layui-form-label">级别</label>
                             <div class="layui-input-block">
                                 {if condition="$car_operation_per_data['grade']==0"}
@@ -66,4 +94,46 @@
         </div>
     </div>
 </div>
+{/block}
+{block name="js"}
+<script>
+    var var_json = {$car_operation_per_data['store_area_ids_json']};
+    var area_item = $("#id_area_temp").find('input').clone(true);
+    $("#id_area_temp").html("");
+    get_josn($("#store_key_id").val());
+    form.on('select(statusselect)', function (data) {
+        var pid = data.value;
+        get_josn(pid);
+    });
+
+    function get_josn(pid) {
+        $.ajax({
+            url: "{:url('api/Store/get_store_area_list')}",
+            type: "get",
+            data: {
+                pid: pid,
+                type: 2
+            },
+            dataType: 'json',
+            success: function (info) {
+                if (parseInt(info.code) === 0) {
+                    $("#id_area").html("");
+                    for (var i = 0; i < info.data.length; i++) {
+                        var area_item_temp = area_item.clone(true);
+                        area_item_temp.attr('name', 'store_area_ids[' + i + ']');
+                        area_item_temp.attr('title', info.data[i].store_name);
+                        area_item_temp.attr('value', info.data[i].id);
+                        $.each(var_json,function (index,item) {
+                            if(item ==info.data[i].id){
+                                area_item_temp.attr("checked","checked");
+                            }
+                        });
+                        area_item_temp.appendTo($("#id_area"));
+                    }
+                    form.render('checkbox');
+                }
+            }
+        });
+    }
+</script>
 {/block}

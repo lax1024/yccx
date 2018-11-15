@@ -20,6 +20,12 @@ class CarOperationPer extends Model
         if (intval($data['grade']) == 1) {
             $data['grade_str'] = "运维管理";
         }
+        if (!empty($data['store_area_ids'])) {
+            $data['store_area_ids'] = unserialize($data['store_area_ids']);
+        } else {
+            $data['store_area_ids'] = array();
+        }
+        $data['store_area_ids_json'] = json_encode($data['store_area_ids']);
     }
 
     /**
@@ -50,6 +56,7 @@ class CarOperationPer extends Model
             'add_time' => date("Y-m-d H:i:s"),
             'update_time' => date("Y-m-d H:i:s"),
             'store_key_id' => $operation_per['store_key_id'],
+            'store_area_ids' => serialize($operation_per['store_area_ids']),
             'store_key_name' => $operation_per['store_key_name']
         ];
         $ret = $this->save($in_operation_per);
@@ -84,7 +91,9 @@ class CarOperationPer extends Model
             'phone' => $operation_per['phone'],
             'grade' => $operation_per['grade'],
             'status' => $operation_per['status'],
-            'update_time' => date("Y-m-d H:i:s")
+            'store_key_id' => $operation_per['store_key_id'],
+            'store_area_ids' => serialize($operation_per['store_area_ids']),
+            'store_key_name' => $operation_per['store_key_name']
         ];
         $ret = $this->save($update_operation_per, ['id' => $operation_per['id']]);
         if ($ret !== false) {

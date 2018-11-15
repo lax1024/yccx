@@ -7,6 +7,7 @@ var layer = layui.layer,
     laydate = layui.laydate,
     form = layui.form();
 
+
 /**
  * AJAX全局设置
  */

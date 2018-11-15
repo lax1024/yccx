@@ -26,6 +26,8 @@ class OperationCar extends HomeBase
     private $operation_id;//运维人员id
     private $operation_phone;//运维人员电话
     private $operation_name;//运维人员名称
+    private $store_area_ids;//区域id
+    private $store_ids;//区域店铺id
     private $store_key_id;//归属店铺
     private $store_key_name;//归属店铺名称
 
@@ -37,6 +39,15 @@ class OperationCar extends HomeBase
         $this->operation_name = Session::get('operation_name');
         $this->store_key_id = Session::get('store_key_id');
         $this->store_key_name = Session::get('store_key_name');
+        $this->store_key_name = Session::get('store_key_name');
+        $store_area_ids = Session::get('store_area_ids');
+        if (!empty($store_area_ids)) {
+            $this->store_area_ids = json_decode($store_area_ids, true);
+        }
+        $store_ids = Session::get('store_ids');
+        if (!empty($store_ids)) {
+            $this->store_ids = json_decode($store_ids, true);
+        }
 //        $this->operation_id = 2;
 //        $this->operation_phone = "18785160986";
 //        $this->operation_name = "龙安祥";
@@ -189,20 +200,21 @@ class OperationCar extends HomeBase
         $store_list = $this->store_model->where($map)->field('id,store_name,car_num,location_longitude,location_latitude')->select();
         $store_list_arr = [];
         foreach ($store_list as $vx) {
-            $distance = get_distance($lng, $lat, $vx['location_longitude'], $vx['location_latitude']);
-            $store_list_arr[intval($vx['id'])] = [
-                'id' => $vx['id'],
-                'store_name' => $vx['store_name'],
-                'car_num' => $vx['car_num'],
-                'park_car' => 0,
-                'mileage_car' => 0,
-                'online_car' => 0,
-                'distance' => $distance,
-                'store_status' => 1,//不符合要求
-                'store_status_str' => "不符合要求",//符合要求
-            ];
+            if (in_array($vx['id'], $this->store_ids)) {
+                $distance = get_distance($lng, $lat, $vx['location_longitude'], $vx['location_latitude']);
+                $store_list_arr[intval($vx['id'])] = [
+                    'id' => $vx['id'],
+                    'store_name' => $vx['store_name'],
+                    'car_num' => $vx['car_num'],
+                    'park_car' => 0,
+                    'mileage_car' => 0,
+                    'online_car' => 0,
+                    'distance' => $distance,
+                    'store_status' => 1,//不符合要求
+                    'store_status_str' => "不符合要求",//符合要求
+                ];
+            }
         }
-
         $map_car = [
             'car_status' => CarStatus::$CarStatusNormal['code']
         ];
@@ -450,7 +462,7 @@ class OperationCar extends HomeBase
     {
         $order_operation_model = new OrderOperation();
         $map = ['operation_id' => $this->operation_id, 'order_status' => OrderStatus::$OrderStatusFinish['code']];
-        $out_order_data = $order_operation_model->getEndList($map, 'id ASC', $page*15, 15, false, $this->store_key_id);
+        $out_order_data = $order_operation_model->getEndList($map, 'id ASC', $page * 15, 15, false, $this->store_key_id);
         if (!empty($out_order_data)) {
             $out_data['code'] = 0;
             $out_data['data'] = $out_order_data;

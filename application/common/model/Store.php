@@ -839,6 +839,51 @@ class Store extends Model
     }
 
     /**
+     *获取指定级店铺区域
+     * @param $store_pid
+     * @param $field
+     * @param $type
+     * @return array|false|\PDOStatement|string|\think\Collection
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     */
+    public function getStoreAreaList($store_pid, $field, $type = 2)
+    {
+        $store_list = $this->where(['store_pid' => $store_pid, 'store_type' => $type])->field($field)->select();
+        if (!empty($store_list)) {
+            return $store_list;
+        }
+        return array(array());
+    }
+
+    /**
+     * 根据区域获取店铺id
+     * @param $areas_ids
+     * @return array|false|\PDOStatement|string|\think\Collection
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     */
+    public function getStoreAreasIdList($areas_ids)
+    {
+        if (empty($areas_ids)) {
+            return array();
+        }
+        if (count($areas_ids) > 1) {
+            $areas_ids = implode(',', $areas_ids);
+        }
+        $store_list = $this->where(['store_pid' => ['in', $areas_ids]])->field('id')->select();
+        $store_id_list = [];
+        if (!empty($store_list)) {
+            foreach ($store_list as $value) {
+                $store_id_list[] = $value['id'];
+            }
+        }
+        return $store_id_list;
+    }
+
+    /**
      * 锁定店铺
      * @param $store_id
      * @return bool
