@@ -12,6 +12,7 @@ use definition\CarStatus;
 use definition\DeviceStatus;
 use definition\GoodsType;
 use think\cache\driver\Redis;
+use think\Config;
 use think\Model;
 use tool\CarDeviceTool;
 
@@ -42,7 +43,7 @@ class CarCommon extends Model
         $redis = new Redis(['select' => 3]);
         if (!$redis->has('car_operation_' . $store_key_id)) {
             if (!empty($store_key_id)) {
-                $field = "id,cartype_id,goods_type,cartype_name,licence_plate,store_site_id,store_site_name,car_status,device_number,location_longitude,location_latitude,store_key_id,store_key_name";
+                $field = "id,cartype_id,series_id,goods_type,cartype_name,licence_plate,store_site_id,store_site_name,car_status,device_number,location_longitude,location_latitude,store_key_id,store_key_name";
                 $car_list_data = $this->where(['car_status' => ['in', CarStatus::$CarStatusLogoff['code'] . "," . CarStatus::$CarStatusNormal['code']], 'store_key_id' => $store_key_id, 'goods_type' => GoodsType::$GoodsTypeElectrocar['code']])->field($field)->select();
                 $car_list = [];
                 foreach ($car_list_data as &$value) {
@@ -144,7 +145,7 @@ class CarCommon extends Model
             $store_arr_list[intval($value['id'])] = $value;
         }
         if (!empty($store_key_id)) {
-            $field = "id,cartype_id,goods_type,cartype_name,licence_plate,store_site_id,store_site_name,car_status,device_number,location_longitude,location_latitude,store_key_id,store_key_name";
+            $field = "id,series_id,cartype_id,goods_type,cartype_name,licence_plate,store_site_id,store_site_name,car_status,device_number,location_longitude,location_latitude,store_key_id,store_key_name";
             $map = ['car_status' => CarStatus::$CarStatusNormal['code'], 'store_key_id' => $store_key_id, 'goods_type' => GoodsType::$GoodsTypeElectrocar['code']];
             if ($is_admin) {
                 $map = ['car_status' => ['in', CarStatus::$CarStatusLogoff['code'] . "," . CarStatus::$CarStatusNormal['code']], 'store_key_id' => $store_key_id, 'goods_type' => GoodsType::$GoodsTypeElectrocar['code']];
@@ -179,6 +180,7 @@ class CarCommon extends Model
                     if ($type > 0 && !$is_admin) {
                         $operation = [
                             'goods_id' => $value['id'],
+                            'series_id' => $value['series_id'],
                             'device_number' => $value['device_number'],
                             'cartype_name' => $value['cartype_name'],
                             'licence_plate' => $value['licence_plate'],
@@ -195,6 +197,7 @@ class CarCommon extends Model
                     if ($is_admin) {
                         $abnormal = [
                             'goods_id' => $value['id'],
+                            'series_id' => $value['series_id'],
                             'device_number' => $value['device_number'],
                             'cartype_name' => $value['cartype_name'],
                             'licence_plate' => $value['licence_plate'],
@@ -273,6 +276,7 @@ class CarCommon extends Model
         $car_oper['park'] = $store_temp['store_park_price'];
         $operation = [
             'goods_id' => $car_oper['id'],
+            'series_id' => $car_oper['series_id'],
             'device_number' => $car_oper['device_number'],
             'cartype_name' => $car_oper['cartype_name'],
             'licence_plate' => $car_oper['licence_plate'],
@@ -357,7 +361,9 @@ class CarCommon extends Model
                 if (empty($data['energy'])) {
                     $data['energy'] = (intval($data['driving_mileage']) / 160) * 100;
                 } else if (empty($data['driving_mileage'])) {
-                    $data['driving_mileage'] = intval(floatval($data['energy']) / 100 * 100);
+                    $course = Config::get('course');
+                    $km = $course[intval($data['series_id'])]['drive_km'];
+                    $data['driving_mileage'] = intval(floatval($data['energy']) / 100 * $km);
                 }
                 $data['driving_mileage_num'] = $data['driving_mileage'];
             } else {

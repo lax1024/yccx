@@ -341,13 +341,6 @@ function add_marker_car_index(index, div_id, item) {
 
 }
 
-$(".js_go_navi").on("click", function () {
-    var active_car_item = $("#js_marker_group").find(".mui-active");
-    var lat = active_car_item.find(".js_marker_car_lat").text();
-    var lng = active_car_item.find(".js_marker_car_lng").text();
-    go_openLocation(parseFloat(lat), parseFloat(lng));
-});
-
 //使用车辆（点击门店出现的弹窗）
 $(".js_marker_car_use").on("click", function () {
     var active_car_item = $("#js_marker_group").find(".mui-active");
@@ -502,81 +495,6 @@ $('.mui-slider').on('slide', function (event) {
 });
 
 /**
- * “个人中心”按钮的点击事件
- */
-$("#js_user_center").on('click', function () {
-    location.href = "user_center.html"
-});
-/**
- * 界面上方的“车辆列表”按钮点击事件
- */
-$("#js_car_list").on("click", function () {
-    localStorage.setItem("slng", marker_self_lng);
-    localStorage.setItem("slat", marker_self_lat);
-    location.href = "carsearch_newenergy.html";
-});
-/**
- * “立即用车”按钮的点击事件
- */
-$("#js_get_refresh").on('click', function () {
-    for (var i = 0; i < store_marker.length; i++) {
-        store_marker[i].remove();
-    }
-    Toast("正在为您刷新车辆", 2000);
-    is_show = true;
-    is_have = false;
-    weixinLocation(true);
-});
-
-/**
- * “推荐建点”按钮的点击事件
- */
-$("#js_goto_recommend").on("click", function () {
-    location.href = "build_point.html";
-});
-/**
- * 搜索框获得焦点
- */
-$("#js_search_plate").focus(function () {
-    $("#js_marker_car_pop").fadeOut(200);
-    $("#js_car_pop").fadeOut(200);
-    $("#js_user_map_fun").hide();
-    if (polylineDriving != null) {
-        map.removeOverlay(polylineDriving);
-        map.removeOverlay(carMarker);
-    }
-});
-
-/**
- * “车牌号”输入框输入监听
- */
-$("#js_search_plate").bind("input propertychange", function () {
-    var plate = $("#js_search_plate").val();
-    if (isLicenseNo(plate)) {
-        getStoreByLicense(plate);
-    }
-});
-/**
- * “搜索框”按钮的点击事件
- */
-$("#js_search_by_plate").on("click", function () {
-    var plate = $("#js_search_plate").val();
-    if (plate == "" || plate == null) {
-        Toast("请输入车牌号", 2000);
-    } else if (isLicenseNo(plate)) {
-        $("#js_car_pop").hide();
-        getStoreByLicense(plate);
-    }
-});
-/**
- * “刷新定位”按钮的点击事件
- */
-$("#user_location_self").on("click", function () {
-    Toast("定位中", 2000);
-    weixinLocation(false);
-});
-
-/**
  * 七、八位车牌号认证
  * @param str  车牌字符串
  * @returns {*|boolean}  是否是合法车牌号
@@ -593,14 +511,6 @@ function isLicenseNo(str) {
         return xreg.test(str);
     }
 }
-
-/**
- * 拍车牌取车
- */
-$("#js_get_by_qrcode").on("click", function () {
-    // location.href = "qrcode_or_license.html";
-    take_plate_pic();
-});
 
 /**
  * 根据车牌号获取门店信息(车辆所属门店的信息)
@@ -670,15 +580,3 @@ function getStoreByLicense(license) {
     });
 }
 
-$("#js_go_navi").on("click", function () {
-    var active_car_item = $("#js_car_pop");
-    var lat = active_car_item.find(".js_marker_car_lat").text();
-    var lng = active_car_item.find(".js_marker_car_lng").text();
-    go_openLocation(parseFloat(lat), parseFloat(lng));
-});
-/**
- * 搜索框获得焦点事件
- */
-$("#js_search_plate").blur(function () {
-    $("#js_user_map_fun").show();
-});

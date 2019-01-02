@@ -9,6 +9,7 @@ namespace app\common\model;
 use definition\CarOperationType;
 use definition\CarStatus;
 use think\cache\driver\Redis;
+use think\Config;
 use think\Model;
 
 class CarOperationList extends Model
@@ -52,7 +53,9 @@ class CarOperationList extends Model
                 if (empty($data['energy'])) {
                     $data['energy'] = (intval($data['driving_mileage']) / 160) * 100;
                 } else if (empty($data['driving_mileage'])) {
-                    $data['driving_mileage'] = intval(floatval($data['energy']) / 100 * 100);
+                    $course = Config::get('course');
+                    $km = $course[intval($data['series_id'])]['drive_km'];
+                    $data['driving_mileage'] = intval(floatval($data['energy']) / $km * 100);
                 }
                 $data['driving_mileage_num'] = $data['driving_mileage'];
             } else {
@@ -66,7 +69,7 @@ class CarOperationList extends Model
                     $data['status_str'] = "已处理";
                 } else {
                     $car_data_model = new CarCommon();
-                    $car_data = $car_data_model->getCarCommonField($data['goods_id'], 'car_status');
+                    $car_data = $car_data_model->getCarCommonField($data['goods_id'], 'series_id,car_status');
                     if (empty($car_data['code'])) {
                         if (intval($car_data['data']['car_status']) === CarStatus::$CarStatusInuse['code']) {
                             $this->where(['goods_id' => $data['goods_id']])->order('id DESC')->limit(1)->delete();
@@ -150,6 +153,7 @@ class CarOperationList extends Model
             if (($max_g > (3600 * 3) && $order_status == 50) || $order_status == 0) {
                 $in_operation = [
                     'goods_id' => $operation['goods_id'],
+                    'series_id' => $operation['series_id'],
                     'cartype_name' => $operation['cartype_name'],
                     'device_number' => $operation['device_number'],
                     'licence_plate' => $operation['licence_plate'],
@@ -273,7 +277,7 @@ class CarOperationList extends Model
             foreach ($operation_list as &$value) {
                 $this->formatx($value);
                 if (intval($value['status']) == 0) {
-                    $car_data = $car_model->getCarCommonField($value['goods_id'], 'store_site_id,store_site_name,car_status');
+                    $car_data = $car_model->getCarCommonField($value['goods_id'], 'series_id,store_site_id,store_site_name,car_status');
                     if (empty($car_data['code'])) {
                         if (intval($car_data['data']['car_status']) != CarStatus::$CarStatusInuse['code']) {
                             $value['store_site_id'] = $car_data['data']['store_site_id'];

@@ -170,7 +170,9 @@ class OrderOperation extends Model
             $data['order_type_str'] = OrderOperationType::$ORDEROPERATIONTYPE_CODE[intval($data['order_type'])];
         }
         $order_status = OrderStatus::$ORDER_OP_STATUS_CODE;
+        $car_status = CarStatus::$CARSTATUS_CODE;
         $data['order_status_str'] = $order_status[$data['order_status']];
+        $data['car_status_str'] = $car_status[$data['car_status']];
         $data['acquire_time_str'] = date("Y-m-d H:i:s", $data['acquire_time']);
         $data['all_time_str'] = round(($data['return_time'] - $data['acquire_time']) / 3600, 2);
         $data['return_time_str'] = date("Y-m-d H:i:s", $data['return_time']);
@@ -618,7 +620,6 @@ class OrderOperation extends Model
             return array('code' => 90, 'info' => "归还车辆失败,请查看车辆是否满足归还条件");
         }
     }
-
 
     /**
      * 确认任务

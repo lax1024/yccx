@@ -17,6 +17,7 @@ abstract class TerminalCarType
     public static $CarTypeDFQC = ['code' => 4, 'name' => '东方汽车', 'value' => 'FD27'];
     public static $CarTypeZT100 = ['code' => 5, 'name' => '众泰100', 'value' => 'FD28'];
     public static $CarTypeYQQ1 = ['code' => 6, 'name' => '云雀Q1', 'value' => 'FD29'];
+    public static $CarTypeZT100S = ['code' => 7, 'name' => '众泰100S', 'value' => 'FD2A'];
     public static $CARDEVICETYPE_CODE = [
         1 => ['name' => '北汽EC200', 'value' => 'FD21'],
         2 => ['name' => 'EQ1_OLD小蚂蚁', 'value' => 'FD22'],
@@ -24,5 +25,6 @@ abstract class TerminalCarType
         4 => ['name' => '东方汽车', 'value' => 'FD27'],
         5 => ['name' => '众泰100', 'value' => 'FD28'],
         6 => ['name' => '云雀Q1', 'value' => 'FD29'],
+        7 => ['name' => '众泰100S', 'value' => 'FD2A'],
     ];
 }

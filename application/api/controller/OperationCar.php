@@ -28,6 +28,7 @@ class OperationCar extends HomeBase
     private $operation_name;//运维人员名称
     private $store_area_ids;//区域id
     private $store_ids;//区域店铺id
+    private $grade;//等级
     private $store_key_id;//归属店铺
     private $store_key_name;//归属店铺名称
 
@@ -38,7 +39,7 @@ class OperationCar extends HomeBase
         $this->operation_phone = Session::get('operation_phone');
         $this->operation_name = Session::get('operation_name');
         $this->store_key_id = Session::get('store_key_id');
-        $this->store_key_name = Session::get('store_key_name');
+        $this->grade = Session::get('grade');
         $this->store_key_name = Session::get('store_key_name');
         $store_area_ids = Session::get('store_area_ids');
         if (!empty($store_area_ids)) {
@@ -82,19 +83,22 @@ class OperationCar extends HomeBase
         $out_car_list = $operation_list_model->getOperationPerList($sid, 0, $type);
         if ($out_car_list['code'] == 0) {
             $car_list = $out_car_list['data'];
+            $car_list_arr = [];
             foreach ($car_list as &$value) {
-                if (empty($value['location_latitude']) || empty($value['location_latitude'])) {
-                    $value['distance_per'] = "无数据";
-                } else {
-                    $value['distance_per'] = get_distance($lng, $lat, $value['location_longitude'], $value['location_latitude']);
+                if (in_array($value['store_site_id'], $this->store_ids)) {
+                    if (empty($value['location_latitude']) || empty($value['location_latitude'])) {
+                        $value['distance_per'] = "无数据";
+                    } else {
+                        $value['distance_per'] = get_distance($lng, $lat, $value['location_longitude'], $value['location_latitude']);
+                    }
+                    $value['time_str'] = round((time() - $value['gain_time']) / 3600, 2);
+
+                    $car_list_arr[] = json_decode(json_encode($value), true);
                 }
-                $value['time_str'] = round((time() - $value['gain_time']) / 3600, 2);
             }
-            $car_list = json_encode($car_list);
-            $car_list = json_decode($car_list, true);
-            $car_list = rank_elecar_grade($car_list, 'distance_per');
+            $car_list_arr = rank_elecar_grade($car_list_arr, 'distance_per');
             $out_data['code'] = 0;
-            $out_data['data'] = $car_list;
+            $out_data['data'] = $car_list_arr;
             $out_data['info'] = "获取成功";
         }
         out_json_data($out_data);
@@ -108,10 +112,30 @@ class OperationCar extends HomeBase
      */
     public function add_order_operation($id, $notes = "", $type = 0)
     {
+        $operation_ids = [2, 5, 11];
         $out_data = [
             'code' => 100,
             'info' => "车辆id不合法"
         ];
+
+//        if (!in_array($this->operation_id, $operation_ids)) {
+//            $stime = ['H' => 6, 'i' => 0];
+//            $etime = ['H' => 21, 'i' => 30];
+//            if (!verify_time_interval($stime, $etime)) {
+//                $out_data['code'] = 110;
+//                $out_data['info'] = "未到接单时间，请到21:30-第二天06:00时间段内接单";
+//                out_json_data($out_data);
+//            }
+//        }
+        if (intval($this->grade) == 0) {
+            $stime = ['H' => 6, 'i' => 0];
+            $etime = ['H' => 21, 'i' => 30];
+            if (!verify_time_interval($stime, $etime)) {
+                $out_data['code'] = 110;
+                $out_data['info'] = "未到接单时间，请到21:30-第二天06:00时间段内接单";
+                out_json_data($out_data);
+            }
+        }
         if (empty($id)) {
             out_json_data($out_data);
         }

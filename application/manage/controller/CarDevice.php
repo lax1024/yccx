@@ -274,6 +274,9 @@ class CarDevice extends AdminBase
             case TerminalCarType::$CarTypeYQQ1['code']:
                 $carType = TerminalCarType::$CarTypeYQQ1['value'];
                 break;
+            case TerminalCarType::$CarTypeZT100S['code']:
+                $carType = TerminalCarType::$CarTypeZT100S['value'];
+                break;
         }
         if (empty($carType)) {
             $out_data['code'] = 100;

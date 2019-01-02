@@ -62,7 +62,6 @@
                 <table class="layui-table">
                     <thead>
                     <tr>
-                        <th>操作</th>
                         <th>店铺名称</th>
                         <th>所在门店</th>
                         <th>车型名称</th>
@@ -75,11 +74,24 @@
                         <th>电压</th>
                         <th>车机编号</th>
                         <th>租赁次数</th>
+                        <th>操作</th>
                     </tr>
                     </thead>
                     <tbody>
                     {foreach name="carcommon_list" item="vo"}
                     <tr>
+                        <td>{$vo.store_key_name}</td>
+                        <td>{$vo.store_site_name}</td>
+                        <td>{$vo.cartype_name}</td>
+                        <td>{$vo.licence_plate}</td>
+                        <td>{$vo.day_price}</td>
+                        <td>{$vo.km_price}</td>
+                        <td>{$vo.car_status_str}/({$vo.car_device_str})</td>
+                        <td>{$vo.car_color_str}</td>
+                        <td>{$vo.driving_mileage}(km)</td>
+                        <td>{$vo.voltage}(V)</td>
+                        <td>{$vo.device_number}</td>
+                        <td>{$vo.rent_count}</td>
                         <td>
                             <a href="{:url('seller/electrocar/edit',['id'=>$vo['id']])}"
                                class="layui-btn layui-btn-normal layui-btn-mini">编辑审核</a>
@@ -111,18 +123,6 @@
                             <a href="{:url('seller/CarDevice/clearOrder',['device_number'=>$vo['device_number']])}"
                                class="layui-btn layui-btn-normal layui-btn-mini ajax-common">还车</a>
                         </td>
-                        <td>{$vo.store_key_name}</td>
-                        <td>{$vo.store_site_name}</td>
-                        <td>{$vo.cartype_name}</td>
-                        <td>{$vo.licence_plate}</td>
-                        <td>{$vo.day_price}</td>
-                        <td>{$vo.km_price}</td>
-                        <td>{$vo.car_status_str}/({$vo.car_device_str})</td>
-                        <td>{$vo.car_color_str}</td>
-                        <td>{$vo.driving_mileage}(km)</td>
-                        <td>{$vo.voltage}(V)</td>
-                        <td>{$vo.device_number}</td>
-                        <td>{$vo.rent_count}</td>
                     </tr>
                     {/foreach}
                     </tbody>

@@ -301,7 +301,10 @@ class Order extends Model
                     if (empty($data['energy'])) {
                         $data['energy'] = intval(($data['driving_mileage'] / 160) * 100);
                     } else if (empty($data['driving_mileage'])) {
-                        $data['driving_mileage'] = intval(floatval($data['energy']) / 100 * 100);
+//                        $course = Config::get('course');
+//                        $km = $course[intval($data['series_id'])]['drive_km'];
+                        $km = 100;
+                        $data['driving_mileage'] = intval(floatval($data['energy']) / 100 * $km);
                     }
                     $data['return_mileage'] = $device_data['odometer'];
                     $all_mileage = intval($device_data['odometer']) - intval($data['acquire_mileage']);
@@ -2349,7 +2352,7 @@ class Order extends Model
             if (!empty($order_expand_data['data']['order_goods'])) {
                 $order_goods = $order_expand_data['data']['order_goods'];
                 $series_id = intval($order_goods['series_id']);
-                if ($series_id == 4663 || $series_id == 4664) {
+                if ($series_id == 4663 || $series_id == 4664|| $series_id == 4666) {
                     $is_parking = false;
                 }
             }
@@ -2958,7 +2961,7 @@ class Order extends Model
         if (!empty($order_expand_data['data']['order_goods'])) {
             $order_goods = $order_expand_data['data']['order_goods'];
             $series_id = intval($order_goods['series_id']);
-            if ($series_id == 4663 || $series_id == 4664) {
+            if ($series_id == 4663 || $series_id == 4664|| $series_id == 4666) {
                 $is_parking = false;
             }
         }

@@ -255,14 +255,14 @@
 <script type="text/javascript" src="__STATIC__/mobile/js/gps-transform-js.js?rand={$js_rand}"></script>
 <script type="text/javascript" src="__STATIC__/mobile/js/public-js.js?rand={$js_rand}"></script>
 <script type="text/javascript"
-        src="http://api.map.baidu.com/api?v=2.0&ak=84chcOlNtuGKpKkIfp0oprKRveLSXEnj"></script>
+        src="http://api.map.baidu.com/api?v=2.0&ak=DplTpLn9EpGEIwimAKUNscH6YWGAyoH3"></script>
 <script type="text/javascript" src="__STATIC__/mobile/js/baidu/TextIconOverlay.js?rand={$css_rand}"></script>
 <script type="text/javascript" src="__STATIC__/mobile/js/baidu/MarkerClusterer.js?rand={$css_rand}"></script>
 <script type="text/javascript" src="__STATIC__/mui/js/mui.min.js?rand={$css_rand}"></script>
 <script type="text/javascript" src="__STATIC__/mobile/js/map-choose-car-js.js?rand={$js_rand}"></script>
 
 {if condition="$is_wxBrowser eq 'yes'"}
-<script src="http://res.wx.qq.com/open/js/jweixin-1.4.0.js?rand={$js_rand}"></script>
+<script src="__STATIC__/js/weixin/jweixin-1.4.0.js?rand={$js_rand}"></script>
 <script>
     /*
      * 注意：
@@ -291,6 +291,20 @@
     });
 
     wx.ready(function (res) {
+        wx.checkJsApi({
+            jsApiList: [
+                'openLocation',
+                'getLocation',
+                'chooseImage',
+                'uploadImage'
+            ],
+            success: function (res) {
+                // alert(JSON.stringify(res));
+            },
+            error:function (res) {
+                alert(JSON.stringify(res));
+            }
+        });
         if (marker_self != null) {
             marker_self.remove();
         }

@@ -49,12 +49,14 @@ class Task extends OperationBase
                         'operation_id' => $operation_per_data['id'],
                         'operation_phone' => $operation_per_data['phone'],
                         'operation_name' => $operation_per_data['name'],
+                        'grade' => $operation_per_data['grade'],
                         'operation_status' => $operation_per_data['status']
                     );
                     Session::set('operation_id', $operation_per_data['id']);
                     Session::set('operation_phone', $operation_per_data['phone']);
                     Session::set('operation_name', $operation_per_data['name']);
                     Session::set('store_key_id', $operation_per_data['store_key_id']);
+                    Session::set('grade', $operation_per_data['grade']);
                     Session::set('store_area_ids', json_encode($operation_per_data['store_area_ids']));
                     Session::set('store_key_name', $operation_per_data['store_key_name']);
                     $store_model = new StoreModel();

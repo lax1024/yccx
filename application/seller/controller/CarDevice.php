@@ -9,6 +9,7 @@ use app\common\model\Store as StoreModel;
 use definition\CarDeviceType;
 use definition\DeviceStatus;
 use definition\TerminalCarType;
+use definition\TerminalDormancy;
 use think\Config;
 use tool\CarDeviceTool;
 
@@ -44,6 +45,7 @@ class CarDevice extends SellerAdminBase
         $device_status = DeviceStatus::$DEVICESTATUS_CODE;
         $device_type = CarDeviceType::$CARDEVICETYPE_CODE;
         $terminal_car_type = TerminalCarType::$CARDEVICETYPE_CODE;
+        $terminal_time_code = TerminalDormancy::$TERMiNAlDORMANCY_CODE;
         $cardevice_list = [];
         if (!empty($cardevice_list_all)) {
             foreach ($cardevice_list_all as $value) {
@@ -52,7 +54,7 @@ class CarDevice extends SellerAdminBase
                 }
             }
         }
-        return $this->fetch('index', ['cardevice_list' => $cardevice_list, 'device_status' => $device_status, 'device_type' => $device_type, 'terminal_car_type' => $terminal_car_type, 'keyword' => $keyword]);
+        return $this->fetch('index', ['cardevice_list' => $cardevice_list, 'device_status' => $device_status, 'device_type' => $device_type, 'terminal_time_code' => $terminal_time_code, 'terminal_car_type' => $terminal_car_type, 'keyword' => $keyword]);
     }
 
     /**
@@ -110,12 +112,9 @@ class CarDevice extends SellerAdminBase
 //            * store_key_id 总店铺id
 //            * store_key_name 总店名称
             $name = $data['name'];
-            $device_number = $data['device_number'];
             $device_type = $data['device_type'];
             $device_status = $data['device_status'];
-            $sim_imsi = $data['sim_imsi'];
             $store_key_id = $data['store_key_id'];
-            $obd_versions = $data['obd_versions'];
             $store_key_name = "";
             $out_store = $this->store_model->getStore($data['store_key_id'], '', true);
             if ($out_store['code'] == 0) {
@@ -196,7 +195,6 @@ class CarDevice extends SellerAdminBase
      */
     public function clearOrder($device_number)
     {
-//        $out_data = $this->car_device_tool->clearOrder($device_number);
         $out_data = $this->car_device_tool->closeDoor($device_number);
         $out_data = $this->car_device_tool->powerFailure($device_number);
         out_json_data($out_data);
@@ -211,7 +209,6 @@ class CarDevice extends SellerAdminBase
         $out_data = $this->car_device_tool->startOrder($device_number);
         out_json_data($out_data);
     }
-
 
     /**
      * 寻车
@@ -288,6 +285,9 @@ class CarDevice extends SellerAdminBase
             case TerminalCarType::$CarTypeYQQ1['code']:
                 $carType = TerminalCarType::$CarTypeYQQ1['value'];
                 break;
+            case TerminalCarType::$CarTypeZT100S['code']:
+                $carType = TerminalCarType::$CarTypeZT100S['value'];
+                break;
         }
         if (empty($carType)) {
             $out_data['code'] = 100;
@@ -296,6 +296,28 @@ class CarDevice extends SellerAdminBase
         }
         $this->car_device_tool->updateDevice(['id' => $device_data['data']['id'], 'terminal_car_type' => $car_type]);
         $out_data = $this->car_device_tool->setTerminalCarType($device_number, $carType);
+        out_json_data($out_data);
+    }
+
+    /**
+     * 设置休眠时间
+     * @param $device_number
+     * @param $time_code
+     */
+    public function setTerminalDormancy($device_number, $time_code)
+    {
+        $device_data = $this->car_device_tool->getDevice($device_number);
+        if (!empty($device_data['code'])) {
+            $out_data['code'] = 100;
+            $out_data['info'] = "设备信息有误";
+            out_json_data($out_data);
+        }
+        if (empty($time_code)) {
+            $out_data['code'] = 100;
+            $out_data['info'] = "休眠时间格式不正确";
+            out_json_data($out_data);
+        }
+        $out_data = $this->car_device_tool->setTerminalDormancy($device_number, $time_code);
         out_json_data($out_data);
     }
 

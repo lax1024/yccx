@@ -8,6 +8,7 @@ namespace app\common\model;
 
 use definition\CarOperationType;
 use think\cache\driver\Redis;
+use think\Config;
 use think\Model;
 
 class CarAbnormalLog extends Model
@@ -51,7 +52,9 @@ class CarAbnormalLog extends Model
                 if (empty($data['energy'])) {
                     $data['energy'] = (intval($data['driving_mileage']) / 160) * 100;
                 } else if (empty($data['driving_mileage'])) {
-                    $data['driving_mileage'] = intval(floatval($data['energy']) / 100 * 100);
+                    $course = Config::get('course');
+                    $km = $course[intval($data['series_id'])]['drive_km'];
+                    $data['driving_mileage'] = intval(floatval($data['energy']) / $km * 100);
                 }
                 $data['driving_mileage_num'] = $data['driving_mileage'];
             } else {
@@ -118,6 +121,7 @@ class CarAbnormalLog extends Model
         if (empty($abnormal_data['gain_time'])) {
             $in_operation = [
                 'goods_id' => $abnormal['goods_id'],
+                'series_id' => $abnormal['series_id'],
                 'cartype_name' => $abnormal['cartype_name'],
                 'device_number' => $abnormal['device_number'],
                 'licence_plate' => $abnormal['licence_plate'],

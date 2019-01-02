@@ -14,6 +14,7 @@ use definition\GoodsType;
 use definition\StoreType;
 use think\Cache;
 use think\cache\driver\Redis;
+use think\Config;
 
 /**
  * 车辆信息列表 对外公共
@@ -220,7 +221,9 @@ class Car extends HomeBase
         if (empty($energy)) {
             $energy = (intval($driving_mileage) / 160) * 100;
         } else if (empty($driving_mileage)) {
-            $driving_mileage = intval(floatval($energy) / 100 * 100);
+            $course = Config::get('course');
+            $km = $course[intval($car_data['series_id'])]['drive_km'];
+            $driving_mileage = intval(floatval($car_data['energy']) / 100 * $km);
         }
         $car_data['location_latitude'] = $car_device_data['latitude'];
         $car_data['location_longitude'] = $car_device_data['longitude'];
@@ -286,7 +289,9 @@ class Car extends HomeBase
         if (empty($car_data['energy'])) {
             $car_data['energy'] = (intval($car_data['driving_mileage']) / 160) * 100;
         } else if (empty($car_data['driving_mileage'])) {
-            $car_data['driving_mileage'] = intval(floatval($car_data['energy']) / 100 * 100);
+            $course = Config::get('course');
+            $km = $course[intval($car_data['series_id'])]['drive_km'];
+            $car_data['driving_mileage'] = intval(floatval($car_data['energy']) / 100 * $km);
         }
         $car_data['location_latitude'] = $car_device_data['latitude'];
         $car_data['location_longitude'] = $car_device_data['longitude'];
@@ -458,7 +463,9 @@ class Car extends HomeBase
         if (empty($car_data['energy'])) {
             $car_data['energy'] = (intval($car_data['driving_mileage']) / 160) * 100;
         } else if (empty($car_data['driving_mileage'])) {
-            $car_data['driving_mileage'] = intval(floatval($car_data['energy']) / 100 * 100);
+            $course = Config::get('course');
+            $km = $course[intval($car_data['series_id'])]['drive_km'];
+            $car_data['driving_mileage'] = intval(floatval($car_data['energy']) / 100 * $km);
         }
         $car_data['location_latitude'] = $car_device_data['latitude'];
         $car_data['location_longitude'] = $car_device_data['longitude'];

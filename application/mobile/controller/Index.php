@@ -104,7 +104,6 @@ class Index extends MobileBase
         return $this->fetch('index_tradition', ['jssdk' => $jssdk, 'fxurl' => $fxurl, 'article' => $article, 'article1' => $article1]);
     }
 
-
     /**
      * 推荐建一个站点
      */
@@ -484,53 +483,17 @@ class Index extends MobileBase
     }
 
     //测试界面
-    public function test()
+    public function goto_map()
     {
-        $jssdk = array();
         $urls = curPageURL();
-        $fxurl = '';
         if ($this->is_wxBrowser) {
-            get_wxuser($urls);
-            $jssdk = get_jssdk($urls);
             $customer_id = Session::get('customer_id');
-            $mobile_phone = Session::get('mobile_phone');
-            $customer_status = Session::get('customer_status');
-            $reserve_model = new Reserve();
-            $r_data = $reserve_model->isReserve($customer_id);
-            if ($r_data['code'] == 103) {
-                $this->redirect(url('mobile/index/order_fillin_newenergy'));
+            $openid = Session::get('wechar_openid');
+            if (!empty($customer_id) && !empty($openid)) {
+                header("location:".url('mobile/index/map_choose_car'));
             }
-            $order_model = new OrderModel();
-
-            $map = array(
-                'customer_id' => $customer_id,
-                'goods_type' => GoodsType::$GoodsTypeElectrocar['code'],
-                'order_status' => OrderStatus::$OrderStatusAcquire['code'],
-            );
-            $order_data = $order_model->where($map)->field('id')->find();
-            if (!empty($order_data)) {
-                $order_id = $order_data['id'];
-                $this->redirect(url('mobile/index/order_ele_key') . "?order_id=" . $order_id);
-            }
-            $customer_info = array(
-                'customer_id' => $customer_id,
-                'mobile_phone' => $mobile_phone,
-                'customer_status' => $customer_status,
-            );
-            $this->assign($customer_info);
-            if (strpos($urls, '=') > 0) {
-                $fxurl = $urls . "&channel_uid=" . $customer_id;
-            } else {
-                $fxurl = $urls . "?channel_uid=" . $customer_id;
-            }
-            $customer_model = new Customer();
-            $field = "customer_status,customer_name,customer_nickname,customer_balance,id_number,mobile_phone,wechar_headimgurl,wechar_nickname,cash,cash_is,wechar_location_lat,wechar_location_lng";
-            $customer_data = $customer_model->getCustomerField($customer_id, $field);
-            $customer_data = $customer_data['data'];
-        } else {
-            $customer_data = [];
+            get_wxuser($urls);
         }
-        return $this->fetch('test', ['customer_data' => $customer_data, 'jssdk' => $jssdk, 'fxurl' => $fxurl]);
     }
 
     //取车城市选择
@@ -733,6 +696,60 @@ class Index extends MobileBase
         }
         //分享渠道链接
         return $this->fetch('map_choose_car', ['customer_data' => $customer_data, 'jssdk' => $jssdk, 'fxurl' => $fxurl]);
+    }
+
+
+    /**
+     * 地图选车
+     */
+    public function map_choose_car1()
+    {
+        $jssdk = array();
+        $urls = curPageURL();
+        $fxurl = '';
+        if ($this->is_wxBrowser) {
+            get_wxuser($urls);
+            $jssdk = get_jssdk($urls);
+            $customer_id = Session::get('customer_id');
+            $mobile_phone = Session::get('mobile_phone');
+            $customer_status = Session::get('customer_status');
+            $reserve_model = new Reserve();
+            $r_data = $reserve_model->isReserve($customer_id);
+            if ($r_data['code'] == 103) {
+                $this->redirect(url('mobile/index/order_fillin_newenergy').'?goods_id='.$r_data['goods_id']);
+            }
+            $order_model = new OrderModel();
+
+            $map = array(
+                'customer_id' => $customer_id,
+                'goods_type' => GoodsType::$GoodsTypeElectrocar['code'],
+                'order_status' => OrderStatus::$OrderStatusAcquire['code'],
+            );
+            $order_data = $order_model->where($map)->field('id')->find();
+            if (!empty($order_data)) {
+                $order_id = $order_data['id'];
+                $this->redirect(url('mobile/index/order_ele_key') . "?order_id=" . $order_id);
+            }
+            $customer_info = array(
+                'customer_id' => $customer_id,
+                'mobile_phone' => $mobile_phone,
+                'customer_status' => $customer_status,
+            );
+            $this->assign($customer_info);
+            if (strpos($urls, '=') > 0) {
+                $fxurl = $urls . "&channel_uid=" . $customer_id;
+            } else {
+                $fxurl = $urls . "?channel_uid=" . $customer_id;
+            }
+            $customer_model = new Customer();
+            $field = "customer_status,customer_name,customer_nickname,customer_balance,id_number,mobile_phone,wechar_headimgurl,wechar_nickname,cash,cash_is,wechar_location_lat,wechar_location_lng";
+            $customer_data = $customer_model->getCustomerField($customer_id, $field);
+            $customer_data = $customer_data['data'];
+        } else {
+            $customer_data = [];
+        }
+        //分享渠道链接
+        return $this->fetch('map_choose_car1', ['customer_data' => $customer_data, 'jssdk' => $jssdk, 'fxurl' => $fxurl]);
     }
 
     /**
@@ -961,6 +978,7 @@ class Index extends MobileBase
         //分享渠道链接
         return $this->fetch('order_details_newenergy', ['jssdk' => $jssdk, 'fxurl' => $fxurl]);
     }
+
 
     /**
      * 新能源车订单详情

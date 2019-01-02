@@ -50,6 +50,7 @@
                         <th>处理时间</th>
                         <th>处理备注</th>
                         <th>处理状态</th>
+                        <th>管理人员</th>
                         <th>处理人员</th>
                         <th>操作</th>
                     </tr>
@@ -69,6 +70,7 @@
                         <td>{$vo.remark}</td>
                         <td>{$vo.state_str}</td>
                         <td>{$vo.admin_name}</td>
+                        <td>{$vo.seller_name}</td>
                         <td>
                             <a href="{:url('manage/CarRegulations/edit',['id'=>$vo['id']])}"
                                class="layui-btn layui-btn-mini">编辑操作</a>

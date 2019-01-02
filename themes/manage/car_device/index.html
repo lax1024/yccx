@@ -54,6 +54,8 @@
                         <th>设备类型</th>
                         <th>车型</th>
                         <th>OBD版本</th>
+                        <th>续航</th>
+                        <th>小电瓶</th>
                         <th>归属店铺</th>
                         <th>设备状态</th>
                         <th>终端状态</th>
@@ -109,10 +111,12 @@
                         <td>{$vo.carName}</td>
                         <td>{$device_type[$vo.deviceType]}</td>
                         <td>{$vo.terminalVersions}</td>
+                        <td>{$vo.driving_mileage}</td>
+                        <td>{$vo.voltage}</td>
                         <td>{$vo.storeKeyName}({$vo.storeKeyId})</td>
                         <td>{$device_status[$vo.deviceStatus]}</td>
                         <td>
-                            {if condition="$vo['deviceOnline']!=1"}
+                            {if condition="$vo['car_device']!=1"}
                             离线
                             {else/}
                             在线

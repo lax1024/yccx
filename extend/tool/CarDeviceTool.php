@@ -183,10 +183,32 @@ class CarDeviceTool
             $TerminalCarType = TerminalCarType::$CARDEVICETYPE_CODE;
             $data['carName'] = $TerminalCarType[intval($data['terminalCarType'])]['name'];
         }
+
         $redis = new Redis();
-        $data['deviceOnline'] = 0;
-        if ($redis->has("login:" . $data['deviceId'])) {
-            $data['deviceOnline'] = 1;
+        if (!$redis->has("login:" . $data['deviceId'])) {
+            $data['car_device_str'] = "离线";
+            $data['car_device'] = 0;
+        } else {
+            $data['car_device_str'] = "在线";
+            $data['car_device'] = 1;
+        }
+        $out_data_device = $redis->get("status:" . $data['deviceId']);
+        if (!empty($out_data_device)) {
+            $device_data = json_decode($out_data_device, true);
+            $data['driving_mileage'] = $device_data['drivingMileage'];
+            $data['energy'] = $device_data['energy'];
+            $data['location_latitude'] = $device_data['latitude'];
+            $data['location_longitude'] = $device_data['longitude'];
+            $data['voltage'] = $device_data['batteryVoltage'];
+            if (empty($data['energy'])) {
+                $data['energy'] = (intval($data['driving_mileage']) / 160) * 100;
+            } else if (empty($data['driving_mileage'])) {
+                $data['driving_mileage'] = intval(floatval($data['energy']) / 100 * 100);
+            }
+            $data['driving_mileage_num'] = $data['driving_mileage'];
+        } else {
+            $data['driving_mileage'] = "无数据";
+            $data['driving_mileage_num'] = 0;
         }
         $data['createTime_str'] = date("Y-m-d H:i:s", $data['createTime'] / 1000);
         $data['updateTime_str'] = date("Y-m-d H:i:s", $data['updateTime'] / 1000);

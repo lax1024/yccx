@@ -852,7 +852,7 @@ class Order extends UserBase
                     out_json_data($out_data);
                 }
             }
-            if ($series_id == 4663 || $series_id == 4664) {
+            if ($series_id == 4663 || $series_id == 4664 || $series_id == 4666) {
                 $is_parking = false;
             }
         }

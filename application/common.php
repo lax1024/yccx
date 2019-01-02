@@ -1573,7 +1573,9 @@ function group_elecar_grade($car_list, $lng = '106.717801', $lat = '26.58804', $
             if (empty($energy)) {
                 $energy = (intval($driving_mileage) / 180) * 100;
             } else if (empty($driving_mileage)) {
-                $driving_mileage = intval(floatval($energy) / 100 * 100);
+                $course = Config::get('course');
+                $km = $course[intval($value['series_id'])]['drive_km'];
+                $driving_mileage = intval(floatval($energy) / $km * 100);
             }
             if ((floatval($driving_mileage) < $electric_quantity)) {
                 continue;
@@ -1651,8 +1653,9 @@ function group_elecar_map($car_list, $lng = '106.717801', $lat = '26.58804')
             if (empty($energy)) {
                 $energy = ($driving_mileage / 180) * 100;
             } else if (empty($driving_mileage)) {
-                $driving_mileage = intval(floatval($energy) / 100 * 100);
-//                $driving_mileage = $energy;
+                $course = Config::get('course');
+                $km = $course[intval($value['series_id'])]['drive_km'];
+                $driving_mileage = intval(floatval($energy) / 100 * $km);
             }
             if ((floatval($driving_mileage) < $electric_quantity)) {
                 continue;
@@ -2410,4 +2413,46 @@ function getCarDevice($goods_device)
         $device['info'] = "获取成功";
     }
     return $device;
+}
+
+/**
+ * 判断时间区域
+ * @param $stime ['H'=>'6','s'=>'30']
+ * @param $etime ['H'=>'21','s'=>'30']
+ * @param bool $is_day
+ * @return bool
+ */
+function verify_time_interval($stime, $etime, $is_day = true)
+{
+    if ($is_day) {
+        if (_verify_time_interval($stime, $etime)) {
+            return false;
+        }
+        return true;
+    } else {
+        if (_verify_time_interval($stime, $etime)) {
+            return true;
+        }
+        return false;
+    }
+}
+
+/**
+ * 判断时间区域_正向区间
+ * @param $stime ['H'=>'6','s'=>'30']
+ * @param $etime ['H'=>'21','s'=>'30']
+ * @return bool
+ */
+function _verify_time_interval($stime, $etime)
+{
+    $H = intval(date("H"));
+    $i = intval(date("i"));
+    if ($H > $stime['H'] && $H < $etime['H']) {
+        return true;
+    } else if ($H == $stime['H'] && $i > $stime['i'] && $H < $etime['H']) {
+        return true;
+    } else if ($H > $stime['H'] && $H == $etime['H'] && $i < $etime['i']) {
+        return true;
+    }
+    return false;
 }

@@ -54,7 +54,7 @@ class CarRegulations extends AdminBase
     public function add($order_id = '')
     {
         $order_model = new Order();
-        $order_data = $order_model->getOrder($order_id, '', true);
+        $order_data = $order_model->getOrder($order_id,'',true);
         if (empty($order_data['code'])) {
             $u_data = [
                 'customer_name' => $order_data['data']['customer_information']['vehicle_drivers'],

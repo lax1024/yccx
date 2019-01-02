@@ -259,7 +259,7 @@ class Electrocar extends AdminBase
      */
     public function dispatch_car($car_id)
     {
-        $car_data = $this->carcommon_model->getCarCommonField($car_id, "goods_type,store_key_id,location_longitude,location_latitude,device_number");
+        $car_data = $this->carcommon_model->getCarCommonField($car_id, "goods_type,series_id,store_key_id,location_longitude,location_latitude,device_number");
         $car_data = $car_data['data'];
         $store_key_id = $car_data['store_key_id'];
         $lng = $car_data['location_longitude'];

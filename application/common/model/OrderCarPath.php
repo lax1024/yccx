@@ -7,6 +7,7 @@ namespace app\common\model;
  */
 
 use definition\PayCode;
+use OSS\OssClient;
 use think\Model;
 use tool\CarDeviceTool;
 
@@ -23,6 +24,7 @@ class OrderCarPath extends Model
     /**
      * 添加订单运行轨迹
      * @param $order_id
+     * @param $order_type
      * @param $device_id
      * @param $start_time
      * @param $end_time
@@ -48,7 +50,17 @@ class OrderCarPath extends Model
         if (empty($out_path['code'])) {
             $path = $out_path['data'];
         }
-        $startt = date("Y-m",strtotime($start_time));
+        $startt = date("Y-m", strtotime($start_time));
+
+        $object = '/public/uploads/order/path/order_path_' . $order_id . ".txt";
+        file_put_contents($object, serialize($path));
+        $config = config('aliyun_oss');
+        $bucketName = $config['Bucket'];
+        //获取配置项，并赋值给对象$config
+        //实例化OSS
+        $ossClient = new OssClient($config['KeyId'], $config['KeySecret'], $config['Endpoint']);
+        //uploadFile的上传方法
+        $ossClient->uploadFile($bucketName, $object, $object);
         $in_data = [
             'order_id' => $order_id,
             'path' => serialize($path),

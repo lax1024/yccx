@@ -66,8 +66,9 @@ class MobileBase extends Controller
         }
         $this->assign($customer_info);
         $js_css_rand = array(
-            'js_rand' => '20180804',
-            'css_rand' => '20180804'
+            'js_rand' => '2018111191',
+            'css_rand' => '201811191',
+            'm_rand' => date("YmdHis")
         );
         $this->assign($js_css_rand);
     }

@@ -32,7 +32,7 @@ class Reserve extends Model
             return $out_data;
         }
         $car_model = new CarCommon();
-        $out_car_data = $car_model->getCarCommonField($goods_id, 'licence_plate');
+        $out_car_data = $car_model->getCarCommonField($goods_id, 'series_id,licence_plate');
         $reserve_mileage = Config::get('reserve_mileage');
         if (!empty($out_car_data['code'])) {
             $out_data['code'] = 101;
